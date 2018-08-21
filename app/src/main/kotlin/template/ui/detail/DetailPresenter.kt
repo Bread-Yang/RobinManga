@@ -1,8 +1,8 @@
 package template.ui.detail
 
-import nucleus5.presenter.RxPresenter
+import template.ui.common.mvp.BasePresenter
 
-class DetailPresenter : RxPresenter<DetailPresenter.View>() {
+class DetailPresenter : BasePresenter<DetailPresenter.View>() {
 
     interface View
 }

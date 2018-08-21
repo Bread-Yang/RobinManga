@@ -1,4 +1,4 @@
-package template.ui.common
+package template.extensions
 
 import io.erva.celladapter.CellAdapter
 import io.erva.celladapter.select.SelectableCellAdapter

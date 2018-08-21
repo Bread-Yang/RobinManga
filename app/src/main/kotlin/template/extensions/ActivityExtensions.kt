@@ -1,4 +1,4 @@
-package template.ui.common.activity
+package template.extensions
 
 import android.app.Activity
 import android.content.res.Configuration

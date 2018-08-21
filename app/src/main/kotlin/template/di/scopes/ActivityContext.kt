@@ -8,4 +8,4 @@ import javax.inject.Scope
         AnnotationTarget.FUNCTION,
         AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.SOURCE)
-@Scope annotation class ForActivity
+@Scope annotation class ActivityContext

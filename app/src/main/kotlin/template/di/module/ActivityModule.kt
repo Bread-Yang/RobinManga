@@ -6,16 +6,16 @@ import android.view.ViewGroup
 import com.bluelinelabs.conductor.Conductor
 import dagger.Module
 import dagger.Provides
-import template.di.scopes.ForActivity
+import template.di.scopes.ActivityContext
 
 @Module
 class ActivityModule(private val activity: Activity, private val container: ViewGroup, private val bundle: Bundle?) {
 
     @Provides
-    @ForActivity
+    @ActivityContext
     fun provideActivityInstance() = activity
 
     @Provides
-    @ForActivity
+    @ActivityContext
     fun provideRouter() = Conductor.attachRouter(activity, container, bundle)
 }

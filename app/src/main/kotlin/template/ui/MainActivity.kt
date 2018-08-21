@@ -12,8 +12,13 @@ import template.ui.main.MainController
 @Layout(R.layout.activity_main)
 class MainActivity : BaseActivity() {
 
+    var testData: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        testData ?: let {
+            testData = "haha"
+        }
         if (!router.hasRootController()) router.pushController(RouterTransaction.with(MainController()))
     }
 

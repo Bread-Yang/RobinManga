@@ -6,7 +6,7 @@ import nucleus5.presenter.RxPresenter
 /**
  * Created by Robin Yeung on 8/21/18.
  */
-class BasePresenter<View> : RxPresenter<View>() {
+open class BasePresenter<View> : RxPresenter<View>() {
 
     /**
      * Subscribes an observable with [deliverFirst] and adds it to the presenter's lifecycle
@@ -16,7 +16,7 @@ class BasePresenter<View> : RxPresenter<View>() {
      * @param onError function to execute when the observable throws an error.
      *
      */
-    fun <T> Observable<T>.subscribeFirst(onNext: (View, T) -> Unit, onError: ((View, Throwable) -> Unit)? = null) =
+    fun <T> Observable<T>.subscribeFirst(onError: ((View, Throwable) -> Unit)? = null, onNext: (View, T) -> Unit) =
             compose(deliverFirst<T>()).subscribe(split(onNext, onError)).apply { add(this) }
 
     /**
@@ -27,7 +27,7 @@ class BasePresenter<View> : RxPresenter<View>() {
      * @param onError function to execute when the observable throws an error.
      *
      */
-    fun <T> Observable<T>.subscribeLatestCache(onNext: (View, T) -> Unit, onError: ((View, Throwable) -> Unit)? = null) =
+    fun <T> Observable<T>.subscribeLatestCache(onError: ((View, Throwable) -> Unit)? = null, onNext: (View, T) -> Unit) =
             compose(deliverLatestCache<T>()).subscribe(split(onNext, onError)).apply { add(this) }
 
     /**
@@ -38,6 +38,6 @@ class BasePresenter<View> : RxPresenter<View>() {
      * @param onError function to execute when the observable throws an error.
      *
      */
-    fun <T> Observable<T>.subscribeReplay(onNext: (View, T) -> Unit, onError: ((View, Throwable) -> Unit)? = null) =
+    fun <T> Observable<T>.subscribeReplay(onError: ((View, Throwable) -> Unit)? = null, onNext: (View, T) -> Unit) =
             compose(deliverReplay<T>()).subscribe(split(onNext, onError)).apply { add(this) }
 }

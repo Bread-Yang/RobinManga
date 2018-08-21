@@ -7,6 +7,7 @@ import com.bluelinelabs.conductor.Router
 import template.di.Injector
 import template.di.component.ActivityComponent
 import template.di.module.ActivityModule
+import template.extensions.app
 import template.ui.common.annotation.Layout
 import javax.inject.Inject
 

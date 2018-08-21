@@ -2,11 +2,11 @@ package template.di.component
 
 import dagger.Subcomponent
 import template.di.module.ControllerModule
-import template.di.scopes.ForController
+import template.di.scopes.ControllerContext
 import template.ui.detail.DetailPresenter
 import template.ui.main.MainPresenter
 
-@ForController
+@ControllerContext
 @Subcomponent(modules = arrayOf(ControllerModule::class))
 interface ControllerComponent {
 

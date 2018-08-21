@@ -1,34 +1,44 @@
 package template.ui.main
 
+import android.os.Bundle
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import nucleus5.presenter.RxPresenter
 import template.api.Api
+import template.ui.common.mvp.BasePresenter
 import template.ui.main.cell.MainModel
+import timber.log.Timber
 import javax.inject.Inject
 
-class MainPresenter : RxPresenter<MainPresenter.View>() {
+class MainPresenter : BasePresenter<MainController>() {
 
-    @Inject lateinit var api: Api
+    @Inject
+    lateinit var api: Api
 
-    fun fetchHistory() {
-        add(api.getHistoricalPrice()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { historical ->
-                            view?.onHistoricalLoaded(
-                                    historical.bpi.toList().asReversed()
-                                            .map { MainModel(it.first, it.second) })
-                        },
-                        { throwable -> view?.onError(throwable) }
-                ))
+    override fun onCreate(savedState: Bundle?) {
+        super.onCreate(savedState)
+        fetchHistory()
     }
 
-    interface View {
-
-        fun onHistoricalLoaded(historical: List<MainModel>)
-
-        fun onError(throwable: Throwable)
+    fun fetchHistory() {
+        api.getHistoricalPrice()
+                .doOnNext {
+                    Timber.e("得到的数据是")
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .toObservable()
+                .subscribeLatestCache(
+                        { view, throwable ->
+                            view.onError(throwable)
+                        },
+                        { view, historical ->
+                            view.onHistoricalLoaded(
+                                    historical.bpi.toList().asReversed()
+                                            .map {
+                                                MainModel(it.first, it.second)
+                                            }
+                            )
+                        }
+                )
     }
 }

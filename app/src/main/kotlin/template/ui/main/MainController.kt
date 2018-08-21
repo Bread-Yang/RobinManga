@@ -20,7 +20,7 @@ import timber.log.Timber
 
 @Layout(R.layout.controller_main)
 @RequiresPresenter(MainPresenter::class)
-class MainController : NucleusController<MainPresenter>(), MainPresenter.View {
+class MainController : NucleusController<MainPresenter>() {
 
     private var mainAdapter: CellAdapter = CellAdapter().let {
         it.cell(MainCell::class) {
@@ -35,21 +35,36 @@ class MainController : NucleusController<MainPresenter>(), MainPresenter.View {
 
     override fun onViewCreated(view: View) {
         super.onViewCreated(view)
+        Timber.e("onViewCreated()")
         with(view.recyclerView) {
             layoutManager = LinearLayoutManager(view.context)
             addItemDecoration(DividerItemDecoration(view.context, DividerItemDecoration.HORIZONTAL))
             adapter = mainAdapter
         }
-        presenter.fetchHistory()
     }
 
-    override fun onHistoricalLoaded(mainModels: List<MainModel>) {
+    override fun onAttach(view: View) {
+        super.onAttach(view)
+        Timber.e("onAttach()")
+    }
+
+    override fun onDetach(view: View) {
+        super.onDetach(view)
+        Timber.e("onDetach()")
+    }
+
+    override fun onDestroyView(view: View) {
+        super.onDestroyView(view)
+        Timber.e("onDestroyView()")
+    }
+
+    fun onHistoricalLoaded(mainModels: List<MainModel>) {
         mainAdapter.clear()
         mainAdapter.addItems(mainModels)
         mainAdapter.notifyDataSetChanged()
     }
 
-    override fun onError(throwable: Throwable) {
+    fun onError(throwable: Throwable) {
         Timber.d(throwable)
         Toast.makeText(activity, throwable.message, Toast.LENGTH_LONG).show()
     }

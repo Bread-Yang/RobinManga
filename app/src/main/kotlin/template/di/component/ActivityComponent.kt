@@ -5,10 +5,10 @@ import com.bluelinelabs.conductor.Router
 import dagger.Subcomponent
 import template.di.module.ActivityModule
 import template.di.module.ControllerModule
-import template.di.scopes.ForActivity
+import template.di.scopes.ActivityContext
 import template.ui.MainActivity
 
-@ForActivity
+@ActivityContext
 @Subcomponent(modules = arrayOf(ActivityModule::class))
 interface ActivityComponent {
 
