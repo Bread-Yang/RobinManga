@@ -14,9 +14,9 @@ ext {
     ]
 
     version = [
-            kotlin     : '1.1.51',
+            kotlin     : '1.2.60',
             gradle     : '3.0.0-beta6',
-            conductor  : '2.1.4',
+            conductor  : '2.1.5',
             nucleus    : '7.0.0',
             rxjava     : '2.1.5',
             rxandroid  : '2.0.1',

@@ -8,6 +8,7 @@ import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import io.erva.celladapter.Cell
 import io.erva.celladapter.CellAdapter
+import kotlinx.android.synthetic.main.controller_main.*
 import kotlinx.android.synthetic.main.controller_main.view.*
 import nucleus5.factory.RequiresPresenter
 import template.R
@@ -40,6 +41,11 @@ class MainController : NucleusController<MainPresenter>() {
             layoutManager = LinearLayoutManager(view.context)
             addItemDecoration(DividerItemDecoration(view.context, DividerItemDecoration.HORIZONTAL))
             adapter = mainAdapter
+        }
+        if (tvLicense.text == "2") {
+            tvLicense.text = "1"
+        } else {
+            tvLicense.text = "2"
         }
     }
 

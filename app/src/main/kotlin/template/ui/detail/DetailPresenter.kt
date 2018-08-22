@@ -2,7 +2,6 @@ package template.ui.detail
 
 import template.ui.common.mvp.BasePresenter
 
-class DetailPresenter : BasePresenter<DetailPresenter.View>() {
+class DetailPresenter : BasePresenter<DetailController>() {
 
-    interface View
 }

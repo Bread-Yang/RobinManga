@@ -2,9 +2,7 @@ package template.ui.common.mvp.controller
 
 import android.os.Bundle
 import android.support.annotation.CallSuper
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
 import nucleus5.factory.PresenterFactory
 import nucleus5.factory.ReflectionPresenterFactory
@@ -14,11 +12,12 @@ import nucleus5.view.ViewWithPresenter
 import template.di.component.ControllerComponent
 import template.di.module.ControllerModule
 import template.ui.common.activity.BaseActivity
-import template.ui.common.annotation.Layout
 import template.ui.common.mvp.DaggerPresenterFactory
 
-abstract class NucleusController<P : RxPresenter<out Any>> : Controller, ViewWithPresenter<P> {
+abstract class NucleusController<P : RxPresenter<out Any>>(val bundle: Bundle? = null)
+    : RxController(bundle), ViewWithPresenter<P> {
 
+    // DI for the presenter
     private val presenterDelegate by lazy {
         PresenterLifecycleDelegate<P>(
                 DaggerPresenterFactory<P, ReflectionPresenterFactory<P>>(
@@ -27,10 +26,6 @@ abstract class NucleusController<P : RxPresenter<out Any>> : Controller, ViewWit
                 )
         )
     }
-
-    constructor() : this(null)
-
-    constructor(bundle: Bundle?) : super(bundle)
 
     private val lifecycleListener = object : Controller.LifecycleListener() {
 
@@ -41,12 +36,8 @@ abstract class NucleusController<P : RxPresenter<out Any>> : Controller, ViewWit
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        val view = inflater.inflate(layout(), container, false)
-
+    init {
         addLifecycleListener(lifecycleListener)
-
-        return view
     }
 
     @CallSuper
@@ -61,18 +52,9 @@ abstract class NucleusController<P : RxPresenter<out Any>> : Controller, ViewWit
         super.onDestroy()
     }
 
-    private fun layout(): Int {
-        this.javaClass.kotlin.annotations.forEach {
-            if (it is Layout)
-                return it.layoutRes
-        }
-        throw IllegalArgumentException("You should specify Layout annotation")
-    }
-
     override fun onDestroyView(view: View) {
-        presenterDelegate.onDropView()
-
         super.onDestroyView(view)
+        presenterDelegate.onDropView()
     }
 
     override fun getPresenter(): P = presenterDelegate.presenter

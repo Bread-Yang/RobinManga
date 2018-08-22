@@ -39,6 +39,10 @@ android {
     buildToolsVersion '27.0.3'
 }
 
+androidExtensions {
+    experimental = true
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     def version = rootProject.extensions.ext.version
