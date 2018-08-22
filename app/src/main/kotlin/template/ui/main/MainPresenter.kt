@@ -5,7 +5,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import template.api.Api
 import template.ui.common.mvp.BasePresenter
-import template.ui.main.cell.MainModel
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -32,12 +31,10 @@ class MainPresenter : BasePresenter<MainController>() {
                             view.onError(throwable)
                         },
                         { view, historical ->
-                            view.onHistoricalLoaded(
-                                    historical.bpi.toList().asReversed()
-                                            .map {
-                                                MainModel(it.first, it.second)
-                                            }
-                            )
+                            // recyclerview加载数据
+                            historical.bpi.toList().asReversed()
+                                    .map {
+                                    }
                         }
                 )
     }
