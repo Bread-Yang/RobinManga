@@ -7,12 +7,17 @@ import android.preference.PreferenceManager
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import template.R
 import template.source.Source
+import timber.log.Timber
 import java.io.File
 
 /**
  * Created by Robin Yeung on 8/22/18.
  */
 class PreferencesHelper(val context: Context) {
+
+    init {
+        Timber.e("PreferencesHelper初始化！！！！！")
+    }
 
     private val prefs = PreferenceManager.getDefaultSharedPreferences(context)
     private val rxPrefs = RxSharedPreferences.create(prefs)

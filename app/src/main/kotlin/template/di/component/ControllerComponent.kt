@@ -3,6 +3,7 @@ package template.di.component
 import dagger.Subcomponent
 import template.di.module.ControllerModule
 import template.di.scopes.ControllerContext
+import template.ui.catalogue.BrowseCataloguePresenter
 import template.ui.detail.DetailPresenter
 import template.ui.main.MainPresenter
 
@@ -13,4 +14,6 @@ interface ControllerComponent {
     fun inject(presenter: MainPresenter)
 
     fun inject(presenter: DetailPresenter)
+
+    fun inject(presenter: BrowseCataloguePresenter)
 }

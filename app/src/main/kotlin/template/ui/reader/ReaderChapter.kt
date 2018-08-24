@@ -1,6 +1,6 @@
 package template.ui.reader
 
-import template.source.model.Chapter
+import template.data.database.models.Chapter
 import template.source.model.Page
 
 /**

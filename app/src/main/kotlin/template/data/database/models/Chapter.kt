@@ -1,5 +1,6 @@
-package template.source.model
+package template.data.database.models
 
+import template.source.model.SChapter
 import java.io.Serializable
 
 /**

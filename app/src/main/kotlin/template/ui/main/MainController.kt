@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.controller_main.*
 import kotlinx.android.synthetic.main.controller_main.view.*
 import nucleus5.factory.RequiresPresenter
 import template.R
+import template.ui.catalogue.BrowseCatalogueController
 import template.ui.common.annotation.Layout
 import template.ui.common.mvp.controller.NucleusController
 import template.ui.detail.DetailController
@@ -31,6 +32,9 @@ class MainController : NucleusController<MainPresenter>() {
             tvLicense.text = "1"
         } else {
             tvLicense.text = "2"
+        }
+        tvLicense.setOnClickListener{
+            toBrowseCatalogueController()
         }
     }
 
@@ -56,6 +60,13 @@ class MainController : NucleusController<MainPresenter>() {
 
     private fun goToDetails() {
         val toController = DetailController()
+        router.pushController(RouterTransaction.with(toController)
+                .pushChangeHandler(HorizontalChangeHandler())
+                .popChangeHandler(HorizontalChangeHandler()))
+    }
+
+    private fun toBrowseCatalogueController() {
+        val toController = BrowseCatalogueController()
         router.pushController(RouterTransaction.with(toController)
                 .pushChangeHandler(HorizontalChangeHandler())
                 .popChangeHandler(HorizontalChangeHandler()))

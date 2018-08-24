@@ -6,4 +6,6 @@ import template.di.scopes.ControllerContext
 
 @Module
 @ControllerContext
-class ControllerModule(private val controller: Controller)
+class ControllerModule(private val controller: Controller) {
+
+}

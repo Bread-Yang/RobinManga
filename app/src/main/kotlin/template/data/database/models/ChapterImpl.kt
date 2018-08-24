@@ -1,4 +1,4 @@
-package template.source.model
+package template.data.database.models
 
 /**
  * Created by Robin Yeung on 8/22/18.
