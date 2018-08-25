@@ -12,6 +12,7 @@ import template.R
 import template.extensions.visible
 import template.ui.common.annotation.Layout
 import template.ui.common.mvp.controller.NucleusController
+import timber.log.Timber
 
 /**
  * Created by Robin Yeung on 8/22/18.
@@ -40,7 +41,7 @@ class BrowseCatalogueController : NucleusController<BrowseCataloguePresenter>() 
 
         // 请求数据
         presenter.setSourceId(4)
-        presenter.requestNext()
+        presenter.restartPager()
     }
 
     fun setupRecycler(view: View) {
@@ -72,4 +73,16 @@ class BrowseCatalogueController : NucleusController<BrowseCataloguePresenter>() 
         this.recycler = recycler
     }
 
+    /**
+     * Called from the presenter when the network request fails.
+     *
+     * @param error the error received.
+     */
+    fun onAddPageError(error: Throwable) {
+        Timber.e(error)
+        val adapter = adapter ?: return
+        adapter.onLoadMoreComplete(null)
+
+
+    }
 }

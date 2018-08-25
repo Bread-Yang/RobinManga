@@ -2,9 +2,12 @@ package template.ui.catalogue.browse
 
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
+import template.data.database.models.Manga
 import template.source.CatalogueSource
 import template.source.SourceManager
 import template.source.model.FilterList
+import template.source.model.SManga
 import template.ui.common.mvp.BasePresenter
 import template.utils.preference.PreferencesHelper
 import javax.inject.Inject
@@ -33,7 +36,6 @@ class BrowseCataloguePresenter : BasePresenter<BrowseCatalogueController>() {
      */
     lateinit var source: CatalogueSource
 
-
     /**
      * Pager containing a list of manga results.
      */
@@ -51,14 +53,46 @@ class BrowseCataloguePresenter : BasePresenter<BrowseCatalogueController>() {
         private set
 
     /**
-     * Subscription for one request from the pager.
+     * Disposable for the pager.
+     */
+    private var pagerDisposable: Disposable? = null
+
+    /**
+     * Disposable for one request from the pager.
      */
     private var pageDisposable: Disposable? = null
 
     fun setSourceId(sourceId: Long) {
         this.sourceId = sourceId
         source = sourceManager.get(sourceId) as CatalogueSource
-        pager = createPager(query, appliedFilters)
+    }
+
+    /**
+     * Restarts the pager for the active source with the provided query and filters.
+     *
+     * @param query the query.
+     * @param filters the current state of the filters (for search mode).
+     */
+    fun restartPager(query: String = this.query, filters: FilterList = this.appliedFilters) {
+        this.query = query
+        this.appliedFilters = filters
+
+        // Create a new pager.
+        pager = createPager(query, filters)
+
+        // Prepare the pager.
+        pagerDisposable?.let {
+            remove(it)
+        }
+
+        pagerDisposable = pager.results()
+                .observeOn(Schedulers.io())
+                .map {
+
+                }
+
+        // Request first page.
+        requestNext()
     }
 
     /**
@@ -66,10 +100,14 @@ class BrowseCataloguePresenter : BasePresenter<BrowseCatalogueController>() {
      */
     fun requestNext() {
 
+        pageDisposable?.let {
+            remove(it)
+        }
+
         pageDisposable = Observable
                 .defer {
                     pager.requestNext()
-                }.subscribeFirst { _, _ ->
+                }.subscribeFirst(BrowseCatalogueController::onAddPageError) { _, _ ->
                     // Nothing to do when onNext is emitted.
                     /**
                      * 这里不处理，是因为由CataloguePager的PublicSubject[Pager.onPageReceived]负责再次转发事件出去
@@ -81,4 +119,14 @@ class BrowseCataloguePresenter : BasePresenter<BrowseCatalogueController>() {
         return CataloguePager(source, query, filters)
     }
 
+    /**
+     * Returns a manga from the database for the given manga from network. It creates a new entry
+     * if the manga is not yet in the database.
+     *
+     * @param sManga the manga from the source.
+     * @return a manga from the database.
+     */
+    private fun networkToLocalManga(sManga: SManga, sourceId: Long): Manga {
+
+    }
 }
