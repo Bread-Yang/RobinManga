@@ -3,7 +3,7 @@ package template.di.component
 import dagger.Subcomponent
 import template.di.module.ControllerModule
 import template.di.scopes.ControllerContext
-import template.ui.catalogue.BrowseCataloguePresenter
+import template.ui.catalogue.browse.BrowseCataloguePresenter
 import template.ui.detail.DetailPresenter
 import template.ui.main.MainPresenter
 

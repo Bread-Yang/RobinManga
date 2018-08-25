@@ -1,4 +1,4 @@
-package template.ui.catalogue
+package template.ui.catalogue.browse
 
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -37,6 +37,10 @@ class BrowseCatalogueController : NucleusController<BrowseCataloguePresenter>() 
         setupRecycler(view)
 
         progressBar?.visible()
+
+        // 请求数据
+        presenter.setSourceId(4)
+        presenter.requestNext()
     }
 
     fun setupRecycler(view: View) {

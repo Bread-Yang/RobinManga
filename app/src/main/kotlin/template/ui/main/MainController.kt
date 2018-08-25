@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.controller_main.*
 import kotlinx.android.synthetic.main.controller_main.view.*
 import nucleus5.factory.RequiresPresenter
 import template.R
-import template.ui.catalogue.BrowseCatalogueController
+import template.ui.catalogue.browse.BrowseCatalogueController
 import template.ui.common.annotation.Layout
 import template.ui.common.mvp.controller.NucleusController
 import template.ui.detail.DetailController
