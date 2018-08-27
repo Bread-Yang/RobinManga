@@ -9,6 +9,7 @@ import eu.davidea.flexibleadapter.items.IFlexible
 import kotlinx.android.synthetic.main.catalogue_controller.*
 import nucleus5.factory.RequiresPresenter
 import template.R
+import template.extensions.gone
 import template.extensions.visible
 import template.ui.common.annotation.Layout
 import template.ui.common.mvp.controller.NucleusController
@@ -74,6 +75,20 @@ class BrowseCatalogueController : NucleusController<BrowseCataloguePresenter>() 
     }
 
     /**
+     * Called from the presenter when the network request is received.
+     *
+     * @param page the current page.
+     * @param mangas the list of manga of the page.
+     */
+    fun onAddPage(page: Int, mangas: List<CatalogueItem>) {
+        val adapter = adapter ?: return
+        hideProgressBar()
+        // TODO()
+
+        adapter.onLoadMoreComplete(mangas)
+    }
+
+    /**
      * Called from the presenter when the network request fails.
      *
      * @param error the error received.
@@ -82,7 +97,12 @@ class BrowseCatalogueController : NucleusController<BrowseCataloguePresenter>() 
         Timber.e(error)
         val adapter = adapter ?: return
         adapter.onLoadMoreComplete(null)
+    }
 
-
+    /**
+     * Hides active progress bars.
+     */
+    private fun hideProgressBar() {
+        progressBar?.gone()
     }
 }

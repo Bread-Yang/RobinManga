@@ -126,7 +126,7 @@ class BrowseCataloguePresenter : BasePresenter<BrowseCatalogueController>() {
                 .subscribeReplay({ view, error ->
                     Timber.e(error)
                 }, { view, (page, mangas) ->
-
+                    view.onAddPage(page, mangas)
                 })
 
         // Request first page.
