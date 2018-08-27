@@ -29,6 +29,7 @@ android {
             applicationIdSuffix ".debug"
             buildConfigField "String", "END_POINT", '"https://api.coindesk.com/v1/bpi/"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            multiDexEnabled true
         }
         release {
             minifyEnabled true

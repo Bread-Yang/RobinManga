@@ -5,7 +5,6 @@ import com.bumptech.glide.integration.okhttp3.OkHttpStreamFetcher
 import com.bumptech.glide.load.Options
 import com.bumptech.glide.load.model.*
 import template.App
-import template.App.Companion.sourceManager
 import template.data.cache.CoverCache
 import template.data.database.models.Manga
 import template.source.SourceManager
@@ -29,17 +28,17 @@ class MangaModelLoader : ModelLoader<Manga, InputStream> {
     /**
      * Cover cache where persistent coverts are stored.
      */
-    private val coverCache: CoverCache = App.coverCache
+    private val coverCache: CoverCache = App.app.lazyCoverCache.get()
 
     /**
      * Source manager.
      */
-    private val sourcemanager: SourceManager = App.sourceManager
+    private val sourceManager: SourceManager = App.app.lazySourceManager.get()
 
     /**
      * Default network client.
      */
-    private val defaultClient = App.networkHelper.client
+    private val defaultClient = App.app.lazyNetworkHelper.get().client
 
     /**
      * LRU cache whose key is the thumbnail url of the manga, and the value contains the request url

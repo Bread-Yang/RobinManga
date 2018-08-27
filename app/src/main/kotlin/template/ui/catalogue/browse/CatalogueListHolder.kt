@@ -1,10 +1,12 @@
 package template.ui.catalogue.browse
 
 import android.view.View
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import eu.davidea.flexibleadapter.FlexibleAdapter
 import kotlinx.android.synthetic.main.catalogue_list_item.*
 import template.data.database.models.Manga
 import template.extensions.getResourceColor
+import template.glide.GlideApp
 
 /**
  * Class used to hold the displayed data of a manga in the catalogue, like the cover or the title.

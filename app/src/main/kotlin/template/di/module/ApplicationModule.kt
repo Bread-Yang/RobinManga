@@ -4,6 +4,7 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import template.App
+import template.data.cache.CoverCache
 import template.data.database.DatabaseHelper
 import template.di.scopes.ApplicationContext
 import template.network.NetworkHelper
@@ -33,6 +34,11 @@ class ApplicationModule(private val application: App) {
     @Singleton
     @ApplicationContext
     fun provideDatabaseHelper(context: Context): DatabaseHelper = DatabaseHelper(context)
+
+    @Provides
+    @Singleton
+    @ApplicationContext
+    fun provideCoverCache(context: Context): CoverCache = CoverCache(context)
 
     @Provides
     @Singleton

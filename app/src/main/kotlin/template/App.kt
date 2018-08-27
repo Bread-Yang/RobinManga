@@ -15,15 +15,17 @@ import javax.inject.Inject
 class App : Application() {
 
     companion object {
-        @Inject
-        lateinit var coverCache: CoverCache
-
-        @Inject
-        lateinit var sourceManager : SourceManager
-
-        @Inject
-        lateinit var networkHelper: NetworkHelper
+        lateinit var app: App
     }
+
+    @Inject
+    lateinit var lazyCoverCache: dagger.`Lazy`<CoverCache>
+
+    @Inject
+    lateinit var lazySourceManager : dagger.`Lazy`<SourceManager>
+
+    @Inject
+    lateinit var lazyNetworkHelper: dagger.`Lazy`<NetworkHelper>
 
     val component: ApplicationComponent by lazy {
         DaggerApplicationComponent
@@ -34,9 +36,9 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        app = this
         component.inject(this)
         timber()
-        app = this
     }
 
     private fun timber() {
