@@ -4,6 +4,7 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import template.App
+import template.data.database.DatabaseHelper
 import template.di.scopes.ApplicationContext
 import template.network.NetworkHelper
 import template.source.SourceManager
@@ -27,6 +28,11 @@ class ApplicationModule(private val application: App) {
     @Singleton
     @ApplicationContext
     fun provideNetworkHelper(context: Context): NetworkHelper = NetworkHelper(context)
+
+    @Provides
+    @Singleton
+    @ApplicationContext
+    fun provideDatabaseHelper(context: Context): DatabaseHelper = DatabaseHelper(context)
 
     @Provides
     @Singleton

@@ -1,8 +1,12 @@
 package template.ui.catalogue.browse
 
+import io.reactivex.BackpressureStrategy
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
+import template.data.database.DatabaseHelper
 import template.data.database.models.Manga
 import template.source.CatalogueSource
 import template.source.SourceManager
@@ -10,6 +14,7 @@ import template.source.model.FilterList
 import template.source.model.SManga
 import template.ui.common.mvp.BasePresenter
 import template.utils.preference.PreferencesHelper
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -24,10 +29,13 @@ import javax.inject.Inject
 class BrowseCataloguePresenter : BasePresenter<BrowseCatalogueController>() {
 
     @Inject
-    lateinit var preferences: PreferencesHelper
+    lateinit var preferencesHelper: PreferencesHelper
 
     @Inject
     lateinit var sourceManager: SourceManager
+
+    @Inject
+    lateinit var databaseHelper: DatabaseHelper
 
     var sourceId: Long? = null
 
@@ -40,6 +48,11 @@ class BrowseCataloguePresenter : BasePresenter<BrowseCatalogueController>() {
      * Pager containing a list of manga results.
      */
     private lateinit var pager: Pager
+
+    /**
+     * Subject that initializes a list of manga detail.
+     */
+    private val mangaDetailSubject = PublishSubject.create<List<Manga>>()
 
     /**
      * List of filters used by the [Pager]. If empty alongside [query], the popular query is used.
@@ -62,6 +75,11 @@ class BrowseCataloguePresenter : BasePresenter<BrowseCatalogueController>() {
      */
     private var pageDisposable: Disposable? = null
 
+    /**
+     * Disposable for initialize manga details.
+     */
+    private var mangaDetailDisposable: Disposable? = null
+
     fun setSourceId(sourceId: Long) {
         this.sourceId = sourceId
         source = sourceManager.get(sourceId) as CatalogueSource
@@ -77,8 +95,12 @@ class BrowseCataloguePresenter : BasePresenter<BrowseCatalogueController>() {
         this.query = query
         this.appliedFilters = filters
 
+        subscribeToMangaDetails()
+
         // Create a new pager.
         pager = createPager(query, filters)
+
+        val catalogueAsList = preferencesHelper.catalogueAsList()
 
         // Prepare the pager.
         pagerDisposable?.let {
@@ -88,8 +110,24 @@ class BrowseCataloguePresenter : BasePresenter<BrowseCatalogueController>() {
         pagerDisposable = pager.results()
                 .observeOn(Schedulers.io())
                 .map {
-
+                    it.first to it.second.map {
+                        networkToLocalManga(it, source.id)
+                    }
                 }
+                .doOnNext {
+                    initializeMangas(it.second)
+                }
+                .map {
+                    it.first to it.second.map {
+                        CatalogueItem(it, catalogueAsList)
+                    }
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeReplay({ view, error ->
+                    Timber.e(error)
+                }, { view, (page, mangas) ->
+
+                })
 
         // Request first page.
         requestNext()
@@ -119,6 +157,61 @@ class BrowseCataloguePresenter : BasePresenter<BrowseCatalogueController>() {
         return CataloguePager(source, query, filters)
     }
 
+    private fun subscribeToMangaDetails() {
+        mangaDetailDisposable?.let {
+            remove(it)
+        }
+
+        mangaDetailDisposable = mangaDetailSubject
+                .observeOn(Schedulers.io())
+                .flatMap {
+                    Observable.fromIterable(it)
+                }
+                .filter {
+                    it.thumbnail_url == null && !it.initialized
+                }
+                .concatMap {
+                    getMangaDetailsObservable(it)
+                }
+                .toFlowable(BackpressureStrategy.LATEST)
+                .onBackpressureDrop {
+
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    //                    view.onMangaInitialized(manga)
+                }, {
+                    Timber.e(it)
+                })
+                .apply {
+                    add(this)
+                }
+    }
+
+    /**
+     * Initialize a list of manga.
+     *
+     * @param mangas the list of manga to initialize.
+     */
+    fun initializeMangas(mangas: List<Manga>) {
+        mangaDetailSubject.onNext(mangas)
+    }
+
+    private fun getMangaDetailsObservable(manga: Manga): Observable<Manga> {
+        return source.fetchMangaDetails(manga)
+                .flatMap {
+                    manga.copyFrom(it)
+                    manga.initialized = true
+
+                    // TODO("inser database")
+
+                    Observable.just(manga)
+                }
+                .onErrorResumeNext { _: Throwable ->
+                    Observable.just(manga)
+                }
+    }
+
     /**
      * Returns a manga from the database for the given manga from network. It creates a new entry
      * if the manga is not yet in the database.
@@ -127,6 +220,14 @@ class BrowseCataloguePresenter : BasePresenter<BrowseCatalogueController>() {
      * @return a manga from the database.
      */
     private fun networkToLocalManga(sManga: SManga, sourceId: Long): Manga {
-
+        var localManga = databaseHelper.getManga(sManga.url, sourceId).executeAsBlocking()
+        if (localManga == null) {
+            val newManga = Manga.create(sManga.url, sManga.title, sourceId)
+            newManga.copyFrom(sManga)
+            val result = databaseHelper.insertManga(newManga).executeAsBlocking()
+            newManga.id = result.insertedId()
+            localManga = newManga
+        }
+        return localManga
     }
 }

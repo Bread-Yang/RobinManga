@@ -11,7 +11,6 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/tvLicense"
         tools:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        tools:listitem="@layout/cell_main"
         tools:orientation="vertical" />
 
     <TextView
@@ -23,7 +22,7 @@
         android:gravity="center"
         android:linksClickable="true"
         android:padding="8dp"
-        android:text="@string/license"
+        android:text="@string/app_name"
         android:textSize="16sp" />
 
 </RelativeLayout>

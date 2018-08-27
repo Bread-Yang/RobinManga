@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import eu.davidea.flexibleadapter.FlexibleAdapter
 import eu.davidea.flexibleadapter.items.IFlexible
-import kotlinx.android.synthetic.main.controller_catalogue.*
+import kotlinx.android.synthetic.main.catalogue_controller.*
 import nucleus5.factory.RequiresPresenter
 import template.R
 import template.extensions.visible
@@ -17,7 +17,7 @@ import timber.log.Timber
 /**
  * Created by Robin Yeung on 8/22/18.
  */
-@Layout(R.layout.controller_catalogue)
+@Layout(R.layout.catalogue_controller)
 @RequiresPresenter(BrowseCataloguePresenter::class)
 class BrowseCatalogueController : NucleusController<BrowseCataloguePresenter>() {
 

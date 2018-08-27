@@ -3,12 +3,27 @@ package template
 import android.annotation.SuppressLint
 import android.app.Application
 import android.util.Log
+import template.data.cache.CoverCache
 import template.di.component.ApplicationComponent
 import template.di.component.DaggerApplicationComponent
 import template.di.module.ApplicationModule
+import template.network.NetworkHelper
+import template.source.SourceManager
 import timber.log.Timber
+import javax.inject.Inject
 
 class App : Application() {
+
+    companion object {
+        @Inject
+        lateinit var coverCache: CoverCache
+
+        @Inject
+        lateinit var sourceManager : SourceManager
+
+        @Inject
+        lateinit var networkHelper: NetworkHelper
+    }
 
     val component: ApplicationComponent by lazy {
         DaggerApplicationComponent
@@ -21,6 +36,7 @@ class App : Application() {
         super.onCreate()
         component.inject(this)
         timber()
+        app = this
     }
 
     private fun timber() {

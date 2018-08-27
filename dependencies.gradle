@@ -9,17 +9,19 @@ ext {
             applicationId: 'template',
             buildTools   : '27.0.3',
             compileSdk   : 26,
-            minSdk       : 16,
+            minSdk       : 17,
             targetSdk    : 26
     ]
 
     version = [
             kotlin          :   '1.2.60',
             gradle          :   '3.0.0-beta6',
+            constraintlayout:   '1.1.2',
             conductor       :   '2.1.5',
             nucleus         :   '7.0.0',
             rxjava          :   '2.1.5',
             rxandroid       :   '2.0.1',
+            glide           :   '4.8.0',
             dagger          :   '2.11',
             gson            :   '2.8.0',
             okhttp          :   '3.9.0',
