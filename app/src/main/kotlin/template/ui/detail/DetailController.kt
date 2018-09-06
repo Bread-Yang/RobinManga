@@ -7,4 +7,8 @@ import template.ui.common.mvp.controller.NucleusController
 
 @Layout(R.layout.controller_detail)
 @RequiresPresenter(DetailPresenter::class)
-class DetailController : NucleusController<DetailPresenter>()
+class DetailController : NucleusController<DetailPresenter>() {
+
+    override fun initPresenter() {
+    }
+}

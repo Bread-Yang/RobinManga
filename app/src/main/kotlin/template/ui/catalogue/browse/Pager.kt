@@ -15,10 +15,10 @@ abstract class Pager(var currentPage: Int = 1) {
     var hasNextPage = true
         private set
 
-    protected val results: PublishSubject<Pair<Int, List<SManga>>> = PublishSubject.create()
+    protected val resultsPublicSubject: PublishSubject<Pair<Int, List<SManga>>> = PublishSubject.create()
 
-    fun results(): Observable<Pair<Int, List<SManga>>> {
-        return results
+    fun resultsPublicSubject(): Observable<Pair<Int, List<SManga>>> {
+        return resultsPublicSubject
     }
 
     abstract fun requestNext(): Observable<MangasPage>
@@ -27,6 +27,6 @@ abstract class Pager(var currentPage: Int = 1) {
         val page = currentPage
         currentPage++
         hasNextPage = mangasPage.hasNextPage && !mangasPage.mangas.isEmpty()
-        results.onNext(Pair(page, mangasPage.mangas))
+        resultsPublicSubject.onNext(Pair(page, mangasPage.mangas))
     }
 }

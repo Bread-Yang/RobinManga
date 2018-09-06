@@ -18,9 +18,9 @@ class CatalogueItem(val manga: Manga, private val catalogueAsList: Preference<Bo
 
     override fun getLayoutRes(): Int {
         return if (catalogueAsList.getOrDefault())
-            R.layout.catalogue_list_item
-        else
             R.layout.catalogue_grid_item
+        else
+            R.layout.catalogue_list_item
     }
 
     override fun createViewHolder(view: View,

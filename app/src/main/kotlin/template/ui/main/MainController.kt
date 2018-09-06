@@ -38,6 +38,9 @@ class MainController : NucleusController<MainPresenter>() {
         }
     }
 
+    override fun initPresenter() {
+    }
+
     override fun onAttach(view: View) {
         super.onAttach(view)
         Timber.e("onAttach()")

@@ -7,23 +7,22 @@ import com.bluelinelabs.conductor.Controller
 import nucleus5.factory.PresenterFactory
 import nucleus5.factory.ReflectionPresenterFactory
 import nucleus5.presenter.RxPresenter
-import nucleus5.view.PresenterLifecycleDelegate
 import nucleus5.view.ViewWithPresenter
 import template.di.component.ControllerComponent
 import template.di.module.ControllerModule
 import template.ui.common.activity.BaseActivity
 import template.ui.common.mvp.DaggerPresenterFactory
+import template.ui.common.mvp.NucleusConductorDelegate
 
 abstract class NucleusController<P : RxPresenter<out Any>>(val bundle: Bundle? = null)
     : RxController(bundle), ViewWithPresenter<P> {
 
     // DI for the presenter
     private val presenterDelegate by lazy {
-        PresenterLifecycleDelegate<P>(
+        NucleusConductorDelegate<P>(
                 DaggerPresenterFactory<P, ReflectionPresenterFactory<P>>(
                         ReflectionPresenterFactory.fromViewClass<P>(javaClass)!!,
-                        screenComponent()
-                )
+                        screenComponent(), this), this
         )
     }
 
@@ -33,6 +32,8 @@ abstract class NucleusController<P : RxPresenter<out Any>>(val bundle: Bundle? =
             super.postCreateView(controller, view)
 
             onViewCreated(view)
+            // here presenter will be created, or if rotate screen, event(onNext()、onError()、onComplete()) will be send again.
+            presenterDelegate.onResume(this@NucleusController)
         }
     }
 
@@ -42,8 +43,6 @@ abstract class NucleusController<P : RxPresenter<out Any>>(val bundle: Bundle? =
 
     @CallSuper
     open fun onViewCreated(view: View) {
-        // here presenter will be created
-        presenterDelegate.onResume(this)
     }
 
     override fun onDestroy() {
@@ -67,4 +66,6 @@ abstract class NucleusController<P : RxPresenter<out Any>>(val bundle: Bundle? =
 
     private fun screenComponent(): ControllerComponent =
             (activity as BaseActivity).component().plus(ControllerModule(this))
+
+    abstract fun initPresenter()
 }

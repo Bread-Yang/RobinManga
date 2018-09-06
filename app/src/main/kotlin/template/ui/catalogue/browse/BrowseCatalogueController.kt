@@ -9,6 +9,7 @@ import eu.davidea.flexibleadapter.items.IFlexible
 import kotlinx.android.synthetic.main.catalogue_controller.*
 import nucleus5.factory.RequiresPresenter
 import template.R
+import template.data.database.models.Manga
 import template.extensions.gone
 import template.extensions.visible
 import template.ui.common.annotation.Layout
@@ -28,7 +29,7 @@ class BrowseCatalogueController : NucleusController<BrowseCataloguePresenter>() 
     private var adapter: FlexibleAdapter<IFlexible<*>>? = null
 
     /**
-     * Recycler view with the list of results.
+     * Recycler view with the list of resultsPublicSubject.
      */
     private var recycler: RecyclerView? = null
 
@@ -37,13 +38,15 @@ class BrowseCatalogueController : NucleusController<BrowseCataloguePresenter>() 
 
         adapter = FlexibleAdapter(null)
         setupRecycler(view)
+    }
 
+    override fun initPresenter() {
         progressBar?.visible()
-
         // 请求数据
         presenter.setSourceId(4)
         presenter.restartPager()
     }
+
 
     fun setupRecycler(view: View) {
 
@@ -72,6 +75,29 @@ class BrowseCatalogueController : NucleusController<BrowseCataloguePresenter>() 
             recycler.layoutManager.scrollToPosition(oldPosition)
         }
         this.recycler = recycler
+    }
+
+    fun onMangaInitialize(manga: Manga) {
+        getHolder(manga)?.setImage(manga)
+    }
+
+    /**
+     * Returns the view holder for the given manga.
+     *
+     * @param manga the manga to find.
+     * @return the holder of the manga or null if it's not bound.
+     */
+    private fun getHolder(manga: Manga): CatalogueHolder? {
+        val adapter = adapter ?: return null
+
+        adapter.allBoundViewHolders.forEach {
+            val item = adapter.getItem(it.adapterPosition) as? CatalogueItem
+            if (item != null && item.manga.id!! == manga.id!!) {
+                return it as CatalogueHolder
+            }
+        }
+
+        return null
     }
 
     /**

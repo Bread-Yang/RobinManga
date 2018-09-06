@@ -45,7 +45,7 @@ class BrowseCataloguePresenter : BasePresenter<BrowseCatalogueController>() {
     lateinit var source: CatalogueSource
 
     /**
-     * Pager containing a list of manga results.
+     * Pager containing a list of manga resultsPublicSubject.
      */
     private lateinit var pager: Pager
 
@@ -107,7 +107,7 @@ class BrowseCataloguePresenter : BasePresenter<BrowseCatalogueController>() {
             remove(it)
         }
 
-        pagerDisposable = pager.results()
+        pagerDisposable = pager.resultsPublicSubject()
                 .observeOn(Schedulers.io())
                 .map {
                     it.first to it.second.map {
@@ -171,15 +171,16 @@ class BrowseCataloguePresenter : BasePresenter<BrowseCatalogueController>() {
                     it.thumbnail_url == null && !it.initialized
                 }
                 .concatMap {
+                    Timber.e("getMangaDetailsObservable")
                     getMangaDetailsObservable(it)
                 }
                 .toFlowable(BackpressureStrategy.LATEST)
                 .onBackpressureDrop {
-
+                    Timber.e("BackpressureDrop : ${it.thumbnail_url}" )
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    //                    view.onMangaInitialized(manga)
+                    view?.onMangaInitialize(it)
                 }, {
                     Timber.e(it)
                 })
@@ -197,14 +198,19 @@ class BrowseCataloguePresenter : BasePresenter<BrowseCatalogueController>() {
         mangaDetailSubject.onNext(mangas)
     }
 
+    /**
+     * Returns an observable of manga that initializes the given manga.
+     *
+     * @param manga the manga to initialize.
+     * @return an observable of the manga to initialize
+     */
     private fun getMangaDetailsObservable(manga: Manga): Observable<Manga> {
         return source.fetchMangaDetails(manga)
                 .flatMap {
                     manga.copyFrom(it)
                     manga.initialized = true
 
-                    // TODO("inser database")
-
+                    databaseHelper.insertManga(manga).executeAsBlocking()
                     Observable.just(manga)
                 }
                 .onErrorResumeNext { _: Throwable ->
