@@ -21,7 +21,8 @@ import timber.log.Timber
  */
 @Layout(R.layout.catalogue_controller)
 @RequiresPresenter(BrowseCataloguePresenter::class)
-class BrowseCatalogueController : NucleusController<BrowseCataloguePresenter>() {
+class BrowseCatalogueController : NucleusController<BrowseCataloguePresenter>(),
+        FlexibleAdapter.EndlessScrollListener {
 
     /**
      * Adapter containing the list of manga from the catalogue.
@@ -33,10 +34,15 @@ class BrowseCatalogueController : NucleusController<BrowseCataloguePresenter>() 
      */
     private var recycler: RecyclerView? = null
 
+    /**
+     *
+     */
+    private var progressItem: ProgressItem? = null
+
     override fun onViewCreated(view: View) {
         super.onViewCreated(view)
 
-        adapter = FlexibleAdapter(null)
+        adapter = FlexibleAdapter(null, this)
         setupRecycler(view)
     }
 
@@ -109,7 +115,10 @@ class BrowseCatalogueController : NucleusController<BrowseCataloguePresenter>() 
     fun onAddPage(page: Int, mangas: List<CatalogueItem>) {
         val adapter = adapter ?: return
         hideProgressBar()
-        // TODO()
+        if (page == 1) {
+            adapter.clear()
+            resetProgressItem()
+        }
 
         adapter.onLoadMoreComplete(mangas)
     }
@@ -126,9 +135,30 @@ class BrowseCatalogueController : NucleusController<BrowseCataloguePresenter>() 
     }
 
     /**
+     * Sets a new progress item and reenables the scroll listener.
+     */
+    private fun resetProgressItem() {
+        progressItem = ProgressItem()
+        adapter?.endlessTargetCount = 0
+        adapter?.setEndlessScrollListener(this, progressItem!!)
+    }
+
+    /**
      * Hides active progress bars.
      */
     private fun hideProgressBar() {
         progressBar?.gone()
+    }
+
+    override fun noMoreLoad(newItemsSize: Int) {
+    }
+
+    override fun onLoadMore(lastPosition: Int, currentPage: Int) {
+        if (presenter.hasNextPage()) {
+            presenter.requestNext()
+        } else {
+            adapter?.onLoadMoreComplete(null)
+            adapter?.endlessTargetCount = 1
+        }
     }
 }

@@ -123,7 +123,7 @@ class BrowseCataloguePresenter : BasePresenter<BrowseCatalogueController>() {
                     }
                 }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeReplay({ view, error ->
+                .subscribeReplay({ view, error ->           // 屏幕rotate之后事件会重新发送
                     Timber.e(error)
                 }, { view, (page, mangas) ->
                     view.onAddPage(page, mangas)
@@ -137,6 +137,7 @@ class BrowseCataloguePresenter : BasePresenter<BrowseCatalogueController>() {
      * Requests the next page for the active pager.
      */
     fun requestNext() {
+        if (!hasNextPage()) return
 
         pageDisposable?.let {
             remove(it)
@@ -151,6 +152,10 @@ class BrowseCataloguePresenter : BasePresenter<BrowseCatalogueController>() {
                      * 这里不处理，是因为由CataloguePager的PublicSubject[Pager.onPageReceived]负责再次转发事件出去
                      */
                 }
+    }
+
+    fun hasNextPage() : Boolean {
+        return pager.hasNextPage
     }
 
     open fun createPager(query: String, filters: FilterList): Pager {
