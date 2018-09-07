@@ -1,6 +1,5 @@
 package template.extensions
 
-/**
- * Created by Robin Yeung on 8/21/18.
- */
+import io.reactivex.disposables.Disposable
 
+fun Disposable?.isNullOrDisposed() = this == null || isDisposed

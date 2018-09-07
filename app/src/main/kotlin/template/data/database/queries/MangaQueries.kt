@@ -31,5 +31,14 @@ interface MangaQueries : DbProvider {
                     .build())
             .prepare()
 
+    fun getManga(id: Long) = db.get()
+            .`object`(Manga::class.java)
+            .withQuery(Query.builder()
+                    .table(MangaTable.TABLE)
+                    .where("${MangaTable.COL_ID} = ?")
+                    .whereArgs(id)
+                    .build())
+            .prepare()
+
     fun insertManga(manga: Manga) = db.put().`object`(manga).prepare()
 }

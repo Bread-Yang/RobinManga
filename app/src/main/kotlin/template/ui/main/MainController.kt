@@ -21,7 +21,6 @@ import timber.log.Timber
 class MainController : NucleusController<MainPresenter>() {
 
     override fun onViewCreated(view: View) {
-        super.onViewCreated(view)
         Timber.e("onViewCreated()")
         with(view.recyclerView) {
             layoutManager = LinearLayoutManager(view.context)

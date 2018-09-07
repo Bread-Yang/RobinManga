@@ -1,7 +1,6 @@
 package template.ui.common.mvp.controller
 
 import android.os.Bundle
-import android.support.annotation.CallSuper
 import android.view.View
 import com.bluelinelabs.conductor.Controller
 import nucleus5.factory.PresenterFactory
@@ -41,9 +40,7 @@ abstract class NucleusController<P : RxPresenter<out Any>>(val bundle: Bundle? =
         addLifecycleListener(lifecycleListener)
     }
 
-    @CallSuper
-    open fun onViewCreated(view: View) {
-    }
+    abstract fun onViewCreated(view: View)
 
     override fun onDestroy() {
         presenterDelegate.onDestroy(true)

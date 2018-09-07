@@ -12,8 +12,10 @@ import template.R
 import template.data.database.models.Manga
 import template.extensions.gone
 import template.extensions.visible
+import template.extensions.withFadeTransaction
 import template.ui.common.annotation.Layout
 import template.ui.common.mvp.controller.NucleusController
+import template.ui.manga.MangaController
 import timber.log.Timber
 
 /**
@@ -22,7 +24,8 @@ import timber.log.Timber
 @Layout(R.layout.catalogue_controller)
 @RequiresPresenter(BrowseCataloguePresenter::class)
 class BrowseCatalogueController : NucleusController<BrowseCataloguePresenter>(),
-        FlexibleAdapter.EndlessScrollListener {
+        FlexibleAdapter.EndlessScrollListener,
+        FlexibleAdapter.OnItemClickListener {
 
     /**
      * Adapter containing the list of manga from the catalogue.
@@ -40,8 +43,6 @@ class BrowseCatalogueController : NucleusController<BrowseCataloguePresenter>(),
     private var progressItem: ProgressItem? = null
 
     override fun onViewCreated(view: View) {
-        super.onViewCreated(view)
-
         adapter = FlexibleAdapter(null, this)
         setupRecycler(view)
     }
@@ -148,6 +149,19 @@ class BrowseCatalogueController : NucleusController<BrowseCataloguePresenter>(),
      */
     private fun hideProgressBar() {
         progressBar?.gone()
+    }
+
+    /**
+     * Called when a manga is clicked.
+     *
+     * @param position the position of the element clicked.
+     * @param true if the item should be selected, false otherwise.
+     */
+    override fun onItemClick(view: View?, position: Int): Boolean {
+        val item = adapter?.getItem(position) as? CatalogueItem ?: return false
+        router.pushController(MangaController(item.manga, true).withFadeTransaction())
+
+        return false
     }
 
     override fun noMoreLoad(newItemsSize: Int) {
