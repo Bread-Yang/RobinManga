@@ -67,7 +67,7 @@ public final class NucleusConductorDelegate<P extends Presenter> {
             if (presenter == null) {
                 presenter = presenterFactory.createPresenter();
                 if (nucleusController != null) {
-                    nucleusController.initPresenter();
+                    nucleusController.initPresenterOnce();
                 }
                 PresenterStorage.INSTANCE.add(presenter);
                 presenter.create(bundle == null ? null : bundle.getBundle(PRESENTER_KEY));

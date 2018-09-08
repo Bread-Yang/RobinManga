@@ -64,5 +64,9 @@ abstract class NucleusController<P : RxPresenter<out Any>>(val bundle: Bundle? =
     private fun screenComponent(): ControllerComponent =
             (activity as BaseActivity).component().plus(ControllerModule(this))
 
-    abstract fun initPresenter()
+    /**
+     * 创建Presenter的时候调用,用于method Injection，在[NucleusController.onViewCreated]之后调用，controller生命周期内只调用一次
+     * 也就是就算controller创建之后，rotate screen，initPresenterOnce也不会被调用
+     */
+    abstract fun initPresenterOnce()
 }

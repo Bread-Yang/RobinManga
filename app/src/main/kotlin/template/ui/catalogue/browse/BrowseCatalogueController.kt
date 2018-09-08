@@ -47,7 +47,7 @@ class BrowseCatalogueController : NucleusController<BrowseCataloguePresenter>(),
         setupRecycler(view)
     }
 
-    override fun initPresenter() {
+    override fun initPresenterOnce() {
         progressBar?.visible()
         // 请求数据
         presenter.setSourceId(4)

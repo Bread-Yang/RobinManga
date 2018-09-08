@@ -60,51 +60,51 @@ class MangaInfoController : NucleusController<MangaInfoPresenter>() {
     override fun onViewCreated(view: View) {
 
         // Set onclickListener to toggle favorite when FAB clicked.
-        fab_favorite.clicks().subscribeUntilDestroy {
+        fabFavorite.clicks().subscribeUntilDestroy {
             onFabClick()
         }
 
         // Set SwipeRefresh to refresh manga data.
-        swipe_refresh.refreshes().subscribeUntilDestroy {
+        swipeRefresh.refreshes().subscribeUntilDestroy {
             fetchMangaFromSource()
         }
 
-        manga_full_title.longClicks().subscribeUntilDestroy {
-            copyToClipboard(view.context.getString(R.string.title), manga_full_title.text.toString())
+        tvMangaFullTitle.longClicks().subscribeUntilDestroy {
+            copyToClipboard(view.context.getString(R.string.title), tvMangaFullTitle.text.toString())
         }
 
-        manga_full_title.clicks().subscribeUntilDestroy {
-            performGlobalSearch(manga_full_title.text.toString())
+        tvMangaFullTitle.clicks().subscribeUntilDestroy {
+            performGlobalSearch(tvMangaFullTitle.text.toString())
         }
 
-        manga_artist.longClicks().subscribeUntilDestroy {
-            copyToClipboard(manga_artist_label.text.toString(), manga_artist.text.toString())
+        tvMangaArtist.longClicks().subscribeUntilDestroy {
+            copyToClipboard(tvMangaArtistLabel.text.toString(), tvMangaArtist.text.toString())
         }
 
-        manga_artist.clicks().subscribeUntilDestroy {
-            performGlobalSearch(manga_artist.text.toString())
+        tvMangaArtist.clicks().subscribeUntilDestroy {
+            performGlobalSearch(tvMangaArtist.text.toString())
         }
 
-        manga_author.longClicks().subscribeUntilDestroy {
-            copyToClipboard(manga_author.text.toString(), manga_author.text.toString())
+        tvMangaAuthor.longClicks().subscribeUntilDestroy {
+            copyToClipboard(tvMangaAuthor.text.toString(), tvMangaAuthor.text.toString())
         }
 
-        manga_author.clicks().subscribeUntilDestroy {
-            performGlobalSearch(manga_author.text.toString())
+        tvMangaAuthor.clicks().subscribeUntilDestroy {
+            performGlobalSearch(tvMangaAuthor.text.toString())
         }
 
-        manga_summary.longClicks().subscribeUntilDestroy {
-            copyToClipboard(view.context.getString(R.string.description), manga_summary.text.toString())
+        tvMangaSummary.longClicks().subscribeUntilDestroy {
+            copyToClipboard(view.context.getString(R.string.description), tvMangaSummary.text.toString())
         }
 
         //manga_genres_tags.setOnTagClickListener { tag -> performGlobalSearch(tag) }
 
-        manga_cover.longClicks().subscribeUntilDestroy {
+        ivMangaCover.longClicks().subscribeUntilDestroy {
             copyToClipboard(view.context.getString(R.string.title), presenter.manga.title)
         }
     }
 
-    override fun initPresenter() {
+    override fun initPresenterOnce() {
         val ctrl = parentController as MangaController
         presenter.init(ctrl)
     }
@@ -138,28 +138,28 @@ class MangaInfoController : NucleusController<MangaInfoPresenter>() {
         val view = view ?: return
 
         //update full title TextView.
-        manga_full_title.text = if (manga.title.isBlank()) {
+        tvMangaFullTitle.text = if (manga.title.isBlank()) {
             view.context.getString(R.string.unknown)
         } else {
             manga.title
         }
 
         // Update artist TextView.
-        manga_artist.text = if (manga.artist.isNullOrBlank()) {
+        tvMangaArtist.text = if (manga.artist.isNullOrBlank()) {
             view.context.getString(R.string.unknown)
         } else {
             manga.artist
         }
 
         // Update author TextView.
-        manga_author.text = if (manga.author.isNullOrBlank()) {
+        tvMangaAuthor.text = if (manga.author.isNullOrBlank()) {
             view.context.getString(R.string.unknown)
         } else {
             manga.author
         }
 
         // If manga source is known update source TextView.
-        manga_source.text = if (source == null) {
+        tvMangaSource.text = if (source == null) {
             view.context.getString(R.string.unknown)
         } else {
             source.toString()
@@ -167,18 +167,18 @@ class MangaInfoController : NucleusController<MangaInfoPresenter>() {
 
         // Update genres list
         if (manga.genre.isNullOrBlank().not()) {
-            manga_genres_tags.setTags(manga.genre?.split(", "))
+            tagGroupMangaGenres.setTags(manga.genre?.split(", "))
         }
 
         // Update description TextView.
-        manga_summary.text = if (manga.description.isNullOrBlank()) {
+        tvMangaSummary.text = if (manga.description.isNullOrBlank()) {
             view.context.getString(R.string.unknown)
         } else {
             manga.description
         }
 
         // Update status TextView.
-        manga_status.setText(when (manga.status) {
+        tvMangaStatus.setText(when (manga.status) {
             SManga.ONGOING -> R.string.ongoing
             SManga.COMPLETED -> R.string.completed
             SManga.LICENSED -> R.string.licensed
@@ -189,25 +189,25 @@ class MangaInfoController : NucleusController<MangaInfoPresenter>() {
         setFavoriteDrawable(manga.favorite)
 
         // Set cover if it wasn't already.
-        if (manga_cover.drawable == null && !manga.thumbnail_url.isNullOrEmpty()) {
+        if (ivMangaCover.drawable == null && !manga.thumbnail_url.isNullOrEmpty()) {
             GlideApp.with(view.context)
                     .load(manga)
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .centerCrop()
-                    .into(manga_cover)
+                    .into(ivMangaCover)
 
-            if (backdrop != null) {
+            if (ivBackdrop != null) {
                 GlideApp.with(view.context)
                         .load(manga)
                         .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                         .centerCrop()
-                        .into(backdrop)
+                        .into(ivBackdrop)
             }
         }
     }
 
     override fun onDestroyView(view: View) {
-        manga_genres_tags.setOnTagClickListener(null)
+        tagGroupMangaGenres.setOnTagClickListener(null)
         super.onDestroyView(view)
     }
 
@@ -237,17 +237,17 @@ class MangaInfoController : NucleusController<MangaInfoPresenter>() {
             new DecimalFormat("##.##").format(13.146)  //结果：13.15
             new DecimalFormat("#.##").format(13.146)  //结果：13.15
              */
-            manga_chapters?.text = DecimalFormat("#.#").format(count)
+            tvMangaChapters?.text = DecimalFormat("#.#").format(count)
         } else {
-            manga_chapters?.text = resources?.getString(R.string.unknown)
+            tvMangaChapters?.text = resources?.getString(R.string.unknown)
         }
     }
 
     fun setLastUpdateDate(date: Date) {
         if (date.time != 0L) {
-            manga_last_update?.text = DateFormat.getDateInstance(DateFormat.SHORT).format(date)
+            tvMangaLastUpdate?.text = DateFormat.getDateInstance(DateFormat.SHORT).format(date)
         } else {
-            manga_last_update?.text = resources?.getString(R.string.unknown)
+            tvMangaLastUpdate?.text = resources?.getString(R.string.unknown)
         }
     }
 
@@ -312,7 +312,7 @@ class MangaInfoController : NucleusController<MangaInfoPresenter>() {
     private fun setFavoriteDrawable(isFavorite: Boolean) {
         // Set the Favorite drawable to the correct one.
         // Border drawable if false, filled drawable if true.
-        fab_favorite?.setImageResource(if (isFavorite)
+        fabFavorite?.setImageResource(if (isFavorite)
             R.drawable.ic_bookmark_white_24dp
         else
             R.drawable.ic_add_to_library_24dp)
@@ -347,7 +347,7 @@ class MangaInfoController : NucleusController<MangaInfoPresenter>() {
      * @param value whether it should be refreshing or not.
      */
     private fun setRefreshing(value: Boolean) {
-        swipe_refresh?.isRefreshing = value
+        swipeRefresh?.isRefreshing = value
     }
 
     /**

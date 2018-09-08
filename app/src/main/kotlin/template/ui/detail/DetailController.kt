@@ -13,6 +13,6 @@ class DetailController : NucleusController<DetailPresenter>() {
     override fun onViewCreated(view: View) {
     }
 
-    override fun initPresenter() {
+    override fun initPresenterOnce() {
     }
 }

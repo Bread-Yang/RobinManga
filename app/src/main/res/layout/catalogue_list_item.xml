@@ -10,7 +10,7 @@
     tools:layout_editor_absoluteY="25dp">
 
     <ImageView
-        android:id="@+id/thumbnail"
+        android:id="@+id/ivThumbnail"
         android:layout_width="@dimen/material_component_lists_single_line_with_avatar_height"
         android:layout_height="@dimen/material_component_lists_single_line_with_avatar_height"
         android:layout_gravity="center_vertical"
@@ -23,7 +23,7 @@
         tools:src="@mipmap/ic_launcher" />
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/ptvTitle"
         style="@style/TextAppearance.Regular.SubHeading"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -36,14 +36,14 @@
         android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.007"
-        app:layout_constraintLeft_toRightOf="@+id/thumbnail"
-        app:layout_constraintRight_toLeftOf="@+id/local_text"
+        app:layout_constraintLeft_toRightOf="@+id/ivThumbnail"
+        app:layout_constraintRight_toLeftOf="@+id/tvLocal"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.523"
         tools:text="Manga title" />
 
     <TextView
-        android:id="@+id/local_text"
+        android:id="@+id/tvLocal"
         style="@style/TextAppearance.Regular.Caption.Light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,12 +60,12 @@
         android:text="@string/local_source_badge"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/unread_text"
+        app:layout_constraintRight_toLeftOf="@+id/tvUnread"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
     <TextView
-        android:id="@+id/unread_text"
+        android:id="@+id/tvUnread"
         style="@style/TextAppearance.Regular.Caption.Light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -82,14 +82,14 @@
         android:paddingTop="1dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/download_text"
+        app:layout_constraintRight_toLeftOf="@+id/tvDownload"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="130"
         tools:visibility="visible" />
 
     <TextView
-        android:id="@+id/download_text"
+        android:id="@+id/tvDownload"
         style="@style/TextAppearance.Regular.Caption.Light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:layout_toStartOf="@+id/unread_text"
+        android:layout_toStartOf="@+id/tvUnread"
         android:background="@color/md_red_500"
         android:maxLines="1"
         android:paddingBottom="1dp"

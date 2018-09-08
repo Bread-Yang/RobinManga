@@ -2,7 +2,7 @@
 <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@id/swipe_refresh"
+    android:id="@id/swipeRefresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,7 +13,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/manga_cover"
+            android:id="@+id/ivMangaCover"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="16dp"
@@ -29,7 +29,7 @@
             tools:background="@color/material_grey_700" />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_favorite"
+            android:id="@+id/fabFavorite"
             style="@style/Theme.Widget.FAB"
             android:layout_marginBottom="16dp"
             android:layout_marginRight="16dp"
@@ -38,7 +38,7 @@
             app:srcCompat="@drawable/ic_bookmark_border_white_24dp" />
 
         <android.support.v4.widget.NestedScrollView
-            android:id="@+id/info_scrollview"
+            android:id="@+id/nsvInfo"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="16dp"
@@ -48,7 +48,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/manga_cover"
+            app:layout_constraintLeft_toRightOf="@+id/ivMangaCover"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -57,7 +57,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/manga_full_title"
+                    android:id="@+id/tvMangaFullTitle"
                     style="@style/TextAppearance.Medium.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -72,17 +72,17 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/manga_author_label"
+                    android:id="@+id/tvMangaAuthorLabel"
                     style="@style/TextAppearance.Medium.Body2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/manga_info_author_label"
                     android:textIsSelectable="false"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/manga_full_title" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvMangaFullTitle" />
 
                 <TextView
-                    android:id="@+id/manga_author"
+                    android:id="@+id/tvMangaAuthor"
                     style="@style/TextAppearance.Regular.Body1.Secondary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -91,22 +91,22 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textIsSelectable="false"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/manga_author_label"
-                    app:layout_constraintLeft_toRightOf="@+id/manga_author_label"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/tvMangaAuthorLabel"
+                    app:layout_constraintLeft_toRightOf="@+id/tvMangaAuthorLabel"
                     app:layout_constraintRight_toRightOf="parent" />
 
                 <TextView
-                    android:id="@+id/manga_artist_label"
+                    android:id="@+id/tvMangaArtistLabel"
                     style="@style/TextAppearance.Medium.Body2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/manga_info_artist_label"
                     android:textIsSelectable="false"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/manga_author_label" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvMangaAuthorLabel" />
 
                 <TextView
-                    android:id="@+id/manga_artist"
+                    android:id="@+id/tvMangaArtist"
                     style="@style/TextAppearance.Regular.Body1.Secondary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -115,22 +115,22 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textIsSelectable="false"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/manga_artist_label"
-                    app:layout_constraintLeft_toRightOf="@+id/manga_artist_label"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/tvMangaArtistLabel"
+                    app:layout_constraintLeft_toRightOf="@+id/tvMangaArtistLabel"
                     app:layout_constraintRight_toRightOf="parent" />
 
                 <TextView
-                    android:id="@+id/manga_chapters_label"
+                    android:id="@+id/tvMangaChaptersLabel"
                     style="@style/TextAppearance.Medium.Body2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/manga_info_last_chapter_label"
                     android:textIsSelectable="false"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/manga_artist_label" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvMangaArtistLabel" />
 
                 <TextView
-                    android:id="@+id/manga_chapters"
+                    android:id="@+id/tvMangaChapters"
                     style="@style/TextAppearance.Regular.Body1.Secondary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -139,22 +139,22 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textIsSelectable="false"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/manga_chapters_label"
-                    app:layout_constraintLeft_toRightOf="@+id/manga_chapters_label"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/tvMangaChaptersLabel"
+                    app:layout_constraintLeft_toRightOf="@+id/tvMangaChaptersLabel"
                     app:layout_constraintRight_toRightOf="parent" />
 
                 <TextView
-                    android:id="@+id/manga_last_update_label"
+                    android:id="@+id/tvMangaLastUpdateLabel"
                     style="@style/TextAppearance.Medium.Body2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/manga_info_latest_data_label"
                     android:textIsSelectable="false"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/manga_chapters_label" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvMangaChaptersLabel" />
 
                 <TextView
-                    android:id="@+id/manga_last_update"
+                    android:id="@+id/tvMangaLastUpdate"
                     style="@style/TextAppearance.Regular.Body1.Secondary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -163,22 +163,22 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textIsSelectable="false"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/manga_last_update_label"
-                    app:layout_constraintLeft_toRightOf="@+id/manga_last_update_label"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/tvMangaLastUpdateLabel"
+                    app:layout_constraintLeft_toRightOf="@+id/tvMangaLastUpdateLabel"
                     app:layout_constraintRight_toRightOf="parent" />
 
                 <TextView
-                    android:id="@+id/manga_status_label"
+                    android:id="@+id/tvMangaStatusLabel"
                     style="@style/TextAppearance.Medium.Body2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/manga_info_status_label"
                     android:textIsSelectable="false"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/manga_last_update_label" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvMangaLastUpdateLabel" />
 
                 <TextView
-                    android:id="@+id/manga_status"
+                    android:id="@+id/tvMangaStatus"
                     style="@style/TextAppearance.Regular.Body1.Secondary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -187,22 +187,22 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textIsSelectable="false"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/manga_status_label"
-                    app:layout_constraintLeft_toRightOf="@+id/manga_status_label"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/tvMangaStatusLabel"
+                    app:layout_constraintLeft_toRightOf="@+id/tvMangaStatusLabel"
                     app:layout_constraintRight_toRightOf="parent" />
 
                 <TextView
-                    android:id="@+id/manga_source_label"
+                    android:id="@+id/tvMangaSourceLabel"
                     style="@style/TextAppearance.Medium.Body2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/manga_info_source_label"
                     android:textIsSelectable="false"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/manga_status_label" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvMangaStatusLabel" />
 
                 <TextView
-                    android:id="@+id/manga_source"
+                    android:id="@+id/tvMangaSource"
                     style="@style/TextAppearance.Regular.Body1.Secondary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -211,22 +211,22 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textIsSelectable="false"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/manga_source_label"
-                    app:layout_constraintLeft_toRightOf="@+id/manga_source_label"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/tvMangaSourceLabel"
+                    app:layout_constraintLeft_toRightOf="@+id/tvMangaSourceLabel"
                     app:layout_constraintRight_toRightOf="parent" />
 
                 <TextView
-                    android:id="@+id/manga_summary_label"
+                    android:id="@+id/tvMangaSummaryLabel"
                     style="@style/TextAppearance.Medium.Body2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/description"
                     android:textIsSelectable="false"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/manga_source" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvMangaSource" />
 
                 <TextView
-                    android:id="@+id/manga_summary"
+                    android:id="@+id/tvMangaSummary"
                     style="@style/TextAppearance.Regular.Body1.Secondary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -234,10 +234,10 @@
                     android:textIsSelectable="false"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/manga_summary_label" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvMangaSummaryLabel" />
 
                 <me.gujun.android.taggroup.TagGroup
-                    android:id="@+id/manga_genres_tags"
+                    android:id="@+id/tagGroupMangaGenres"
                     style="@style/TagGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -249,7 +249,7 @@
                     app:atg_textColor="@color/md_blue_A400"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/manga_summary" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvMangaSummary" />
             </android.support.constraint.ConstraintLayout>
         </android.support.v4.widget.NestedScrollView>
     </android.support.constraint.ConstraintLayout>

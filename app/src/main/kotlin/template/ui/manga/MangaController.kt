@@ -75,14 +75,14 @@ class MangaController: NucleusController<MangaPresenter>, TabbedController {
         requestPermissionsSafe(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 301)
 
         adapter = MangaDetailAdapter()
-        manga_pager.offscreenPageLimit = 3
-        manga_pager.adapter = adapter
+        viewPager.offscreenPageLimit = 3
+        viewPager.adapter = adapter
 
         if (!fromCatalogue)
-            manga_pager.currentItem = CHAPTERS_CONTROLLER
+            viewPager.currentItem = CHAPTERS_CONTROLLER
     }
 
-    override fun initPresenter() {
+    override fun initPresenterOnce() {
     }
 
     override fun onDestroyView(view: View) {

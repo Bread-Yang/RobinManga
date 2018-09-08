@@ -37,7 +37,7 @@ class MainController : NucleusController<MainPresenter>() {
         }
     }
 
-    override fun initPresenter() {
+    override fun initPresenterOnce() {
     }
 
     override fun onAttach(view: View) {

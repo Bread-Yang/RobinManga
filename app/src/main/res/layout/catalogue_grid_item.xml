@@ -7,13 +7,13 @@
     android:background="?selectable_library_drawable">
 
     <FrameLayout
-        android:id="@+id/card"
+        android:id="@+id/fltCard"
         android:layout_width="wrap_content"
         android:layout_height="220dp"
         android:background="@drawable/card_background">
 
         <ImageView
-            android:id="@+id/thumbnail"
+            android:id="@+id/ivThumbnail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?android:attr/colorBackground"
@@ -22,7 +22,7 @@
             tools:src="@mipmap/ic_launcher" />
 
         <View
-            android:id="@+id/gradient"
+            android:id="@+id/viewGradient"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -35,7 +35,7 @@
             tools:layout_editor_absoluteY="7dp">
 
             <TextView
-                android:id="@+id/unread_text"
+                android:id="@+id/tvUnread"
                 style="@style/TextAppearance.Regular.Caption.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,13 +47,13 @@
                 android:paddingRight="3dp"
                 android:paddingTop="1dp"
                 android:visibility="gone"
-                app:layout_constraintLeft_toRightOf="@+id/download_text"
+                app:layout_constraintLeft_toRightOf="@+id/tvDownload"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="120"
                 tools:visibility="visible" />
 
             <TextView
-                android:id="@+id/download_text"
+                android:id="@+id/tvDownload"
                 style="@style/TextAppearance.Regular.Caption.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,13 +65,13 @@
                 android:paddingRight="3dp"
                 android:paddingTop="1dp"
                 android:visibility="gone"
-                app:layout_constraintLeft_toRightOf="@+id/local_text"
+                app:layout_constraintLeft_toRightOf="@+id/tvLocal"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="120"
                 tools:visibility="visible" />
 
             <TextView
-                android:id="@+id/local_text"
+                android:id="@+id/tvLocal"
                 style="@style/TextAppearance.Regular.Caption.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
         </android.support.constraint.ConstraintLayout>
 
         <template.widget.PTSansTextView
-            android:id="@+id/title"
+            android:id="@+id/ptvTitle"
             style="@style/TextAppearance.Regular.Body1.Light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

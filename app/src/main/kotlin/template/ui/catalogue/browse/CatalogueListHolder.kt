@@ -29,14 +29,14 @@ class CatalogueListHolder(private val view: View, adapter: FlexibleAdapter<*>) :
      * @param manga the manga to bind.
      */
     override fun onSetValues(manga: Manga) {
-        title.text = manga.title
-        title.setTextColor(if (manga.favorite) favoriteColor else unfavoriteColor)
+        ptvTitle.text = manga.title
+        ptvTitle.setTextColor(if (manga.favorite) favoriteColor else unfavoriteColor)
 
         setImage(manga)
     }
 
     override fun setImage(manga: Manga) {
-        GlideApp.with(view.context).clear(thumbnail)
+        GlideApp.with(view.context).clear(ivThumbnail)
         if (!manga.thumbnail_url.isNullOrEmpty()) {
             GlideApp.with(view.context)
                     .load(manga)
@@ -46,7 +46,7 @@ class CatalogueListHolder(private val view: View, adapter: FlexibleAdapter<*>) :
                     .dontAnimate()
                     .skipMemoryCache(true)
                     .placeholder(android.R.color.transparent)
-                    .into(thumbnail)
+                    .into(ivThumbnail)
         }
     }
 

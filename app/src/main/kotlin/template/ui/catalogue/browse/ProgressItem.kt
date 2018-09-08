@@ -45,7 +45,7 @@ class ProgressItem : AbstractFlexibleItem<ProgressItem.Holder>() {
     }
 
     class Holder(view: View, adapter: FlexibleAdapter<*>) : FlexibleViewHolder(view, adapter) {
-        val progressBar: ProgressBar = view.findViewById(R.id.progress_bar)
-        val progressMessage: TextView = view.findViewById(R.id.progress_message)
+        val progressBar: ProgressBar = view.findViewById(R.id.progressBar)
+        val progressMessage: TextView = view.findViewById(R.id.tvProgress)
     }
 }
