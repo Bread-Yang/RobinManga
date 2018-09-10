@@ -1,6 +1,5 @@
 package template.ui.manga.info
 
-import android.app.DownloadManager
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -10,6 +9,7 @@ import io.reactivex.subjects.PublishSubject
 import template.data.cache.CoverCache
 import template.data.database.DatabaseHelper
 import template.data.database.models.Manga
+import template.data.download.DownloadManager
 import template.extensions.isNullOrDisposed
 import template.source.Source
 import template.ui.common.mvp.BasePresenter

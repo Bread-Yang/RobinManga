@@ -23,6 +23,7 @@ import template.source.Source
 import template.ui.base.controller.TabbedController
 import template.ui.common.annotation.Layout
 import template.ui.common.mvp.controller.NucleusController
+import template.ui.manga.chapter.ChaptersController
 import template.ui.manga.info.MangaInfoController
 import java.util.*
 
@@ -130,7 +131,7 @@ class MangaController: NucleusController<MangaPresenter>, TabbedController {
     private inner class MangaDetailAdapter : RouterPagerAdapter(this@MangaController) {
 
         // TODO
-        private val tabCount = 1
+        private val tabCount = 2
 
         private val tabTitles = listOf(
                 R.string.manga_detail_tab,
@@ -148,7 +149,7 @@ class MangaController: NucleusController<MangaPresenter>, TabbedController {
             if (!router.hasRootController()) {
                 val controller = when (position) {
                     INFO_CONTROLLER -> MangaInfoController()
-//                    CHAPTERS_CONTROLLER -> ChaptersController()
+                    CHAPTERS_CONTROLLER -> ChaptersController()
                     // TODO
                     else -> error("Wrong position $position")
                 }

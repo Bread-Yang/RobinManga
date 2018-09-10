@@ -3,6 +3,7 @@ package template.data.database.queries
 import com.pushtorefresh.storio3.sqlite.queries.Query
 import template.data.database.DbProvider
 import template.data.database.models.Manga
+import template.data.database.resolvers.MangaLastUpdatedPutResolver
 import template.data.database.tables.MangaTable
 
 /**
@@ -41,4 +42,9 @@ interface MangaQueries : DbProvider {
             .prepare()
 
     fun insertManga(manga: Manga) = db.put().`object`(manga).prepare()
+
+    fun updateLastUpdated(manga: Manga) = db.put()
+            .`object`(manga)
+            .withPutResolver(MangaLastUpdatedPutResolver())
+            .prepare()
 }

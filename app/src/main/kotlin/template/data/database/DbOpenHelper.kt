@@ -3,6 +3,7 @@ package template.data.database
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import template.data.database.tables.ChapterTable
 import template.data.database.tables.MangaTable
 
 /**
@@ -24,11 +25,13 @@ class DbOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
 
     override fun onCreate(db: SQLiteDatabase) = with(db) {
         execSQL(MangaTable.createTableQuery)
+        execSQL(ChapterTable.createTableQuery)
         // TODO("剩下的数据库")
 
         // DB indexes.
         execSQL(MangaTable.createUrlIndexQuery)
         execSQL(MangaTable.createFavoriteIndexQuery)
+        execSQL(ChapterTable.createMangaIdIndexQuery)
         // TODO("剩下的约束")
     }
 

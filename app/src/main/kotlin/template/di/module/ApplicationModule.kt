@@ -6,6 +6,7 @@ import dagger.Provides
 import template.App
 import template.data.cache.CoverCache
 import template.data.database.DatabaseHelper
+import template.data.download.DownloadManager
 import template.di.scopes.ApplicationContext
 import template.network.NetworkHelper
 import template.source.SourceManager
@@ -44,4 +45,10 @@ class ApplicationModule(private val application: App) {
     @Singleton
     @ApplicationContext
     fun provideSourceManager(context: Context, networkHelper: NetworkHelper): SourceManager = SourceManager(context, networkHelper)
+
+    @Provides
+    @Singleton
+    @ApplicationContext
+    fun provideDownloadManager(context: Context): DownloadManager = DownloadManager(context)
+
 }
