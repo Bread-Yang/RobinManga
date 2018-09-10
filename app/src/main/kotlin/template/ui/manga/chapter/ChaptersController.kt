@@ -1,5 +1,6 @@
 package template.ui.manga.chapter
 
+import android.content.Intent
 import android.support.v7.view.ActionMode
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -8,12 +9,14 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import com.jakewharton.rxbinding2.support.v4.widget.refreshes
+import eu.davidea.flexibleadapter.FlexibleAdapter
 import kotlinx.android.synthetic.main.chapters_controller.*
 import nucleus5.factory.RequiresPresenter
 import template.R
+import template.data.database.models.Chapter
 import template.extensions.toast
 import template.ui.common.annotation.Layout
-import template.ui.common.mvp.controller.NucleusController
+import template.ui.common.mvp.controller.NucleusDaggerController
 import template.ui.manga.MangaController
 
 /**
@@ -21,7 +24,8 @@ import template.ui.manga.MangaController
  */
 @Layout(R.layout.chapters_controller)
 @RequiresPresenter(ChaptersPresenter::class)
-class ChaptersController : NucleusController<ChaptersPresenter>(),
+class ChaptersController : NucleusDaggerController<ChaptersPresenter>(),
+        FlexibleAdapter.OnItemClickListener,
         ChaptersAdapter.OnMenuItemClickListener {
 
     /**
@@ -106,5 +110,22 @@ class ChaptersController : NucleusController<ChaptersPresenter>(),
     }
 
     override fun onMenuItemClick(position: Int, item: MenuItem) {
+    }
+
+    override fun onItemClick(view: View?, position: Int): Boolean {
+        val adapter = adapter ?: return false
+        val item = adapter.getItem(position) ?: return false
+        // TODO
+        openChapter(item.chapter)
+        return false
+    }
+
+    fun openChapter(chapter: Chapter, hasAnimation: Boolean = false) {
+        val activity = activity ?: return
+        val intent = ReaderActivity.newIntent(activity, presenter.manga, chapter)
+        if (hasAnimation) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+        }
+        startActivity(intent)
     }
 }

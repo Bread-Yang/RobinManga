@@ -13,7 +13,7 @@ import template.ui.common.activity.BaseActivity
 import template.ui.common.mvp.DaggerPresenterFactory
 import template.ui.common.mvp.NucleusConductorDelegate
 
-abstract class NucleusController<P : RxPresenter<out Any>>(val bundle: Bundle? = null)
+abstract class NucleusDaggerController<P : RxPresenter<out Any>>(val bundle: Bundle? = null)
     : RxController(bundle), ViewWithPresenter<P> {
 
     // DI for the presenter
@@ -32,7 +32,7 @@ abstract class NucleusController<P : RxPresenter<out Any>>(val bundle: Bundle? =
 
             onViewCreated(view)
             // here presenter will be created, or if rotate screen, event(onNext()、onError()、onComplete()) will be send again.
-            presenterDelegate.onResume(this@NucleusController)
+            presenterDelegate.onResume(this@NucleusDaggerController)
         }
     }
 
@@ -65,7 +65,7 @@ abstract class NucleusController<P : RxPresenter<out Any>>(val bundle: Bundle? =
             (activity as BaseActivity).component().plus(ControllerModule(this))
 
     /**
-     * 创建Presenter的时候调用,用于method Injection，在[NucleusController.onViewCreated]之后调用，controller生命周期内只调用一次
+     * 创建Presenter的时候调用,用于method Injection，在[NucleusDaggerController.onViewCreated]之后调用，controller生命周期内只调用一次
      * 也就是就算controller创建之后，rotate screen，initPresenterOnce也不会被调用
      */
     abstract fun initPresenterOnce()

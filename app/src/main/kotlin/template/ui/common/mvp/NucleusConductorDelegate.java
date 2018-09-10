@@ -11,7 +11,7 @@ import nucleus5.factory.PresenterFactory;
 import nucleus5.factory.PresenterStorage;
 import nucleus5.presenter.Presenter;
 import nucleus5.view.ViewWithPresenter;
-import template.ui.common.mvp.controller.NucleusController;
+import template.ui.common.mvp.controller.NucleusDaggerController;
 
 /**
  * This class adopts a View lifecycle to the Presenter`s lifecycle.
@@ -26,7 +26,7 @@ public final class NucleusConductorDelegate<P extends Presenter> {
     @Nullable
     private PresenterFactory<P> presenterFactory;
     @Nullable
-    private NucleusController nucleusController;
+    private NucleusDaggerController nucleusDaggerController;
     @Nullable
     private P presenter;
     @Nullable
@@ -34,9 +34,9 @@ public final class NucleusConductorDelegate<P extends Presenter> {
 
     private boolean presenterHasView;
 
-    public NucleusConductorDelegate(@Nullable PresenterFactory<P> presenterFactory, @Nullable NucleusController controller) {
+    public NucleusConductorDelegate(@Nullable PresenterFactory<P> presenterFactory, @Nullable NucleusDaggerController controller) {
         this.presenterFactory = presenterFactory;
-        this.nucleusController = controller;
+        this.nucleusDaggerController = controller;
     }
 
     /**
@@ -66,8 +66,8 @@ public final class NucleusConductorDelegate<P extends Presenter> {
 
             if (presenter == null) {
                 presenter = presenterFactory.createPresenter();
-                if (nucleusController != null) {
-                    nucleusController.initPresenterOnce();
+                if (nucleusDaggerController != null) {
+                    nucleusDaggerController.initPresenterOnce();
                 }
                 PresenterStorage.INSTANCE.add(presenter);
                 presenter.create(bundle == null ? null : bundle.getBundle(PRESENTER_KEY));

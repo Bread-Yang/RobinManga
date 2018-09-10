@@ -14,7 +14,7 @@ import template.extensions.gone
 import template.extensions.visible
 import template.extensions.withFadeTransaction
 import template.ui.common.annotation.Layout
-import template.ui.common.mvp.controller.NucleusController
+import template.ui.common.mvp.controller.NucleusDaggerController
 import template.ui.manga.MangaController
 import timber.log.Timber
 
@@ -23,7 +23,7 @@ import timber.log.Timber
  */
 @Layout(R.layout.catalogue_controller)
 @RequiresPresenter(BrowseCataloguePresenter::class)
-class BrowseCatalogueController : NucleusController<BrowseCataloguePresenter>(),
+class BrowseCatalogueController : NucleusDaggerController<BrowseCataloguePresenter>(),
         FlexibleAdapter.EndlessScrollListener,
         FlexibleAdapter.OnItemClickListener {
 
@@ -35,10 +35,10 @@ class BrowseCatalogueController : NucleusController<BrowseCataloguePresenter>(),
     /**
      * Recycler view with the list of resultsPublicSubject.
      */
-    private var recycler: RecyclerView? = null
+    private var recyclerView: RecyclerView? = null
 
     /**
-     *
+     *  Endless loading item.
      */
     private var progressItem: ProgressItem? = null
 
@@ -81,7 +81,7 @@ class BrowseCatalogueController : NucleusController<BrowseCataloguePresenter>(),
         if (oldPosition != RecyclerView.NO_POSITION) {
             recycler.layoutManager.scrollToPosition(oldPosition)
         }
-        this.recycler = recycler
+        this.recyclerView = recycler
     }
 
     fun onMangaInitialize(manga: Manga) {

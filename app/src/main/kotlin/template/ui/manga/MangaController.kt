@@ -22,7 +22,7 @@ import template.extensions.toast
 import template.source.Source
 import template.ui.base.controller.TabbedController
 import template.ui.common.annotation.Layout
-import template.ui.common.mvp.controller.NucleusController
+import template.ui.common.mvp.controller.NucleusDaggerController
 import template.ui.manga.chapter.ChaptersController
 import template.ui.manga.info.MangaInfoController
 import java.util.*
@@ -32,7 +32,7 @@ import java.util.*
  */
 @Layout(R.layout.manga_controller)
 @RequiresPresenter(MangaPresenter::class)
-class MangaController: NucleusController<MangaPresenter>, TabbedController {
+class MangaController: NucleusDaggerController<MangaPresenter>, TabbedController {
 
     constructor(manga: Manga?, fromCatalogue: Boolean = false) : super(Bundle().apply {
         putLong(MANGA_EXTRA, manga?.id ?: 0)

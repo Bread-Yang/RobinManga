@@ -42,7 +42,7 @@ import template.source.online.HttpSource
 import template.ui.MainActivity
 import template.ui.base.controller.DialogController
 import template.ui.common.annotation.Layout
-import template.ui.common.mvp.controller.NucleusController
+import template.ui.common.mvp.controller.NucleusDaggerController
 import template.ui.manga.MangaController
 import java.text.DateFormat
 import java.text.DecimalFormat
@@ -55,7 +55,7 @@ import java.util.*
  */
 @Layout(R.layout.manga_info_controller)
 @RequiresPresenter(MangaInfoPresenter::class)
-class MangaInfoController : NucleusController<MangaInfoPresenter>() {
+class MangaInfoController : NucleusDaggerController<MangaInfoPresenter>() {
 
     override fun onViewCreated(view: View) {
 

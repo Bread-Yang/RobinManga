@@ -12,13 +12,13 @@ import nucleus5.factory.RequiresPresenter
 import template.R
 import template.ui.catalogue.browse.BrowseCatalogueController
 import template.ui.common.annotation.Layout
-import template.ui.common.mvp.controller.NucleusController
+import template.ui.common.mvp.controller.NucleusDaggerController
 import template.ui.detail.DetailController
 import timber.log.Timber
 
 @Layout(R.layout.controller_main)
 @RequiresPresenter(MainPresenter::class)
-class MainController : NucleusController<MainPresenter>() {
+class MainController : NucleusDaggerController<MainPresenter>() {
 
     override fun onViewCreated(view: View) {
         Timber.e("onViewCreated()")
