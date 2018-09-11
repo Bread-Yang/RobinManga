@@ -16,13 +16,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tachiyomi">
 
-        <activity android:name="template.ui.MainActivity">
+        <activity android:name="template.ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.reader.ReaderActivity"
+            android:theme="@style/Theme.Reader" />
 
     </application>
 

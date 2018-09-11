@@ -3,12 +3,11 @@ package template.ui.common.mvp
 import nucleus5.factory.PresenterFactory
 import nucleus5.presenter.RxPresenter
 import template.di.Injector
-import template.ui.common.mvp.controller.NucleusDaggerController
 import timber.log.Timber
 
 class DaggerPresenterFactory<P : RxPresenter<out Any>,
         out PF : PresenterFactory<P>>(private val presenterFactory: PF,
-                                      val component: Any, val controller: NucleusDaggerController<P>) : PresenterFactory<P> {
+                                      val component: Any) : PresenterFactory<P> {
 
     private val injector: Injector = Injector(component)
 

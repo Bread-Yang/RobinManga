@@ -11,7 +11,6 @@ import nucleus5.factory.PresenterFactory;
 import nucleus5.factory.PresenterStorage;
 import nucleus5.presenter.Presenter;
 import nucleus5.view.ViewWithPresenter;
-import template.ui.common.mvp.controller.NucleusDaggerController;
 
 /**
  * This class adopts a View lifecycle to the Presenter`s lifecycle.
@@ -26,7 +25,7 @@ public final class NucleusConductorDelegate<P extends Presenter> {
     @Nullable
     private PresenterFactory<P> presenterFactory;
     @Nullable
-    private NucleusDaggerController nucleusDaggerController;
+    private NucleusDaggerView nucleusDaggerView;
     @Nullable
     private P presenter;
     @Nullable
@@ -34,9 +33,9 @@ public final class NucleusConductorDelegate<P extends Presenter> {
 
     private boolean presenterHasView;
 
-    public NucleusConductorDelegate(@Nullable PresenterFactory<P> presenterFactory, @Nullable NucleusDaggerController controller) {
+    public NucleusConductorDelegate(@Nullable PresenterFactory<P> presenterFactory, @Nullable NucleusDaggerView nucleusDaggerView) {
         this.presenterFactory = presenterFactory;
-        this.nucleusDaggerController = controller;
+        this.nucleusDaggerView = nucleusDaggerView;
     }
 
     /**
@@ -66,8 +65,8 @@ public final class NucleusConductorDelegate<P extends Presenter> {
 
             if (presenter == null) {
                 presenter = presenterFactory.createPresenter();
-                if (nucleusDaggerController != null) {
-                    nucleusDaggerController.initPresenterOnce();
+                if (nucleusDaggerView != null) {
+                    nucleusDaggerView.initPresenterOnce();
                 }
                 PresenterStorage.INSTANCE.add(presenter);
                 presenter.create(bundle == null ? null : bundle.getBundle(PRESENTER_KEY));
@@ -75,6 +74,30 @@ public final class NucleusConductorDelegate<P extends Presenter> {
             bundle = null;
         }
         return presenter;
+    }
+
+    /**
+     * {@link android.app.Activity#onSaveInstanceState(Bundle)}, {@link android.app.Fragment#onSaveInstanceState(Bundle)}, {@link android.view.View#onSaveInstanceState()}.
+     */
+    public Bundle onSaveInstanceState() {
+        Bundle bundle = new Bundle();
+        getPresenter();
+        if (presenter != null) {
+            Bundle presenterBundle = new Bundle();
+            presenter.save(presenterBundle);
+            bundle.putBundle(PRESENTER_KEY, presenterBundle);
+            bundle.putString(PRESENTER_ID_KEY, PresenterStorage.INSTANCE.getId(presenter));
+        }
+        return bundle;
+    }
+
+    /**
+     * {@link android.app.Activity#onCreate(Bundle)}, {@link android.app.Fragment#onCreate(Bundle)}, {@link android.view.View#onSaveInstanceState()}.
+     */
+    public void onRestoreInstanceState(Bundle presenterState) {
+        if (presenter != null)
+            throw new IllegalArgumentException("onRestoreInstanceState() should be called before onResume()");
+        this.bundle = ParcelFn.unmarshall(ParcelFn.marshall(presenterState));
     }
 
     /**

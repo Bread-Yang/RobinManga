@@ -39,7 +39,7 @@ import template.glide.GlideApp
 import template.source.Source
 import template.source.model.SManga
 import template.source.online.HttpSource
-import template.ui.MainActivity
+import template.ui.main.MainActivity
 import template.ui.base.controller.DialogController
 import template.ui.common.annotation.Layout
 import template.ui.common.mvp.controller.NucleusDaggerController

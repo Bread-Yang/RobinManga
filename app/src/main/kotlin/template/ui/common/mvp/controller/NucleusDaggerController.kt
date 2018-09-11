@@ -9,19 +9,20 @@ import nucleus5.presenter.RxPresenter
 import nucleus5.view.ViewWithPresenter
 import template.di.component.ControllerComponent
 import template.di.module.ControllerModule
-import template.ui.common.activity.BaseActivity
 import template.ui.common.mvp.DaggerPresenterFactory
 import template.ui.common.mvp.NucleusConductorDelegate
+import template.ui.common.mvp.NucleusDaggerView
+import template.ui.common.mvp.activity.NucleusDaggerActivity
 
 abstract class NucleusDaggerController<P : RxPresenter<out Any>>(val bundle: Bundle? = null)
-    : RxController(bundle), ViewWithPresenter<P> {
+    : RxController(bundle), ViewWithPresenter<P>, NucleusDaggerView {
 
     // DI for the presenter
     private val presenterDelegate by lazy {
         NucleusConductorDelegate<P>(
                 DaggerPresenterFactory<P, ReflectionPresenterFactory<P>>(
                         ReflectionPresenterFactory.fromViewClass<P>(javaClass)!!,
-                        screenComponent(), this), this
+                        screenComponent()), this
         )
     }
 
@@ -62,11 +63,6 @@ abstract class NucleusDaggerController<P : RxPresenter<out Any>>(val bundle: Bun
     }
 
     private fun screenComponent(): ControllerComponent =
-            (activity as BaseActivity).component().plus(ControllerModule(this))
+            (activity as NucleusDaggerActivity<*>).component().plus(ControllerModule(this))
 
-    /**
-     * 创建Presenter的时候调用,用于method Injection，在[NucleusDaggerController.onViewCreated]之后调用，controller生命周期内只调用一次
-     * 也就是就算controller创建之后，rotate screen，initPresenterOnce也不会被调用
-     */
-    abstract fun initPresenterOnce()
 }

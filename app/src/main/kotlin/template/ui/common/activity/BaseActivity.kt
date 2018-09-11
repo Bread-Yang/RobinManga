@@ -6,14 +6,11 @@ import android.view.ViewGroup
 import com.bluelinelabs.conductor.Router
 import template.di.Injector
 import template.di.component.ActivityComponent
-import template.di.module.ActivityModule
-import template.extensions.app
 import template.ui.common.annotation.Layout
-import javax.inject.Inject
 
 abstract class BaseActivity : AppCompatActivity() {
 
-    @Inject
+//    @Inject
     lateinit var router: Router
 
     private lateinit var component: ActivityComponent
@@ -22,9 +19,9 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout())
-        component = app.component.plus(ActivityModule(this, container(), savedInstanceState))
-        injector = Injector(component)
-        injector.inject(this)
+//        component = app.component.plus(ActivityModule(this, container(), savedInstanceState))
+//        injector = Injector(component)
+//        injector.inject(this)
     }
 
     override fun onBackPressed() {

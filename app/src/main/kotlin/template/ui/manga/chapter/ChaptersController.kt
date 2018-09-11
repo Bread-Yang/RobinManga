@@ -18,6 +18,7 @@ import template.extensions.toast
 import template.ui.common.annotation.Layout
 import template.ui.common.mvp.controller.NucleusDaggerController
 import template.ui.manga.MangaController
+import template.ui.reader.ReaderActivity
 
 /**
  * Created by Robin Yeung on 9/7/18.
