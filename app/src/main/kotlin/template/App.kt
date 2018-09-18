@@ -3,6 +3,7 @@ package template
 import android.annotation.SuppressLint
 import android.app.Application
 import android.util.Log
+import template.data.cache.ChapterCache
 import template.data.cache.CoverCache
 import template.data.database.DatabaseHelper
 import template.di.component.ApplicationComponent
@@ -21,6 +22,9 @@ class App : Application() {
 
     @Inject
     lateinit var lazyCoverCache: dagger.`Lazy`<CoverCache>
+
+    @Inject
+    lateinit var lazyChapterCache: dagger.`Lazy`<ChapterCache>
 
     @Inject
     lateinit var lazySourceManager: dagger.`Lazy`<SourceManager>

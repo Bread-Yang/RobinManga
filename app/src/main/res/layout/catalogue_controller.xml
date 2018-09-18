@@ -12,6 +12,14 @@
         android:orientation="vertical"
         tools:context="eu.kanade.tachiyomi.ui.catalogue.browse.BrowseCatalogueController">
 
+        <Button
+            android:id="@+id/btnReload"
+            android:layout_width="wrap_content"
+            android:text="重新加载"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center_vertical|center_horizontal" />
+
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleLarge"

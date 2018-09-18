@@ -1,9 +1,11 @@
 package template.di.module
 
 import android.content.Context
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import template.App
+import template.data.cache.ChapterCache
 import template.data.cache.CoverCache
 import template.data.database.DatabaseHelper
 import template.data.download.DownloadManager
@@ -20,6 +22,11 @@ class ApplicationModule(private val application: App) {
     @Singleton
     @ApplicationContext
     fun provideApplicationContext(): Context = application.applicationContext
+
+    @Provides
+    @Singleton
+    @ApplicationContext
+    fun provideGson(): Gson = Gson()
 
     @Provides
     @Singleton
@@ -51,4 +58,8 @@ class ApplicationModule(private val application: App) {
     @ApplicationContext
     fun provideDownloadManager(context: Context): DownloadManager = DownloadManager(context)
 
+    @Provides
+    @Singleton
+    @ApplicationContext
+    fun provideChapterCache(context: Context, gson: Gson): ChapterCache = ChapterCache(context, gson)
 }

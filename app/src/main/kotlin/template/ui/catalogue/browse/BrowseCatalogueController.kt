@@ -4,6 +4,7 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.jakewharton.rxbinding2.view.clicks
 import eu.davidea.flexibleadapter.FlexibleAdapter
 import eu.davidea.flexibleadapter.items.IFlexible
 import kotlinx.android.synthetic.main.catalogue_controller.*
@@ -11,6 +12,7 @@ import nucleus5.factory.RequiresPresenter
 import template.R
 import template.data.database.models.Manga
 import template.extensions.gone
+import template.extensions.toast
 import template.extensions.visible
 import template.extensions.withFadeTransaction
 import template.ui.common.annotation.Layout
@@ -45,6 +47,10 @@ class BrowseCatalogueController : NucleusDaggerController<BrowseCataloguePresent
     override fun onViewCreated(view: View) {
         adapter = FlexibleAdapter(null, this)
         setupRecycler(view)
+
+        btnReload.clicks().subscribeUntilDestroy {
+            presenter.restartPager()
+        }
     }
 
     override fun initPresenterOnce() {
@@ -116,6 +122,7 @@ class BrowseCatalogueController : NucleusDaggerController<BrowseCataloguePresent
     fun onAddPage(page: Int, mangas: List<CatalogueItem>) {
         val adapter = adapter ?: return
         hideProgressBar()
+        btnReload.visibility = View.GONE
         if (page == 1) {
             adapter.clear()
             resetProgressItem()
@@ -130,6 +137,9 @@ class BrowseCatalogueController : NucleusDaggerController<BrowseCataloguePresent
      * @param error the error received.
      */
     fun onAddPageError(error: Throwable) {
+        hideProgressBar()
+        view?.context?.toast(error.message)
+        btnReload.visibility = View.VISIBLE
         Timber.e(error)
         val adapter = adapter ?: return
         adapter.onLoadMoreComplete(null)

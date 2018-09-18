@@ -2,7 +2,6 @@ package template.ui.common.mvp.activity
 
 import android.os.Bundle
 import android.support.annotation.CallSuper
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import nucleus5.factory.PresenterFactory
 import nucleus5.factory.ReflectionPresenterFactory
@@ -20,7 +19,7 @@ import template.ui.common.mvp.NucleusDaggerView
  * Created by Robin Yeung on 9/10/18.
  */
 abstract class NucleusDaggerActivity<P : RxPresenter<out Any>>
-    : AppCompatActivity(), ViewWithPresenter<P>, NucleusDaggerView {
+    : RxActivity(), ViewWithPresenter<P>, NucleusDaggerView {
 
     private val PRESENTER_STATE_KEY = "presenter_state"
 

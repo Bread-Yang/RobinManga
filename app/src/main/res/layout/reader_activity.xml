@@ -1,30 +1,29 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center">
 
     <FrameLayout
-        android:id="@+id/reader_container"
+        android:id="@+id/fltReaderContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <FrameLayout
-            android:id="@+id/reader"
+            android:id="@+id/fltReader"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </FrameLayout>
+            android:layout_height="match_parent"/>
 
         <ProgressBar
-            android:id="@+id/please_wait"
+            android:id="@+id/pbPleaseWait"
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center" />
 
         <template.ui.reader.PageIndicatorTextView
-            android:id="@+id/page_number"
+            android:id="@+id/tvPageNumber"
             style="@style/TextAppearance.Regular.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,7 +34,7 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/reader_menu"
+        android:id="@+id/fltReaderMenu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
@@ -48,69 +47,69 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?colorPrimary"
             android:elevation="4dp"
-            android:theme="?attr/actionBarTheme"/>
+            android:theme="?attr/actionBarTheme" />
 
         <LinearLayout
-            android:id="@+id/reader_menu_bottom"
+            android:id="@+id/lltReaderMenuBottom"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_gravity="bottom"
-            android:gravity="center"
             android:background="?colorPrimary"
-            android:orientation="horizontal"
+            android:descendantFocusability="blocksDescendants"
             android:focusable="false"
-            android:descendantFocusability="blocksDescendants">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/left_chapter"
+                android:id="@+id/ibLeftChapter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/material_layout_keylines_screen_edge_margin"
                 android:background="?android:selectableItemBackground"
-                app:srcCompat="@drawable/ic_skip_previous_white_24dp"/>
+                android:padding="@dimen/material_layout_keylines_screen_edge_margin"
+                app:srcCompat="@drawable/ic_skip_previous_white_24dp" />
 
             <TextView
-                android:id="@+id/left_page_text"
+                android:id="@+id/tvLeftPage"
                 android:layout_width="32dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <SeekBar
-                android:id="@+id/page_seekbar"
+                android:id="@+id/seekbarPage"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/right_page_text"
+                android:id="@+id/tvRightPage"
                 android:layout_width="32dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <ImageButton
-                android:id="@+id/right_chapter"
+                android:id="@+id/ibRightChapter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/material_layout_keylines_screen_edge_margin"
                 android:background="?android:selectableItemBackground"
-                app:srcCompat="@drawable/ic_skip_next_white_24dp"/>
+                android:padding="@dimen/material_layout_keylines_screen_edge_margin"
+                app:srcCompat="@drawable/ic_skip_next_white_24dp" />
 
         </LinearLayout>
 
     </FrameLayout>
 
     <View
-        android:id="@+id/brightness_overlay"
+        android:id="@+id/viewBrightnessOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <View
-        android:id="@+id/color_overlay"
+        android:id="@+id/viewColorOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </FrameLayout>

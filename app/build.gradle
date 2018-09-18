@@ -133,4 +133,14 @@ dependencies {
 
     // material-dialog
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+
+    // subsampling-scale-image
+    implementation 'com.github.inorichi:subsampling-scale-image-view:81b9d68'
+
+    // toggle system ui
+    implementation 'me.zhanghai.android.systemuihelper:library:1.0.0'
+
+    // Disk
+    implementation 'com.jakewharton:disklrucache:2.0.2'
+    implementation 'com.github.inorichi:unifile:e9ee588'
 }
