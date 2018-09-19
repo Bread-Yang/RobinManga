@@ -40,11 +40,15 @@ class ChapterCache(private val context: Context, private val gson: Gson) {
         const val PARAMETER_CACHE_SIZE = 75L * 1024 * 1024
     }
 
+    // getFileDir() -----> /data/data/cn.xxx.xxx(当前包)/files
+    // getCacheDir() -----> /data/data/cn.xxx.xxx（当前包）/cache
+    // context.getExternalCacheDir() -----> /storage/emulated/0/Android/data/package_name/cache
     /** Cache class used for cache management.  */
     private val diskCache = DiskLruCache.open(
-            File(context.cacheDir, PARAMETER_CACHE_DIRECTORY),        // getFileDir() -----> /data/data/cn.xxx.xxx(当前包)/files
-            PARAMETER_APP_VERSION,                                    // getCacheDir() -----> /data/data/cn.xxx.xxx（当前包）/cache
-            PARAMETER_VALUE_COUNT,                                    // context.getExternalCacheDir() -----> /storage/emulated/0/Android/data/package_name/cache
+//            File(context.cacheDir, PARAMETER_CACHE_DIRECTORY),
+            File(context.externalCacheDir, PARAMETER_CACHE_DIRECTORY),
+            PARAMETER_APP_VERSION,
+            PARAMETER_VALUE_COUNT,
             PARAMETER_CACHE_SIZE)
 
     /**

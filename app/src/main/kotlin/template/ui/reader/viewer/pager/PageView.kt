@@ -13,7 +13,6 @@ import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
-import kotlinx.android.synthetic.main.catalogue_progress_item.view.*
 import kotlinx.android.synthetic.main.reader_pager_item.view.*
 import template.R
 import template.extensions.inflate
@@ -52,8 +51,8 @@ class PageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         val activity = reader.activity as ReaderActivity
 
         when (activity.readerTheme) {
-            ReaderActivity.BLACK_THEME -> progress_text.setTextColor(reader.whiteColor)
-            ReaderActivity.WHITE_THEME -> progress_text.setTextColor(reader.blackColor)
+            ReaderActivity.BLACK_THEME -> tvProgress.setTextColor(reader.whiteColor)
+            ReaderActivity.WHITE_THEME -> tvProgress.setTextColor(reader.blackColor)
         }
 
         if (reader is RightToLeftReader) {

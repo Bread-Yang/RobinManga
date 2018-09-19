@@ -1,7 +1,6 @@
 package template.di.module
 
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import okhttp3.HttpUrl
@@ -35,12 +34,12 @@ class ApiModule() {
         return logging
     }
 
-    @Provides
-    @Singleton
-    internal fun provideGson(): Gson {
-        return GsonBuilder()
-                .create()
-    }
+//    @Provides
+//    @Singleton
+//    internal fun provideGson(): Gson {
+//        return GsonBuilder()
+//                .create()
+//    }
 
     @Provides
     @Singleton

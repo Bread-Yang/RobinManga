@@ -49,6 +49,8 @@ class BrowseCatalogueController : NucleusDaggerController<BrowseCataloguePresent
         setupRecycler(view)
 
         btnReload.clicks().subscribeUntilDestroy {
+            btnReload.gone()
+            progressBar.visible()
             presenter.restartPager()
         }
     }

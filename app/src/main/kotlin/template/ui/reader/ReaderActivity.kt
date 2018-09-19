@@ -2,11 +2,10 @@ package template.ui.reader
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import android.view.KeyEvent
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.reader_activity.*
@@ -16,14 +15,18 @@ import template.R
 import template.data.database.models.Chapter
 import template.data.database.models.Manga
 import template.extensions.getOrDefault
+import template.extensions.gone
 import template.extensions.toast
 import template.source.model.Page
 import template.ui.common.annotation.Layout
 import template.ui.common.mvp.activity.NucleusDaggerActivity
 import template.ui.reader.viewer.base.BaseReader
+import template.ui.reader.viewer.pager.horizontal.LeftToRightReader
 import template.ui.reader.viewer.pager.horizontal.RightToLeftReader
+import template.ui.reader.viewer.pager.vertical.VerticalReader
 import template.utils.GLUtil
 import template.utils.SharedData
+import template.widget.SimpleAnimationListener
 import timber.log.Timber
 import java.text.DecimalFormat
 
@@ -61,7 +64,7 @@ class ReaderActivity : NucleusDaggerActivity<ReaderPresenter>() {
     var maxBitmapSize: Int = 0
         private set
 
-    private val decimalFortmat = DecimalFormat("#.###")
+    private val decimalFormat = DecimalFormat("#.###")
 
     val preferences by lazy {
         presenter.preferencesHelper
@@ -93,8 +96,8 @@ class ReaderActivity : NucleusDaggerActivity<ReaderPresenter>() {
             onBackPressed()
         }
 
-        initializeSettings()
-        initializeBottomMenu()
+//        initializeSettings()
+//        initializeBottomMenu()
 
         if (savedInstanceState != null) {
             menuVisible = savedInstanceState.getBoolean(MENU_VISIBLE)
@@ -150,7 +153,7 @@ class ReaderActivity : NucleusDaggerActivity<ReaderPresenter>() {
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
-            setMenuVisibility(menuVisible, animate = false)
+//            setMenuVisibility(menuVisible, animate = false)
         }
     }
 
@@ -198,7 +201,7 @@ class ReaderActivity : NucleusDaggerActivity<ReaderPresenter>() {
                 KeyEvent.KEYCODE_DPAD_UP -> viewer?.moveUp()
                 KeyEvent.KEYCODE_PAGE_DOWN -> viewer?.moveDown()
                 KeyEvent.KEYCODE_PAGE_UP -> viewer?.moveUp()
-                KeyEvent.KEYCODE_MENU -> toggleMenu()
+//                KeyEvent.KEYCODE_MENU -> toggleMenu()
                 else -> return super.onKeyUp(keyCode, event)
             }
         }
@@ -245,4 +248,150 @@ class ReaderActivity : NucleusDaggerActivity<ReaderPresenter>() {
         pbPleaseWait.visibility = View.VISIBLE
         pbPleaseWait.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in_long))
     }
+
+    fun onChapterReady(chapter: ReaderChapter) {
+        pbPleaseWait.gone()
+        val pages = chapter.pages ?: run {
+            onChapterError(Exception("Null Pages"))
+            return
+        }
+
+        val activePage = pages.getOrElse(chapter.requestedPage) {
+            pages.first()
+        }
+
+        viewer?.onPageListReady(chapter, activePage)
+        setActiveChapter(chapter, activePage.index)
+    }
+
+    fun onEnterChapter(chapter: ReaderChapter, currentPage: Int) {
+        val activePage = if (currentPage == -1) chapter.pages!!.lastIndex else currentPage
+        presenter.setActiveChapter(chapter)
+        setActiveChapter(chapter, activePage)
+    }
+
+    fun setActiveChapter(chapter: ReaderChapter, currentPage: Int) {
+        val numPages = chapter.pages!!.size
+        if (seekbarPage.rotation != 180f) {
+            tvRightPage.text = "$numPages"
+            tvLeftPage.text = "${currentPage + 1}"
+        } else {
+            tvLeftPage.text = "$numPages"
+            tvRightPage.text = "${currentPage + 1}"
+        }
+        seekbarPage.max = numPages - 1
+        seekbarPage.progress = currentPage
+
+        supportActionBar?.subtitle = if (chapter.isRecognizedNumber)
+            getString(R.string.chapter_subtitle, decimalFormat.format(chapter.chapter_number.toDouble()))
+        else
+            chapter.name
+    }
+
+    fun onAppendChapter(chapter: ReaderChapter) {
+        viewer?.onPageListAppendReady(chapter)
+    }
+
+    fun onAdjacentChapters(previous: Chapter?, next: Chapter?) {
+        val isInverted = viewer is RightToLeftReader
+
+        // Chapters are inverted for the right to left reader
+        val hasRightChapter = (if (isInverted) previous else next) != null
+        val hasLeftChapter = (if (isInverted) next else previous) != null
+
+        ibRightChapter.isEnabled = hasRightChapter
+        ibRightChapter.alpha = if (hasRightChapter) 1f else 0.4f
+
+        ibLeftChapter.isEnabled = hasLeftChapter
+        ibLeftChapter.alpha = if (hasLeftChapter) 1f else 0.4f
+    }
+
+    private fun getOrCreateViewer(manga: Manga): BaseReader {
+        val mangaViewer = if (manga.viewer == 0) preferences.defaultViewer() else manga.viewer
+
+        // Try to reuse the viewer using its tag
+        var fragment = supportFragmentManager.findFragmentByTag(manga.viewer.toString()) as? BaseReader
+        if (fragment == null) {
+            // Create a new viewer
+            fragment = when (mangaViewer) {
+                RIGHT_TO_LEFT -> RightToLeftReader()
+                VERTICAL -> VerticalReader()
+//                WEBTOON -> WebtoonReader()
+                else -> LeftToRightReader()
+            }
+
+            supportFragmentManager.beginTransaction().replace(R.id.fltReader, fragment, manga.viewer.toString()).commit()
+        }
+        return fragment
+    }
+
+    fun onPageChanged(page: Page) {
+        presenter.onPageChanged(page)
+
+        val pageNumber = page.number
+        val pageCount = page.chapter.pages!!.size
+        tvPageNumber.text = "$pageNumber/$pageCount"
+        if (seekbarPage.rotation != 180f) {
+            tvLeftPage.text = "$pageNumber"
+        } else {
+            tvRightPage.text = "$pageNumber"
+        }
+        seekbarPage.progress = page.index
+    }
+
+    fun toggleMenu() {
+        setMenuVisibility(!menuVisible)
+    }
+
+    fun requestNextChapter() {
+        if (!presenter.loadNextChapter()) {
+            toast(R.string.no_next_chapter)
+        }
+    }
+
+    fun requestPreviousChapter() {
+        if (!presenter.loadPreviousChapter()) {
+            toast(R.string.no_previous_chapter)
+        }
+    }
+
+    private fun setMenuVisibility(visible: Boolean, animate: Boolean = true) {
+        menuVisible = visible
+        if (visible) {
+            systemUi?.show()
+            fltReaderMenu.visibility = View.VISIBLE
+
+            if (animate) {
+                val toolbarAnimation = AnimationUtils.loadAnimation(this, R.anim.enter_from_top)
+                toolbarAnimation.setAnimationListener(object : SimpleAnimationListener() {
+                    override fun onAnimationStart(animation: Animation) {
+                        // Fix status bar being translucent the first time it's opened.
+                        if (Build.VERSION.SDK_INT >= 21) {
+                            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                        }
+                    }
+                })
+                toolbar.startAnimation(toolbarAnimation)
+
+                val bottomMenuAnimation = AnimationUtils.loadAnimation(this, R.anim.enter_from_bottom)
+                lltReaderMenuBottom.startAnimation(bottomMenuAnimation)
+            }
+        } else {
+            systemUi?.hide()
+
+            if (animate) {
+                val toolbarAnimation = AnimationUtils.loadAnimation(this, R.anim.exit_to_top)
+                toolbarAnimation.setAnimationListener(object : SimpleAnimationListener() {
+                    override fun onAnimationEnd(animation: Animation) {
+                        fltReaderMenu.visibility = View.GONE
+                    }
+                })
+                toolbar.startAnimation(toolbarAnimation)
+
+                val bottomMenuAnimation = AnimationUtils.loadAnimation(this, R.anim.exit_to_bottom)
+                lltReaderMenuBottom.startAnimation(bottomMenuAnimation)
+            }
+        }
+    }
+
 }
