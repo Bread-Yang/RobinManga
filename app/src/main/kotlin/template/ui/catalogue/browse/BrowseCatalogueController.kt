@@ -84,7 +84,7 @@ class BrowseCatalogueController : NucleusDaggerController<BrowseCataloguePresent
         recycler.setHasFixedSize(true)
         recycler.adapter = adapter
 
-        lltCatalogue.addView(recycler, 1)
+        lltCatalogue.addView(recycler, 2)
 
         if (oldPosition != RecyclerView.NO_POSITION) {
             recycler.layoutManager.scrollToPosition(oldPosition)
@@ -124,7 +124,7 @@ class BrowseCatalogueController : NucleusDaggerController<BrowseCataloguePresent
     fun onAddPage(page: Int, mangas: List<CatalogueItem>) {
         val adapter = adapter ?: return
         hideProgressBar()
-        btnReload.visibility = View.GONE
+        btnReload.gone()
         if (page == 1) {
             adapter.clear()
             resetProgressItem()
@@ -141,7 +141,7 @@ class BrowseCatalogueController : NucleusDaggerController<BrowseCataloguePresent
     fun onAddPageError(error: Throwable) {
         hideProgressBar()
         view?.context?.toast(error.message)
-        btnReload.visibility = View.VISIBLE
+        btnReload.visible()
         Timber.e(error)
         val adapter = adapter ?: return
         adapter.onLoadMoreComplete(null)

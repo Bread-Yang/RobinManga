@@ -4,14 +4,14 @@ import android.os.Bundle
 import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.main_activity.*
 import nucleus5.factory.RequiresPresenter
 import template.R
 import template.ui.catalogue.browse.BrowseCatalogueController
 import template.ui.common.annotation.Layout
 import template.ui.common.mvp.activity.NucleusDaggerActivity
 
-@Layout(R.layout.activity_main)
+@Layout(R.layout.main_activity)
 @RequiresPresenter(MainPresenter::class)
 class MainActivity : NucleusDaggerActivity<MainPresenter>() {
 
@@ -36,7 +36,7 @@ class MainActivity : NucleusDaggerActivity<MainPresenter>() {
             testData = "haha"
         }
 
-        router = Conductor.attachRouter(this, container, savedInstanceState)
+        router = Conductor.attachRouter(this, controllerContainer, savedInstanceState)
         if (!router.hasRootController()) router.pushController(RouterTransaction.with(BrowseCatalogueController()))
     }
 
