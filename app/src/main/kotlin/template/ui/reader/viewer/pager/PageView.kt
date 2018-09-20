@@ -12,7 +12,7 @@ import com.hippo.unifile.UniFile
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.processors.PublishProcessor
 import kotlinx.android.synthetic.main.reader_pager_item.view.*
 import template.R
 import template.extensions.inflate
@@ -111,8 +111,8 @@ class PageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     private fun observeStatus() {
         statusDisposable?.dispose()
 
-        val statusSubject = PublishSubject.create<Int>().toSerialized()
-        page.setStatusSubject(statusSubject)
+        val statusSubject = PublishProcessor.create<Int>().toSerialized()
+        page.setStatusProcessor(statusSubject)
 
         statusDisposable = statusSubject.startWith(page.status)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -171,7 +171,7 @@ class PageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
      * Unsubscribes from the status disposable.
      */
     private fun unsubscribeStatus() {
-        page.setStatusSubject(null)
+        page.setStatusProcessor(null)
         statusDisposable?.dispose()
         statusDisposable = null
     }

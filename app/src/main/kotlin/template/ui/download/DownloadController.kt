@@ -45,8 +45,8 @@ class DownloadController : NucleusDaggerController<DownloadPresenter>() {
     }
 
     private fun setInformationView() {
-        if (presenter.downloadQueue.isEmpty()) {
-
-        }
+//        if (presenter.downloadQueue.isEmpty()) {
+//
+//        }
     }
 }

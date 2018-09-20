@@ -3,6 +3,7 @@ package template
 import android.annotation.SuppressLint
 import android.app.Application
 import android.util.Log
+import com.google.gson.Gson
 import template.data.cache.ChapterCache
 import template.data.cache.CoverCache
 import template.data.database.DatabaseHelper
@@ -38,6 +39,9 @@ class App : Application() {
 
     @Inject
     lateinit var lazyPreferencesHelper: dagger.`Lazy`<PreferencesHelper>
+
+    @Inject
+    lateinit var lazyGson: dagger.`Lazy`<Gson>
 
 
     val component: ApplicationComponent by lazy {

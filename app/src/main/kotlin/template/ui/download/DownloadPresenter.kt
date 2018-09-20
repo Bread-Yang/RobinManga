@@ -18,6 +18,6 @@ class DownloadPresenter : BasePresenter<DownloadController>() {
     /**
      * Property to get eh queue from the download manager.
      */
-    val downloadQueue: DownloadQueue
-        get() = downloadManager.queue
+//    val downloadQueue: DownloadQueue
+//        get() = downloadManager.queue
 }

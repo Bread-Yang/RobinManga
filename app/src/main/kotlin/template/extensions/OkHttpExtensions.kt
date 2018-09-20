@@ -19,13 +19,6 @@ fun Call.asObservable(): Observable<Response> {
     return CallObservable(this)
 }
 
-/**
- * Converts the call to a flowable which will emit the latest response, then complete
- */
-fun Call.asFlowable(): Flowable<Response> {
-    return asObservable().toFlowable(BackpressureStrategy.LATEST)
-}
-
 fun Call.asObservableSuccess() : Observable<Response> {
     return asObservable().doOnNext {
         if (!it.isSuccessful) {
@@ -33,6 +26,13 @@ fun Call.asObservableSuccess() : Observable<Response> {
             throw Exception("HTTP error ${it.code()}")
         }
     }
+}
+
+/**
+ * Converts the call to a flowable which will emit the latest response, then complete
+ */
+fun Call.asFlowable(): Flowable<Response> {
+    return asObservable().toFlowable(BackpressureStrategy.LATEST)
 }
 
 fun Call.asFlowableSuccess() : Flowable<Response> {

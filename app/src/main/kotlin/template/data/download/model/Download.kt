@@ -1,6 +1,6 @@
 package template.data.download.model
 
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.processors.PublishProcessor
 import template.data.database.models.Chapter
 import template.data.database.models.Manga
 import template.source.model.Page
@@ -30,17 +30,17 @@ class Download(val source: HttpSource, val manga: Manga, val chapter: Chapter) {
     var downloadedImages: Int = 0
 
     @Transient
-    private var statusSubject: PublishSubject<Download>? = null
+    private var statusProcessor: PublishProcessor<Download>? = null
 
     @Volatile
     @Transient
     var status: Int = 0
         set(status) {
             field = status
-            statusSubject?.onNext(this)
+            statusProcessor?.onNext(this)
         }
 
-    fun setStatusSubject(subject: PublishSubject<Download>) {
-        statusSubject = subject
+    fun setStatusProcessor(processor: PublishProcessor<Download>?) {
+        statusProcessor = processor
     }
 }

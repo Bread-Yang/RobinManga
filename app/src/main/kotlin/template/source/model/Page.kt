@@ -1,7 +1,7 @@
 package template.source.model
 
 import android.net.Uri
-import io.reactivex.subjects.Subject
+import io.reactivex.processors.FlowableProcessor
 import template.network.ProgressListener
 import template.ui.reader.ReaderChapter
 
@@ -36,7 +36,7 @@ class Page(
     var status: Int = 0
         set(value) {
             field = value
-            statusSubject?.onNext(value)
+            statusProcessor?.onNext(value)
         }
 
     @Transient
@@ -44,7 +44,7 @@ class Page(
     var progress: Int = 0
 
     @Transient
-    private var statusSubject: Subject<Int>? = null
+    private var statusProcessor: FlowableProcessor<Int>? = null
 
     override fun update(bytesRead: Long, contentLength: Long, done: Boolean) {
         progress =
@@ -54,7 +54,7 @@ class Page(
                     -1
     }
 
-    fun setStatusSubject(subject: Subject<Int>?) {
-        this.statusSubject = subject
+    fun setStatusProcessor(subject: FlowableProcessor<Int>?) {
+        this.statusProcessor = subject
     }
 }

@@ -16,5 +16,10 @@ class DownloadManager(context: Context) {
      */
     private val pathProvider = DownloadPathProvider(context)
 
+    /**
+     * Cache of downloaded chapters.
+     */
+    private val cache = DownloadCache(context, pathProvider)
+
 
 }
