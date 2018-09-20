@@ -11,4 +11,10 @@ import android.content.Context
  */
 class DownloadManager(context: Context) {
 
+    /**
+     * Downloads path provider, used to retrieve the folders where the chapters are or should be stored.
+     */
+    private val pathProvider = DownloadPathProvider(context)
+
+
 }

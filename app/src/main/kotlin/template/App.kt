@@ -11,6 +11,7 @@ import template.di.component.DaggerApplicationComponent
 import template.di.module.ApplicationModule
 import template.network.NetworkHelper
 import template.source.SourceManager
+import template.utils.preference.PreferencesHelper
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -34,6 +35,9 @@ class App : Application() {
 
     @Inject
     lateinit var lazyDatabaseHelper: dagger.`Lazy`<DatabaseHelper>
+
+    @Inject
+    lateinit var lazyPreferencesHelper: dagger.`Lazy`<PreferencesHelper>
 
 
     val component: ApplicationComponent by lazy {
