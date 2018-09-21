@@ -42,6 +42,12 @@ android {
     }
 }
 
+kotlin {
+    experimental {
+        coroutines 'enable'
+    }
+}
+
 androidExtensions {
     experimental = true
 }
@@ -66,6 +72,10 @@ dependencies {
     // kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version.kotlin"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$version.kotlin"
+
+    // coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version.coroutines"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version.coroutines"
 
     // conductor & nucleus
     implementation "com.bluelinelabs:conductor:$version.conductor"
