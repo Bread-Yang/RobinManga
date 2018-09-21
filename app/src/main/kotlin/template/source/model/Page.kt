@@ -11,7 +11,7 @@ import template.ui.reader.ReaderChapter
 class Page(
         val index: Int,
         val url: String = "",
-        var imageUrl: String? = null,
+        var imageUrl: String? = null,       // uri 和 Url 的区别 : https://www.cnblogs.com/wuyun-blog/p/5706703.html
         @Transient var uri: Uri? = null     // 用transient关键字标记的成员变量不参与序列化过程
 ) : ProgressListener {
 

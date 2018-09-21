@@ -105,3 +105,34 @@ private fun HttpSource.cacheImage(page: Page): Observable<Page> {
             }
 }
 
+fun HttpSource.fetchAllImageUrlsFromPageList(pages: List<Page>): Observable<Page> {
+//    return Observable
+//            .fromIterable(pages)
+//            .filter {
+//                !it.imageUrl.isNullOrEmpty()
+//            }
+//            .mergeWith {
+//                fetchRemainingImageUrlsFromPageList(pages)
+//            }
+    return Observable
+            .fromIterable(pages)
+            .flatMap {
+                if (it.imageUrl.isNullOrEmpty()) {
+                    return@flatMap getImageUrl(it)
+                } else {
+                    return@flatMap Observable.just(it)
+                }
+            }
+}
+
+fun HttpSource.fetchRemainingImageUrlsFromPageList(pages: List<Page>): Observable<Page> {
+    return Observable
+            .fromIterable(pages)
+            .filter {
+                it.imageUrl.isNullOrEmpty()
+            }
+            .concatMap {
+                getImageUrl(it)
+            }
+}
+
