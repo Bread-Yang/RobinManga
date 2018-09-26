@@ -1,6 +1,8 @@
 package template.extensions
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.os.PowerManager
 import android.support.annotation.StringRes
 import android.widget.Toast
 
@@ -35,3 +37,12 @@ fun Context.getResourceColor(@StringRes resource: Int): Int {
     typedArray.recycle()
     return attrValue
 }
+
+/**
+ * Property to get the power manager from the context.
+ */
+val Context.powerManager: PowerManager
+    get() = getSystemService(Context.POWER_SERVICE) as PowerManager
+
+val Context.connectivityManager: ConnectivityManager
+    get() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

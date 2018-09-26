@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import template.data.cache.ChapterCache
 import template.data.cache.CoverCache
 import template.data.database.DatabaseHelper
+import template.data.download.DownloadManager
 import template.di.component.ApplicationComponent
 import template.di.component.DaggerApplicationComponent
 import template.di.module.ApplicationModule
@@ -39,6 +40,9 @@ class App : Application() {
 
     @Inject
     lateinit var lazyPreferencesHelper: dagger.`Lazy`<PreferencesHelper>
+
+    @Inject
+    lateinit var lazyDownloaderManager: dagger.`Lazy`<DownloadManager>
 
     @Inject
     lateinit var lazyGson: dagger.`Lazy`<Gson>

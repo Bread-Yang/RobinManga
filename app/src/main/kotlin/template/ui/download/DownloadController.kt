@@ -1,6 +1,9 @@
 package template.ui.download
 
 import android.support.v7.widget.LinearLayoutManager
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -55,7 +58,7 @@ class DownloadController : NucleusDaggerController<DownloadPresenter>() {
         recyclerView.layoutManager = LinearLayoutManager(view.context)
         recyclerView.setHasFixedSize(true)
 
-        // Suscribe to changes
+        // Subscribe to changes
         DownloadService.runningSubject
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeUntilDestroy {
@@ -67,9 +70,66 @@ class DownloadController : NucleusDaggerController<DownloadPresenter>() {
                 .subscribeUntilDestroy {
                     onStatusChange(it)
                 }
+
+        presenter.getDownloadProgressFlowable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeUntilDestroy {
+                    onUpdateDownloadedPages(it)
+                }
     }
 
     override fun initPresenterOnce() {
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.download_queue, menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        // Set start button visibility.
+        menu.findItem(R.id.start_queue).isVisible = !isRunning && !presenter.downloadQueue.isEmpty()
+
+        // Set pause button visibility.
+        menu.findItem(R.id.pause_queue).isVisible = isRunning
+
+        // Set clear button visibility.
+        menu.findItem(R.id.clear_queue).isVisible = !presenter.downloadQueue.isEmpty()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val context = applicationContext ?: return false
+        when (item.itemId) {
+            R.id.start_queue -> DownloadService.start(context)
+            R.id.pause_queue -> {
+                DownloadService.stop(context)
+                presenter.pauseDownloads()
+            }
+            R.id.clear_queue -> {
+                DownloadService.stop(context)
+                presenter.clearQueue()
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+        return true
+    }
+
+    override fun onDestroyView(view: View) {
+        for (disposable in progressDisposables.values) {
+            disposable.dispose()
+        }
+        progressDisposables.clear()
+        adapter = null
+
+        super.onDestroyView(view)
+    }
+
+    /**
+     * Dispose the given download from the progress disposables.
+     *
+     * @param download the download to dispose.
+     */
+    private fun disposeProgress(download: Download) {
+        progressDisposables.remove(download)?.dispose()
     }
 
     /**
@@ -94,7 +154,15 @@ class DownloadController : NucleusDaggerController<DownloadPresenter>() {
         when (download.status) {
             Download.DOWNLOADING -> {
                 observeProgress(download)
+                // Initial update of the downloaded pages
+                onUpdateDownloadedPages(download)
             }
+            Download.DOWNLOADED -> {
+                disposeProgress(download)
+                onUpdateProgress(download)
+                onUpdateDownloadedPages(download)
+            }
+            Download.ERROR -> disposeProgress(download)
         }
     }
 
@@ -138,6 +206,15 @@ class DownloadController : NucleusDaggerController<DownloadPresenter>() {
      */
     fun onUpdateProgress(download: Download) {
         getHolder(download)?.notifyProgress()
+    }
+
+    /**
+     * Called when a page of a download is downloaded.
+     *
+     * @param download the download whose page has been downloaded.
+     */
+    fun onUpdateDownloadedPages(download: Download) {
+        getHolder(download)?.notifyDownloadedPages()
     }
 
     /**

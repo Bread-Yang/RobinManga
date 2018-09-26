@@ -101,6 +101,13 @@ class ChaptersController : NucleusDaggerController<ChaptersPresenter>(),
         presenter.fetchChaptersFromSource()
     }
 
+    private fun downloadChapters(chapters: List<ChapterItem>) {
+        val view = view
+        // TODO
+//        destroyActionModeIfNeeded()
+        presenter.downloadChapters(chapters)
+    }
+
     fun onFetchChaptersDone() {
         swipeRefresh?.isRefreshing = false
     }
@@ -111,6 +118,12 @@ class ChaptersController : NucleusDaggerController<ChaptersPresenter>(),
     }
 
     override fun onMenuItemClick(position: Int, item: MenuItem) {
+        val chapter = adapter?.getItem(position) ?: return
+        val chapters = listOf(chapter)
+
+        when (item.itemId) {
+            R.id.action_download -> downloadChapters(chapters)
+        }
     }
 
     override fun onItemClick(view: View?, position: Int): Boolean {

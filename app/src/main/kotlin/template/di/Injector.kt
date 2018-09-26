@@ -30,11 +30,18 @@ class Injector(private val component: Any) {
     }
 
     fun isInjectable(injectableObject: Any): Boolean {
-        return try {
-            findInjectableMethod(injectableObject.javaClass) != null
-        } catch (exception: Exception) {
-            false
-        }
+//        return try {
+//            val method = findInjectableMethod(injectableObject.javaClass)
+//                    ?:
+//                    throw Exception("在ControllerComponent.kt里没有找到对应Presenter的inject方法")
+//            method != null
+//        } catch (exception: Exception) {
+//            false
+//        }
+        val method = findInjectableMethod(injectableObject.javaClass)
+                ?:
+                throw Exception("在ControllerComponent.kt里没有找到对应Presenter的inject方法")
+        return method != null
     }
 
     @Throws(NoSuchMethodException::class)

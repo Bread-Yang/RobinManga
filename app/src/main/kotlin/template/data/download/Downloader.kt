@@ -282,7 +282,7 @@ class Downloader(
 
             // Start downloader if needed
             if (autoStart) {
-//                DownloadService.start(this@Downloader.context)
+                DownloadService.start(this@Downloader.context)
             }
         }
     }

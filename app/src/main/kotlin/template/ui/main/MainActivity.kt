@@ -51,6 +51,9 @@ class MainActivity : NucleusDaggerActivity<MainPresenter>() {
             if (currentRoot?.tag()?.toIntOrNull() != id) {
                 when (id) {
                     // TODO
+                    R.id.nav_drawer_catalogues -> {
+                        router.pushController(RouterTransaction.with(BrowseCatalogueController()))
+                    }
                     R.id.nav_drawer_downloads -> {
                         router.pushController(DownloadController().withFadeTransaction())
                     }

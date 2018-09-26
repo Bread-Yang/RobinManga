@@ -113,6 +113,9 @@ dependencies {
     implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$version.rxbinding"
     implementation "com.jakewharton.rxbinding2:rxbinding-support-v4-kotlin:$version.rxbinding"
 
+    // RxNetwork
+    implementation 'com.github.pwittchen:reactivenetwork-rx2:3.0.0'
+
     // log
     implementation "com.jakewharton.timber:timber:$version.timber"
 

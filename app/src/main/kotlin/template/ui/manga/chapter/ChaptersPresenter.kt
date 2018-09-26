@@ -185,6 +185,15 @@ class ChaptersPresenter : BasePresenter<ChaptersController>() {
     }
 
     /**
+     * Downloads the given list of chapters with the manager.
+     *
+     * @param chapters the list of chapters to download.
+     */
+    fun downloadChapters(chapters: List<ChapterItem>) {
+        downloadManager.downloadChapters(manga, chapters)
+    }
+
+    /**
      * Converts a chapter from the database to an extended model, allowing to store new fields.
      */
     private fun Chapter.toModel(): ChapterItem {
