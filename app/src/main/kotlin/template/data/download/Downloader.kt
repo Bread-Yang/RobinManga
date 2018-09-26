@@ -13,12 +13,11 @@ import io.reactivex.subjects.BehaviorSubject
 import kotlinx.coroutines.experimental.async
 import okhttp3.Response
 import template.App
+import template.data.database.models.Chapter
+import template.data.database.models.Manga
 import template.data.download.model.Download
 import template.data.download.model.DownloadQueue
-import template.extensions.fetchAllImageUrlsFromPageList
-import template.extensions.launchNow
-import template.extensions.plusAssign
-import template.extensions.saveTo
+import template.extensions.*
 import template.source.SourceManager
 import template.source.model.Page
 import template.source.online.HttpSource
@@ -96,15 +95,92 @@ class Downloader(
      *
      * @return true if the downloader is started, false otherwise.
      */
-//    fun start(): Boolean {
-//        if (isRunning || queue.isEmpty()) {
-//            return false
-//        }
-//
-//        if (disposables.size() == 0) {
-//
-//        }
-//    }
+    fun start(): Boolean {
+        if (isRunning || queue.isEmpty()) {
+            return false
+        }
+
+        if (disposables.size() == 0) {
+            initializeDisposables()
+        }
+
+        val pending = queue.filter { it.status != Download.DOWNLOADED }
+        pending.forEach {
+            if (it.status != Download.QUEUE)
+                it.status = Download.QUEUE
+        }
+
+        downloadProcessor.onNext(pending)
+        return !pending.isEmpty()
+    }
+
+    /**
+     * Stops the downloader.
+     */
+    fun stop(reason: String? = null) {
+        destroyDisposables()
+        queue
+                .filter {
+                    it.status == Download.DOWNLOADING
+                }
+                .forEach {
+                    it.status = Download.ERROR
+                }
+
+        if (reason != null) {
+            // TODO
+//            notifier.onWarning(reason)
+        } else {
+            // TODO
+//            if (notifier.paused) {
+//                notifier.paused = false
+//                notifier.onDownloadPaused()
+//            } else if (notifier.isSingleChapter && !notifier.errorThrown) {
+//                notifier.isSingleChapter = false
+//            } else {
+//                notifier.dismiss()
+//            }
+        }
+    }
+
+    /**
+     * Pause the downloader
+     */
+    fun pause() {
+        destroyDisposables()
+        queue
+                .filter {
+                    it.status == Download.DOWNLOADING
+                }
+                .forEach {
+                    it.status = Download.QUEUE
+                }
+        // TODO
+//        notifier.paused = true
+    }
+
+    /**
+     * Removes everything from the queue.
+     *
+     * @param isNotification value that determines if status is set (needed for view updateds)
+     */
+    fun clearQueue(isNotification: Boolean = false) {
+        destroyDisposables()
+
+        // Needed to update the chapter view.
+        if (isNotification) {
+            queue
+                    .filter {
+                        it.status == Download.QUEUE
+                    }
+                    .forEach {
+                        it.status == Download.NOT_DOWNLOADED
+                    }
+
+            queue.clear()
+//            notifier.dismiss()
+        }
+    }
 
     /**
      * Prepares the disposables to start downloading.
@@ -137,6 +213,78 @@ class Downloader(
 //                    notifier.onError(error.message)
                 })
 
+    }
+
+    /**
+     * Destroys the downloader disposables.
+     */
+    private fun destroyDisposables() {
+        if (!isRunning) return
+        isRunning = false
+        runningSubject.onNext(false)
+
+        disposables.clear()
+    }
+
+    /**
+     * Creates a download object for every chapter and adds them to the downloads queue.
+     *
+     * @param manga the manga of the chapters to download.
+     * @param chapters the list of chapters to download.
+     * @param autoStart whether to start the downloader after enqueuing the chapters.
+     */
+    fun queueChapters(manga: Manga, chapters: List<Chapter>, autoStart: Boolean) = launchUI {
+        val source = sourceManager.get(manga.source) as? HttpSource ?: return@launchUI
+
+        // Called in background thread, the operation can be slow with SAF.
+        val chaptersWithoutDir = async {
+            val mangaDir = pathProvider.findMangaDir(manga, source)
+
+            chapters
+                    // Avoid downloading chapters with the same name.
+                    .distinctBy {
+                        it.name
+                    }
+                    // Filter out those already download.
+                    .filter {
+                        mangaDir?.findFile(pathProvider.getChapterDirName(it))  == null
+                    }
+                    // Add chapters to queue from the start.
+                    .sortedByDescending {
+                        it.source_order
+                    }
+        }
+
+        // Runs in mian thread (synchronization needed).
+        val chaptersToQueue = chaptersWithoutDir.await()
+                .filter { chapter ->
+                    // Filter out those already enqueued.
+                    queue.none {
+                        it.chapter.id == chapter.id
+                    }
+                }
+                // Create a download for each one.
+                .map {
+                    Download(source, manga, it)
+                }
+
+        if (chaptersToQueue.isNotEmpty()) {
+            queue.addAll(chaptersToQueue)
+
+            // Initialize queue size.
+            // TODO
+//            notifier.initialQueueSize = queue.size
+
+            if (isRunning) {
+                // Send the list of downloads to the downloader.
+                downloadProcessor.onNext(chaptersToQueue)
+            }
+
+            // Start downloader if needed
+            if (autoStart) {
+//                DownloadService.start(this@Downloader.context)
+            }
+        }
     }
 
     /**

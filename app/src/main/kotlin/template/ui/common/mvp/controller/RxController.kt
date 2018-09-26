@@ -5,6 +5,7 @@ import android.support.annotation.CallSuper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -72,13 +73,31 @@ abstract class RxController(bundle: Bundle? = null) : BaseController(bundle) {
         }
     }
 
+    fun <T> Flowable<T>.subscribeUntilDestroy(): Disposable {
+        return subscribe().also {
+            untilDestoryDisposibles.add(it)
+        }
+    }
+
     fun <T> Observable<T>.subscribeUntilDestroy(onNext: (T) -> Unit): Disposable {
         return subscribe(onNext).also {
             untilDestoryDisposibles.add(it)
         }
     }
 
+    fun <T> Flowable<T>.subscribeUntilDestroy(onNext: (T) -> Unit): Disposable {
+        return subscribe(onNext).also {
+            untilDestoryDisposibles.add(it)
+        }
+    }
+
     fun <T> Observable<T>.subscribeUntilDestroy(onNext: (T) -> Unit, onError: (Throwable) -> Unit): Disposable {
+        return subscribe(onNext, onError).also {
+            untilDestoryDisposibles.add(it)
+        }
+    }
+
+    fun <T> Flowable<T>.subscribeUntilDestroy(onNext: (T) -> Unit, onError: (Throwable) -> Unit): Disposable {
         return subscribe(onNext, onError).also {
             untilDestoryDisposibles.add(it)
         }

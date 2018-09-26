@@ -39,6 +39,9 @@ class Page(
             statusProcessor?.onNext(value)
         }
 
+    /**
+     * 图片下载进度，取值范围 : 0～100
+     */
     @Transient
     @Volatile
     var progress: Int = 0
