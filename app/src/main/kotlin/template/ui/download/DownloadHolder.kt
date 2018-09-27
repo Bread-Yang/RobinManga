@@ -39,7 +39,7 @@ class DownloadHolder(private val view: View) : BaseViewHolder(view) {
             view.tvDownloadProgress.text = ""
         } else {
             view.pbDownloadProgress.max = pages.size * 100
-            notifyProgress()
+            notifyDownloadProgress()
             notifyDownloadedPages()
         }
     }
@@ -47,7 +47,7 @@ class DownloadHolder(private val view: View) : BaseViewHolder(view) {
     /**
      * Updates the progress bar of the download.
      */
-    fun notifyProgress() {
+    fun notifyDownloadProgress() {
         val pages = download.pages ?: return
         if (view.pbDownloadProgress.max == 1) {
             view.pbDownloadProgress.max = pages.size * 100

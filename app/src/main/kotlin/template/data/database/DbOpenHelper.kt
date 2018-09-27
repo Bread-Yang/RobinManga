@@ -6,9 +6,6 @@ import android.database.sqlite.SQLiteOpenHelper
 import template.data.database.tables.ChapterTable
 import template.data.database.tables.MangaTable
 
-/**
- * Created by Robin Yeung on 8/26/18.
- */
 class DbOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {

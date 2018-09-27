@@ -30,23 +30,23 @@ class DownloadPresenter : BasePresenter<DownloadController>() {
         super.onCreate(savedState)
 
         downloadQueue
-                .getUpdatedFlowable()
+                .getDownloadListUpdatedFlowable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .map {
                     ArrayList(it)
                 }
                 .subscribeLatestCache { downloadController, arrayList ->
-                    downloadController.onNextDownloads(arrayList)
+                    downloadController.onDownloadListUpdate(arrayList)
                 }
     }
 
-    fun getDownloadStatusFlowable(): Flowable<Download> {
-        return downloadQueue.getStatusFlowable()
+    fun getSingleDownloadStatusFlowable(): Flowable<Download> {
+        return downloadQueue.getSingleDownloadStatusFlowable()
                 .startWith(downloadQueue.getActiveDownloads())
     }
 
     fun getDownloadProgressFlowable(): Flowable<Download> {
-        return downloadQueue.getProgressFlowable()
+        return downloadQueue.getDownloadProgressFlowable()
     }
 
     /**

@@ -1,5 +1,6 @@
 package template.data.download
 
+import android.app.Notification
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -7,6 +8,7 @@ import android.net.NetworkInfo
 import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
+import android.support.v4.app.NotificationCompat
 import com.github.pwittchen.reactivenetwork.library.rx2.Connectivity
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,6 +17,7 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import template.App
 import template.R
+import template.data.notification.Notifications
 import template.extensions.connectivityManager
 import template.extensions.plusAssign
 import template.extensions.powerManager
@@ -71,7 +74,8 @@ class DownloadService : Service() {
 
     /**
      * Wake lock to prevent the device to enter sleep mode.
-     * PowerManager.PARTIIAL_WAKE_LOCK是一个标志位，标志位是用来控制获取的WakeLock对象的类型，主要控制CPU工作
+     *
+     * PowerManager.PARTIAL_WAKE_LOCK是一个标志位，标志位是用来控制获取的WakeLock对象的类型，主要控制CPU工作
      * 时屏幕是否需要亮着以及键盘灯需要亮着，标志位说明如下 :
      *
      *      levelAndFlags           CPU是否运行             屏幕是否亮着          	键盘灯是否亮着
@@ -105,6 +109,24 @@ class DownloadService : Service() {
     }
 
     /**
+     * Called when the service is destroyed.
+     */
+    override fun onDestroy() {
+        runningSubject.onNext(false)
+        disposables.dispose()
+        downloadManager.stopDownloads()
+        wakeLock.releaseIfNeeded()
+        super.onDestroy()
+    }
+
+    /**
+     * Not used.
+     */
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        return Service.START_NOT_STICKY
+    }
+
+    /**
      * Not used.
      */
     override fun onBind(intent: Intent): IBinder? {
@@ -128,6 +150,11 @@ class DownloadService : Service() {
                 })
     }
 
+    /**
+     * Called when the network state changes.
+     *
+     * @param connectivity the new network state.
+     */
     private fun onNetworkStateChanged(connectivity: Connectivity) {
         when (connectivity.state()) {
             NetworkInfo.State.CONNECTED -> {
@@ -174,5 +201,11 @@ class DownloadService : Service() {
     fun PowerManager.WakeLock.acquireIfNeeded() {
         if (!isHeld)
             acquire()
+    }
+
+    private fun getPlaceholderNotification(): Notification {
+        return NotificationCompat.Builder(this, Notifications.CHANNEL_DOWNLOADER)
+                .setContentTitle(getString(R.string.download_notifier_downloader_title))
+                .build()
     }
 }

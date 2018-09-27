@@ -9,7 +9,7 @@ import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
-import template.network.ProgressListener
+import template.network.DownloadProgressListener
 import template.network.ProgressResponseBody
 
 /**
@@ -44,13 +44,13 @@ fun Call.asFlowableSuccess() : Flowable<Response> {
     }
 }
 
-fun OkHttpClient.newCallWithProgress(request: Request, listener: ProgressListener): Call {
+fun OkHttpClient.newCallWithProgress(request: Request, downloadProgressListener: DownloadProgressListener): Call {
     val progressClient = newBuilder()
             .cache(null)
             .addNetworkInterceptor { chain ->
                 val originalResponse = chain.proceed(chain.request())
                 originalResponse.newBuilder()
-                        .body(ProgressResponseBody(originalResponse.body()!!, listener))
+                        .body(ProgressResponseBody(originalResponse.body()!!, downloadProgressListener))
                         .build()
             }
             .build()

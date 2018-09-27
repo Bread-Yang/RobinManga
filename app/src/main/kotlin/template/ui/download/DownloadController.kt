@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit
  */
 @Layout(R.layout.download_controller)
 @RequiresPresenter(DownloadPresenter::class)
-class DownloadController : NucleusDaggerController<DownloadPresenter>() {
+open class DownloadController : NucleusDaggerController<DownloadPresenter>() {
 
     /**
      * Adapter containing th active downloads.
@@ -33,7 +33,7 @@ class DownloadController : NucleusDaggerController<DownloadPresenter>() {
     /**
      * Map of disposables for active downloads.
      */
-    private val progressDisposables by lazy {
+    private val progressDisposablesMap by lazy {
         HashMap<Download, Disposable>()
     }
 
@@ -48,7 +48,7 @@ class DownloadController : NucleusDaggerController<DownloadPresenter>() {
 
     override fun onViewCreated(view: View) {
         // Check if download queue is empty and update information accordingly.
-        setInformationView()
+        setEmptyInformationView()
 
         // Initialize adapter.
         adapter = DownloadAdapter()
@@ -65,16 +65,16 @@ class DownloadController : NucleusDaggerController<DownloadPresenter>() {
                     onQueueStatusChange(it)
                 }
 
-        presenter.getDownloadStatusFlowable()
+        presenter.getSingleDownloadStatusFlowable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeUntilDestroy {
-                    onStatusChange(it)
+                    onSingleDownloadStatusChange(it)
                 }
 
         presenter.getDownloadProgressFlowable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeUntilDestroy {
-                    onUpdateDownloadedPages(it)
+                    onUpdateAdapterItemDownloadedPages(it)
                 }
     }
 
@@ -114,10 +114,10 @@ class DownloadController : NucleusDaggerController<DownloadPresenter>() {
     }
 
     override fun onDestroyView(view: View) {
-        for (disposable in progressDisposables.values) {
+        for (disposable in progressDisposablesMap.values) {
             disposable.dispose()
         }
-        progressDisposables.clear()
+        progressDisposablesMap.clear()
         adapter = null
 
         super.onDestroyView(view)
@@ -129,7 +129,7 @@ class DownloadController : NucleusDaggerController<DownloadPresenter>() {
      * @param download the download to dispose.
      */
     private fun disposeProgress(download: Download) {
-        progressDisposables.remove(download)?.dispose()
+        progressDisposablesMap.remove(download)?.dispose()
     }
 
     /**
@@ -142,7 +142,7 @@ class DownloadController : NucleusDaggerController<DownloadPresenter>() {
         activity?.invalidateOptionsMenu()
 
         // Check if download queue is empty and update information accordingly.
-        setInformationView()
+        setEmptyInformationView()
     }
 
     /**
@@ -150,17 +150,17 @@ class DownloadController : NucleusDaggerController<DownloadPresenter>() {
      *
      * @param download the download whose status has changed.
      */
-    private fun onStatusChange(download: Download) {
+    private fun onSingleDownloadStatusChange(download: Download) {
         when (download.status) {
             Download.DOWNLOADING -> {
-                observeProgress(download)
+                observeSingleDownloadProgress(download)
                 // Initial update of the downloaded pages
-                onUpdateDownloadedPages(download)
+                onUpdateAdapterItemDownloadedPages(download)
             }
             Download.DOWNLOADED -> {
                 disposeProgress(download)
-                onUpdateProgress(download)
-                onUpdateDownloadedPages(download)
+                onUpdateAdapterItemDownloadProgress(download)
+                onUpdateAdapterItemDownloadedPages(download)
             }
             Download.ERROR -> disposeProgress(download)
         }
@@ -171,13 +171,13 @@ class DownloadController : NucleusDaggerController<DownloadPresenter>() {
      *
      * @param download the download to observe its progress.
      */
-    private fun observeProgress(download: Download) {
+    private fun observeSingleDownloadProgress(download: Download) {
         val disposable = Flowable.interval(50, TimeUnit.MILLISECONDS)
                 // Get the sum of percentages for all the pages.
                 .flatMap {
                     Flowable.fromIterable(download.pages)
                             .map {
-                                it.progress
+                                it.imageDownloadProgress
                             }
                             .reduce { x, y -> x + y }
                             .toFlowable()
@@ -189,14 +189,14 @@ class DownloadController : NucleusDaggerController<DownloadPresenter>() {
                     // Update the view only if the progress has changed.
                     if (download.totalProgress != progress) {
                         download.totalProgress = progress
-                        onUpdateProgress(download)
+                        onUpdateAdapterItemDownloadProgress(download)
                     }
                 }
 
         // Avoid leaking disposables
-        progressDisposables.remove(download)?.dispose()
+        progressDisposablesMap.remove(download)?.dispose()
 
-        progressDisposables.put(download, disposable)
+        progressDisposablesMap.put(download, disposable)
     }
 
     /**
@@ -204,8 +204,8 @@ class DownloadController : NucleusDaggerController<DownloadPresenter>() {
      *
      * @param download the download whose progress has changed.
      */
-    fun onUpdateProgress(download: Download) {
-        getHolder(download)?.notifyProgress()
+    fun onUpdateAdapterItemDownloadProgress(download: Download) {
+        getHolder(download)?.notifyDownloadProgress()
     }
 
     /**
@@ -213,7 +213,7 @@ class DownloadController : NucleusDaggerController<DownloadPresenter>() {
      *
      * @param download the download whose page has been downloaded.
      */
-    fun onUpdateDownloadedPages(download: Download) {
+    fun onUpdateAdapterItemDownloadedPages(download: Download) {
         getHolder(download)?.notifyDownloadedPages()
     }
 
@@ -230,7 +230,7 @@ class DownloadController : NucleusDaggerController<DownloadPresenter>() {
     /**
      * Set information view when queue is empty
      */
-    private fun setInformationView() {
+    private fun setEmptyInformationView() {
         if (presenter.downloadQueue.isEmpty()) {
             empty_view?.show(R.drawable.ic_file_download_black_128dp, R.string.information_no_downloads)
         } else {
@@ -243,9 +243,9 @@ class DownloadController : NucleusDaggerController<DownloadPresenter>() {
      *
      * @param downloads the downloads from the queue.
      */
-    fun onNextDownloads(downloads: List<Download>) {
+    fun onDownloadListUpdate(downloads: List<Download>) {
         activity?.invalidateOptionsMenu()
-        setInformationView()
+        setEmptyInformationView()
         adapter?.setItems(downloads)
     }
 }

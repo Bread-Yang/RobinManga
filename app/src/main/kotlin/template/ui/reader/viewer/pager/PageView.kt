@@ -111,10 +111,10 @@ class PageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     private fun observeStatus() {
         statusDisposable?.dispose()
 
-        val statusSubject = PublishProcessor.create<Int>().toSerialized()
-        page.setStatusProcessor(statusSubject)
+        val statusProcessor = PublishProcessor.create<Int>().toSerialized()
+        page.setStatusProcessor(statusProcessor)
 
-        statusDisposable = statusSubject.startWith(page.status)
+        statusDisposable = statusProcessor.startWith(page.status)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     processStatus(it)
@@ -122,14 +122,14 @@ class PageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     }
 
     /**
-     * Observes the progress of the page and updates view.
+     * Observes the image download progress of the page and updates view.
      */
-    private fun observeProgress() {
+    private fun observeImageDownloadProgress() {
         progressDisposable?.dispose()
 
         progressDisposable = Flowable.interval(100, TimeUnit.MILLISECONDS)
                 .map {
-                    page.progress
+                    page.imageDownloadProgress
                 }
                 .distinctUntilChanged()
                 .onBackpressureLatest()
@@ -153,7 +153,7 @@ class PageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             Page.QUEUE -> setQueued()
             Page.LOAD_PAGE -> setLoading()
             Page.DOWNLOAD_IMAGE -> {
-                observeProgress()
+                observeImageDownloadProgress()
                 setDownloading()
             }
             Page.READY -> {

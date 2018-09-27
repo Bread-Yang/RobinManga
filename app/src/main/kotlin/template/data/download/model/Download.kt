@@ -21,10 +21,16 @@ class Download(val source: HttpSource, val manga: Manga, val chapter: Chapter) {
 
     var pages: List<Page>? = null
 
+    /**
+     * Download当前的下载进度，取值 <= pages.size * 100
+     */
     @Volatile
     @Transient
     var totalProgress: Int = 0
 
+    /**
+     * 已下载的图片数，取值 <= pages.size
+     */
     @Volatile
     @Transient
     var downloadedImages: Int = 0

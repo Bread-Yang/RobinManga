@@ -1,5 +1,6 @@
 package template.extensions
 
+import android.app.NotificationManager
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.PowerManager
@@ -44,5 +45,14 @@ fun Context.getResourceColor(@StringRes resource: Int): Int {
 val Context.powerManager: PowerManager
     get() = getSystemService(Context.POWER_SERVICE) as PowerManager
 
+/**
+ * Property to get the connectivity manager from the context.
+ */
 val Context.connectivityManager: ConnectivityManager
     get() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+/**
+ * Property to get the notification manager from the context.
+ */
+val Context.notificationManager: NotificationManager
+    get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

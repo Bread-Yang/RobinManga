@@ -15,18 +15,25 @@ class DownloadQueue(
         private val queue: MutableList<Download> = CopyOnWriteArrayList<Download>())
     : List<Download> by queue {
 
-    private val statusProcessor = PublishProcessor.create<Download>()
+    /**
+     * 单个[Download.status]状态变更时，用来通知adapter更新item界面[template.ui.download.DownloadController.onSingleDownloadStatusChange]
+     */
+    private val singleDownloadStatusProcessor = PublishProcessor.create<Download>()
 
-    private val updatedProcessor = PublishProcessor.create<Unit>()
+    /**
+     * 队列中新增download或者删除download时，用来通知UI更新adapter的download List数据(传this过去 this by List<Download>)
+     * [template.ui.download.DownloadController.onDownloadListUpdate]
+     */
+    private val downloadListUpdatedProcessor = PublishProcessor.create<Unit>()
 
     fun addAll(downloads: List<Download>) {
         downloads.forEach {
-            it.setStatusProcessor(statusProcessor)
+            it.setStatusProcessor(singleDownloadStatusProcessor)
             it.status = Download.QUEUE
         }
         queue.addAll(downloads)
         store.addAll(downloads)
-        updatedProcessor.onNext(Unit)
+        downloadListUpdatedProcessor.onNext(Unit)
     }
 
     fun remove(download: Download) {
@@ -34,7 +41,7 @@ class DownloadQueue(
         store.remove(download)
         download.setStatusProcessor(null)
         if (removed) {
-            updatedProcessor.onNext(Unit)
+            downloadListUpdatedProcessor.onNext(Unit)
         }
     }
 
@@ -52,7 +59,7 @@ class DownloadQueue(
         }
         queue.clear()
         store.clear()
-        updatedProcessor.onNext(Unit)
+        downloadListUpdatedProcessor.onNext(Unit)
     }
 
     fun getActiveDownloads(): Flowable<Download> =
@@ -61,21 +68,25 @@ class DownloadQueue(
                         it.status == Download.DOWNLOADING
                     }
 
-    fun getStatusFlowable(): Flowable<Download> = statusProcessor.onBackpressureBuffer()
+    fun getSingleDownloadStatusFlowable(): Flowable<Download> = singleDownloadStatusProcessor.onBackpressureBuffer()
 
-    fun getUpdatedFlowable(): Flowable<List<Download>> = updatedProcessor.onBackpressureBuffer()
+    fun getDownloadListUpdatedFlowable(): Flowable<List<Download>> = downloadListUpdatedProcessor.onBackpressureBuffer()
             .startWith(Unit)
             .map {
                 this
             }
 
-    fun getProgressFlowable(): Flowable<Download> {
-        return statusProcessor.onBackpressureBuffer()
+    /**
+     * 当Download里面的Pages任何一个page status发生变化时(如 状态DOWNLOAD_IMAGE -> 状态READY),
+     * singleDownloadStatusProcessor就会通知订阅它的observable
+     */
+    fun getDownloadProgressFlowable(): Flowable<Download> {
+        return singleDownloadStatusProcessor.onBackpressureBuffer()
                 .startWith(getActiveDownloads())
                 .flatMap { download ->
                     if (download.status == Download.DOWNLOADING) {
                         val pageStatusProcessor = PublishProcessor.create<Int>()
-                        setPagesProcessor(download.pages, pageStatusProcessor)
+                        setPagesStatusProcessor(download.pages, pageStatusProcessor)
                         return@flatMap pageStatusProcessor
                                 .onBackpressureBuffer()
                                 .filter {
@@ -85,7 +96,7 @@ class DownloadQueue(
                                     download
                                 }
                     } else if (download.status == Download.DOWNLOADED || download.status == Download.ERROR) {
-                        setPagesProcessor(download.pages, null)
+                        setPagesStatusProcessor(download.pages, null)
                     }
                     Flowable.just(download)
                 }
@@ -94,7 +105,7 @@ class DownloadQueue(
                 }
     }
 
-    private fun setPagesProcessor(pages: List<Page>?, processor: PublishProcessor<Int>?) {
+    private fun setPagesStatusProcessor(pages: List<Page>?, processor: PublishProcessor<Int>?) {
         if (pages != null) {
             for (page in pages) {
                 page.setStatusProcessor(processor)

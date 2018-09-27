@@ -65,7 +65,7 @@ class Downloader(
     private val disposables = CompositeDisposable()
 
     /**
-     * Subject to send a list fo downloads to the downloader.
+     * Processor to send a list fo downloads to the downloader.
      */
     private val downloadProcessor = PublishProcessor.create<List<Download>>()
 
@@ -194,6 +194,7 @@ class Downloader(
 
         disposables.clear()
 
+        // concatMapIterable : https://medium.com/@ubuntudroid/rxjava-flattening-a-stream-of-iterables-ea26f593ba07
         disposables += downloadProcessor
                 .concatMapIterable {
                     it
@@ -341,6 +342,7 @@ class Downloader(
                     // TODO
 //                    notifier.onProgressChange(download)
                 }
+                // https://raw.github.com/wiki/ReactiveX/RxJava/images/rx-operators/toList.2.png
                 .toList()
                 .map {
                     download
@@ -396,7 +398,7 @@ class Downloader(
                 // when the image is ready, set image path, progress (just in case) and status
                 .doOnNext { file ->
                     page.uri = file.uri
-                    page.progress = 100
+                    page.imageDownloadProgress = 100
                     download.downloadedImages++
                     page.status = Page.READY
                 }
@@ -405,7 +407,7 @@ class Downloader(
                 }
                 // Mark this page as error and allow to download the remaining
                 .onErrorReturn {
-                    page.progress = 0
+                    page.imageDownloadProgress = 0
                     page.status = Page.ERROR
                     page
                 }
@@ -421,7 +423,7 @@ class Downloader(
      */
     private fun downloadImage(page: Page, source: HttpSource, tmpDir: UniFile, filename: String): Observable<UniFile> {
         page.status = Page.DOWNLOAD_IMAGE
-        page.progress = 0
+        page.imageDownloadProgress = 0
         return source.fetchImage(page)
                 .map { response ->
                     val file = tmpDir.createFile("$filename.tmp")

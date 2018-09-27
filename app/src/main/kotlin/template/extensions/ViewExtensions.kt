@@ -7,10 +7,6 @@ import android.view.View
 import android.widget.TextView
 
 /**
- * Created by Robin Yeung on 8/22/18.
- */
-
-/**
  * Returns coordinates of view.
  * Used for animation
  *
