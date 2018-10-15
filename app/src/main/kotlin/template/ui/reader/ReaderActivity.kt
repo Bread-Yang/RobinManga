@@ -12,13 +12,13 @@ import kotlinx.android.synthetic.main.reader_activity.*
 import me.zhanghai.android.systemuihelper.SystemUiHelper
 import nucleus5.factory.RequiresPresenter
 import template.R
+import template.annotation.Layout
 import template.data.database.models.Chapter
 import template.data.database.models.Manga
 import template.extensions.getOrDefault
 import template.extensions.gone
 import template.extensions.toast
 import template.source.model.Page
-import template.ui.common.annotation.Layout
 import template.ui.common.mvp.activity.NucleusDaggerActivity
 import template.ui.reader.viewer.base.BaseReader
 import template.ui.reader.viewer.pager.horizontal.LeftToRightReader

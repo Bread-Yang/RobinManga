@@ -15,7 +15,7 @@ import nucleus5.factory.RequiresPresenter
 import template.R
 import template.data.database.models.Chapter
 import template.extensions.toast
-import template.ui.common.annotation.Layout
+import template.annotation.Layout
 import template.ui.common.mvp.controller.NucleusDaggerController
 import template.ui.manga.MangaController
 import template.ui.reader.ReaderActivity

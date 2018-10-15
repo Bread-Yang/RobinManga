@@ -41,7 +41,7 @@ import template.source.model.SManga
 import template.source.online.HttpSource
 import template.ui.main.MainActivity
 import template.ui.base.controller.DialogController
-import template.ui.common.annotation.Layout
+import template.annotation.Layout
 import template.ui.common.mvp.controller.NucleusDaggerController
 import template.ui.manga.MangaController
 import java.text.DateFormat

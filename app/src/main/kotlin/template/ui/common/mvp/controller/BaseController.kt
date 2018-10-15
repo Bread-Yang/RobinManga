@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.bluelinelabs.conductor.RestoreViewOnCreateController
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.*
-import template.ui.common.annotation.Layout
+import template.annotation.Layout
 
 /**
  * Created by Robin Yeung on 8/22/18.

@@ -7,7 +7,7 @@ ext {
 
     android = [
             applicationId: 'template',
-            buildTools   : '28.0.2',
+            buildTools   : '28.0.3',
             compileSdk   : 26,
             minSdk       : 17,
             targetSdk    : 26

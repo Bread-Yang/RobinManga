@@ -11,9 +11,9 @@ import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.download_controller.*
 import nucleus5.factory.RequiresPresenter
 import template.R
+import template.annotation.Layout
 import template.data.download.DownloadService
 import template.data.download.model.Download
-import template.ui.common.annotation.Layout
 import template.ui.common.mvp.controller.NucleusDaggerController
 import java.util.concurrent.TimeUnit
 
@@ -23,10 +23,10 @@ import java.util.concurrent.TimeUnit
  */
 @Layout(R.layout.download_controller)
 @RequiresPresenter(DownloadPresenter::class)
-open class DownloadController : NucleusDaggerController<DownloadPresenter>() {
+class DownloadController : NucleusDaggerController<DownloadPresenter>() {
 
     /**
-     * Adapter containing th active downloads.
+     * Adapter containing the active downloads.
      */
     private var adapter: DownloadAdapter? = null
 

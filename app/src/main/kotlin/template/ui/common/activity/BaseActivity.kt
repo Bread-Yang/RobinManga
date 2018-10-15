@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import com.bluelinelabs.conductor.Router
 import template.di.Injector
 import template.di.component.ActivityComponent
-import template.ui.common.annotation.Layout
+import template.annotation.Layout
 
 abstract class BaseActivity : AppCompatActivity() {
 

@@ -14,5 +14,7 @@ class MainPresenter : BasePresenter<MainActivity>() {
         super.onCreate(savedState)
     }
 
-
+    fun testUnitTest() {
+        view?.callByPresenter()
+    }
 }

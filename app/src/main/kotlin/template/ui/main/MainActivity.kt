@@ -10,12 +10,14 @@ import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.main_activity.*
 import nucleus5.factory.RequiresPresenter
 import template.R
+import template.annotation.Layout
+import template.annotation.Mockable
 import template.extensions.withFadeTransaction
 import template.ui.catalogue.browse.BrowseCatalogueController
-import template.ui.common.annotation.Layout
 import template.ui.common.mvp.activity.NucleusDaggerActivity
 import template.ui.download.DownloadController
 
+@Mockable
 @Layout(R.layout.main_activity)
 @RequiresPresenter(MainPresenter::class)
 class MainActivity : NucleusDaggerActivity<MainPresenter>() {
@@ -76,12 +78,19 @@ class MainActivity : NucleusDaggerActivity<MainPresenter>() {
         }
     }
 
+    override fun onBackPressed() {
+        val backstackSize = router.backstackSize
+        if (drawerLayout.isDrawerOpen(GravityCompat.START) || drawerLayout.isDrawerOpen(GravityCompat.END)) {
+            drawerLayout.closeDrawers()
+        } else if (backstackSize == 1 || !router.handleBack()) {
+            super.onBackPressed()
+        }
+    }
+
     override fun initPresenterOnce() {
     }
 
-    override fun onBackPressed() {
-        if (!router.handleBack()) {
-            super.onBackPressed()
-        }
+    fun callByPresenter() {
+
     }
 }

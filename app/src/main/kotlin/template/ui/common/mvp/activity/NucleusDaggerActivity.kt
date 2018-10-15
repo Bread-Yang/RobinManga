@@ -7,10 +7,10 @@ import nucleus5.factory.PresenterFactory
 import nucleus5.factory.ReflectionPresenterFactory
 import nucleus5.presenter.RxPresenter
 import nucleus5.view.ViewWithPresenter
+import template.annotation.Layout
 import template.di.component.ActivityComponent
 import template.di.module.ActivityModule
 import template.extensions.app
-import template.ui.common.annotation.Layout
 import template.ui.common.mvp.DaggerPresenterFactory
 import template.ui.common.mvp.NucleusConductorDelegate
 import template.ui.common.mvp.NucleusDaggerView

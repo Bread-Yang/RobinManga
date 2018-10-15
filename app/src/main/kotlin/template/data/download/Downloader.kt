@@ -54,10 +54,9 @@ class Downloader(
     /**
      * Notifier for the downloader state and progress.
      */
-    // TODO
-//    private val notifier by lazy {
-//        DownloadNotifier(context)
-//    }
+    private val notifier by lazy {
+        DownloadNotifier(context)
+    }
 
     /**
      * Downloader disposables.
@@ -502,7 +501,11 @@ class Downloader(
             queue.remove(download)
         }
         if (areAllDownloadsFinished()) {
-
+            // TODO
+//            if (notifier.isSingleChapter && !notifier.errorThrown) {
+//                notifier.onDownloadCompleted(download, queue)
+//            }
+            DownloadService.stop(context)
         }
     }
 

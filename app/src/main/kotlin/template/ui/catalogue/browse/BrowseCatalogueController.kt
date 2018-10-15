@@ -15,7 +15,7 @@ import template.extensions.gone
 import template.extensions.toast
 import template.extensions.visible
 import template.extensions.withFadeTransaction
-import template.ui.common.annotation.Layout
+import template.annotation.Layout
 import template.ui.common.mvp.controller.NucleusDaggerController
 import template.ui.manga.MangaController
 import timber.log.Timber

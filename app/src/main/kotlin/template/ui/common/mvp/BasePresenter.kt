@@ -33,6 +33,14 @@ open class BasePresenter<View> : RxPresenter<View>() {
     fun <T> Observable<T>.subscribeLatestCache(onError: ((View, Throwable) -> Unit)? = null, onNext: (View, T) -> Unit) =
             compose(deliverLatestCache<T>()).subscribe(split(onNext, onError)).apply { add(this) }
 
+    /**
+     * Subscribes an flowable with [DeliverLatestCacheFlowable] and adds it to the presenter's lifecycle
+     * disposeble list.
+     *
+     * @param onNext function to execute when the flowable emits an item.
+     * @param onError function to execute when the flowable throws an error.
+     *
+     */
     fun <T> Flowable<T>.subscribeLatestCache(onError: ((View, Throwable) -> Unit)? = null, onNext: (View, T) -> Unit) =
             compose(DeliverLatestCacheFlowable<View, T>(view().toFlowable(BackpressureStrategy.BUFFER)))
                     .subscribe(split(onNext, onError))

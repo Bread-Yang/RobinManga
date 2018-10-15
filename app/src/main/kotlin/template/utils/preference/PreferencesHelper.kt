@@ -12,9 +12,9 @@ import java.io.File
 /**
  * Created by Robin Yeung on 8/22/18.
  */
-class PreferencesHelper(val context: Context) {
+open class PreferencesHelper(val context: Context) {
 
-    private val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        private val prefs = PreferenceManager.getDefaultSharedPreferences(context)
     private val rxPrefs = RxSharedPreferences.create(prefs)
 
     private val defaultDownloadsDir = Uri.fromFile(

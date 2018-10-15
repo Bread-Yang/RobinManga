@@ -1,4 +1,4 @@
-package template.ui.common.annotation
+package template.annotation
 
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)

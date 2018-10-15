@@ -2,6 +2,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+/**
+ * for Unit Test. [template.annotation.Mockable]
+ */
+apply plugin: 'kotlin-allopen'
 
 android {
     def android = rootProject.extensions.ext.android
@@ -52,11 +56,19 @@ androidExtensions {
     experimental = true
 }
 
+/**
+ * for Unit Test. [template.annotation.Mockable]
+ */
+allOpen {
+    annotation('template.annotation.Mockable')
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     def version = rootProject.extensions.ext.version
 
     testImplementation "junit:junit:$version.junit"
+    testImplementation "org.mockito:mockito-core:2.+"
     androidTestImplementation("com.android.support.test.espresso:espresso-core:$version.espresso", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

@@ -16,12 +16,12 @@ import kotlinx.android.synthetic.main.manga_controller.*
 import nucleus5.factory.RequiresPresenter
 import template.App
 import template.R
+import template.annotation.Layout
 import template.data.database.models.Manga
 import template.extensions.requestPermissionsSafe
 import template.extensions.toast
 import template.source.Source
 import template.ui.base.controller.TabbedController
-import template.ui.common.annotation.Layout
 import template.ui.common.mvp.controller.NucleusDaggerController
 import template.ui.manga.chapter.ChaptersController
 import template.ui.manga.info.MangaInfoController
