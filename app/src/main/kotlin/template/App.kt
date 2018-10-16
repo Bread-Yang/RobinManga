@@ -8,6 +8,7 @@ import template.data.cache.ChapterCache
 import template.data.cache.CoverCache
 import template.data.database.DatabaseHelper
 import template.data.download.DownloadManager
+import template.data.notification.Notifications
 import template.di.component.ApplicationComponent
 import template.di.component.DaggerApplicationComponent
 import template.di.module.ApplicationModule
@@ -57,8 +58,12 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
         app = this
         component.inject(this)
+
+        setupNotificationChannels()
+
         timber()
     }
 
@@ -82,5 +87,9 @@ class App : Application() {
                 }
             })
         }
+    }
+
+    protected open fun setupNotificationChannels() {
+        Notifications.createChannel(this)
     }
 }

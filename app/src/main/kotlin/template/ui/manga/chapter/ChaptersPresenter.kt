@@ -11,6 +11,7 @@ import template.data.database.DatabaseHelper
 import template.data.database.models.Chapter
 import template.data.database.models.Manga
 import template.data.download.DownloadManager
+import template.data.download.model.Download
 import template.extensions.isNullOrDisposed
 import template.source.Source
 import template.ui.common.mvp.BasePresenter
@@ -168,20 +169,38 @@ class ChaptersPresenter : BasePresenter<ChaptersController>() {
             remove(it)
         }
 
-        // TODO
-//        observeDownloadsDisposable = downloadManager.queue.getStatusObservable()
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .filter { download ->
-//                    download.manga.id == manga.id
-//                }
-//                .doOnNext {
-//                    onDownloadStatusChange(it)
-//                }
-//                .subscribeLatestCache(
-//                        ChaptersController::onChapterStatusChange
-//                ) { _, error ->
-//                    Timber.e(error)
-//                }
+        observeDownloadsDisposable = downloadManager.queue.getSingleDownloadStatusFlowable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .filter { download ->
+                    download.manga.id == manga.id
+                }
+                .doOnNext {
+                    onDownloadStatusChange(it)
+                }
+                .subscribeLatestCache { view, download ->
+                    view.onChapterStatusChange(download)
+                }
+    }
+
+    /**
+     * Called when a download for the active manga changes status.
+     * @param download the download whose status changed.
+     */
+    private fun onDownloadStatusChange(download: Download) {
+        // Assign the download to the model object.
+        if (download.status == Download.QUEUE) {
+            chapterItems.find {
+                it.id == download.chapter.id
+            }?.let {
+                if (it.download == null) {
+                    it.download = download
+                }
+            }
+        }
+
+        // Force UI update if downloaded filter active and download finished.
+        if (onlyDownloaded() && download.status == Download.DOWNLOADED)
+            refreshChapters()
     }
 
     /**
@@ -191,6 +210,13 @@ class ChaptersPresenter : BasePresenter<ChaptersController>() {
      */
     fun downloadChapters(chapters: List<ChapterItem>) {
         downloadManager.downloadChapters(manga, chapters)
+    }
+
+    /**
+     * Updates the UI after applying the filters.
+     */
+    private fun refreshChapters() {
+        chapterItemsSubject.onNext(chapterItems)
     }
 
     /**

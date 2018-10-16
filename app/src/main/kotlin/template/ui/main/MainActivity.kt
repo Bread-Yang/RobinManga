@@ -1,5 +1,6 @@
 package template.ui.main
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.view.GravityCompat
@@ -75,6 +76,30 @@ class MainActivity : NucleusDaggerActivity<MainPresenter>() {
             } else {
                 onBackPressed()
             }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        if (!handleIntentAction(intent)) {
+            super.onNewIntent(intent)
+        }
+    }
+
+    private fun handleIntentAction(intent: Intent): Boolean {
+        when (intent.action) {
+            SHORTCUT_DOWNLOADS -> {
+                if (router.backstack.none { it.controller() is DownloadController }) {
+                    setSelectedDrawerItem(R.id.nav_drawer_downloads)
+                }
+            }
+        }
+        return true
+    }
+
+    private fun setSelectedDrawerItem(itemId: Int) {
+        if (!isFinishing) {
+            navigationView.setCheckedItem(itemId)
+            navigationView.menu.performIdentifierAction(itemId, 0)
         }
     }
 

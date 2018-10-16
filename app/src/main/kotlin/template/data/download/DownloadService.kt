@@ -101,7 +101,7 @@ class DownloadService : Service() {
      */
     override fun onCreate() {
         super.onCreate()
-//        startForeground(Notifications.ID_DOWNLOAD_CHAPTER, getPlaceholderNotification())
+        startForeground(Notifications.ID_DOWNLOAD_CHAPTER, getPlaceholderNotification())
         runningSubject.onNext(true)
         disposables = CompositeDisposable()
         listenDownloaderStatus()

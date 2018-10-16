@@ -13,9 +13,10 @@ import eu.davidea.flexibleadapter.FlexibleAdapter
 import kotlinx.android.synthetic.main.chapters_controller.*
 import nucleus5.factory.RequiresPresenter
 import template.R
-import template.data.database.models.Chapter
-import template.extensions.toast
 import template.annotation.Layout
+import template.data.database.models.Chapter
+import template.data.download.model.Download
+import template.extensions.toast
 import template.ui.common.mvp.controller.NucleusDaggerController
 import template.ui.manga.MangaController
 import template.ui.reader.ReaderActivity
@@ -132,6 +133,14 @@ class ChaptersController : NucleusDaggerController<ChaptersPresenter>(),
         // TODO
         openChapter(item.chapter)
         return false
+    }
+
+    fun onChapterStatusChange(download: Download) {
+        getHolder(download.chapter)?.notifyStatus(download.status)
+    }
+
+    private fun getHolder(chapter: Chapter): ChapterHolder? {
+        return recyclerView?.findViewHolderForItemId(chapter.id!!) as? ChapterHolder
     }
 
     fun openChapter(chapter: Chapter, hasAnimation: Boolean = false) {

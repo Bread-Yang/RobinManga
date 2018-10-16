@@ -54,7 +54,7 @@ class Downloader(
     /**
      * Notifier for the downloader state and progress.
      */
-    private val notifier by lazy {
+    private val downloadNotifier by lazy {
         DownloadNotifier(context)
     }
 
@@ -127,18 +127,16 @@ class Downloader(
                 }
 
         if (reason != null) {
-            // TODO
-//            notifier.onWarning(reason)
+            downloadNotifier.onWarning(reason)
         } else {
-            // TODO
-//            if (notifier.paused) {
-//                notifier.paused = false
-//                notifier.onDownloadPaused()
-//            } else if (notifier.isSingleChapter && !notifier.errorThrown) {
-//                notifier.isSingleChapter = false
-//            } else {
-//                notifier.dismiss()
-//            }
+            if (downloadNotifier.paused) {
+                downloadNotifier.paused = false
+                downloadNotifier.onDownloadPaused()
+            } else if (downloadNotifier.isSingleChapter && !downloadNotifier.errorThrown) {
+                downloadNotifier.isSingleChapter = false
+            } else {
+                downloadNotifier.dismiss()
+            }
         }
     }
 
@@ -154,8 +152,7 @@ class Downloader(
                 .forEach {
                     it.status = Download.QUEUE
                 }
-        // TODO
-//        notifier.paused = true
+        downloadNotifier.paused = true
     }
 
     /**
@@ -177,7 +174,7 @@ class Downloader(
                     }
 
             queue.clear()
-//            notifier.dismiss()
+            downloadNotifier.dismiss()
         }
     }
 
@@ -207,10 +204,9 @@ class Downloader(
                 .subscribe({
                     completeDownload(it)
                 }, { error ->
-                    // TODO
-//                    DownloadService.stop(context)
+                    DownloadService.stop(context)
                     Timber.e(error)
-//                    notifier.onError(error.message)
+                    downloadNotifier.onError(error.message)
                 })
 
     }
@@ -247,7 +243,7 @@ class Downloader(
                     }
                     // Filter out those already download.
                     .filter {
-                        mangaDir?.findFile(pathProvider.getChapterDirName(it))  == null
+                        mangaDir?.findFile(pathProvider.getChapterDirName(it)) == null
                     }
                     // Add chapters to queue from the start.
                     .sortedByDescending {
@@ -272,8 +268,7 @@ class Downloader(
             queue.addAll(chaptersToQueue)
 
             // Initialize queue size.
-            // TODO
-//            notifier.initialQueueSize = queue.size
+            downloadNotifier.initialQueueSize = queue.size
 
             if (isRunning) {
                 // Send the list of downloads to the downloader.
@@ -338,8 +333,7 @@ class Downloader(
                 }
                 // Do when page is downloaded.
                 .doOnNext {
-                    // TODO
-//                    notifier.onProgressChange(download)
+                    downloadNotifier.onProgressChange(download)
                 }
                 // https://raw.github.com/wiki/ReactiveX/RxJava/images/rx-operators/toList.2.png
                 .toList()
@@ -353,7 +347,7 @@ class Downloader(
                 // If the page list threw, it will resume here
                 .onErrorReturn { error ->
                     download.status = Download.ERROR
-//                    notifier.onError(error.message, download.chapter.name)
+                    downloadNotifier.onError(error.message, download.chapter.name)
                     download
                 }
                 .toFlowable()
@@ -501,10 +495,9 @@ class Downloader(
             queue.remove(download)
         }
         if (areAllDownloadsFinished()) {
-            // TODO
-//            if (notifier.isSingleChapter && !notifier.errorThrown) {
-//                notifier.onDownloadCompleted(download, queue)
-//            }
+            if (downloadNotifier.isSingleChapter && !downloadNotifier.errorThrown) {
+                downloadNotifier.onDownloadCompleted(download, queue)
+            }
             DownloadService.stop(context)
         }
     }
