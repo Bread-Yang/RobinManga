@@ -1,9 +1,27 @@
 package template.utils
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.os.Environment
+import android.support.v4.content.ContextCompat
+import android.support.v4.os.EnvironmentCompat
 import java.io.File
 import java.io.InputStream
+import java.net.URLConnection
 
 object DiskUtil {
+
+    fun isImage(name: String, openStream: (() -> InputStream)? = null): Boolean {
+        val contentType = try {
+            URLConnection.guessContentTypeFromName(name)
+        } catch (e: Exception) {
+            null
+        } ?: openStream?.let { findImageMime(it) }
+
+        return contentType?.startsWith("image/") ?: false
+    }
 
     fun findImageMime(openStream: () -> InputStream): String? {
         try {
@@ -45,6 +63,55 @@ object DiskUtil {
             size = f.length()
         }
         return size
+    }
+
+    /**
+     * Returns the root folders of all the available external storages.
+     */
+    fun getExternalStorages(context: Context): Collection<File> {
+        val directories = mutableSetOf<File>()
+        // 通过Context.getExternalFilesDir()方法可以获取到 SDCard/Android/data/你的应用的包名/files/ 目录，一般放一些长时间保存的数据
+        directories += ContextCompat.getExternalFilesDirs(context, null)
+                .filterNotNull()
+                .mapNotNull {
+                    val file = File(it.absolutePath.substringBefore("/Android/"))
+                    val state = EnvironmentCompat.getStorageState(file)
+                    if (state == Environment.MEDIA_MOUNTED || state == Environment.MEDIA_MOUNTED_READ_ONLY) {
+                        file
+                    } else {
+                        null
+                    }
+                }
+
+        if (Build.VERSION.SDK_INT < 21) {
+            val extStorages = System.getenv("SECONDARY_STORAGE")
+            if (extStorages != null) {
+                directories += extStorages.split(":").map(::File)
+            }
+        }
+
+        return directories
+    }
+
+    /**
+     * Scans the given file so that it can be shown in gallery apps, for example.
+     */
+    fun scanMedia(context: Context, file: File) {
+        scanMedia(context, Uri.fromFile(file))
+    }
+
+    /**
+     * Scans the given file so that it can be shown in gallery apps, for example.
+     */
+    fun scanMedia(context: Context, uri: Uri) {
+        val action = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            Intent.ACTION_MEDIA_MOUNTED
+        } else {
+            Intent.ACTION_MEDIA_SCANNER_SCAN_FILE
+        }
+        val mediaScanIntent = Intent(action)
+        mediaScanIntent.data = uri
+        context.sendBroadcast(mediaScanIntent)
     }
 
     /**

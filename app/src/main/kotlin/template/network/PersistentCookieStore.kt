@@ -18,8 +18,13 @@ class PersistentCookieStore(context: Context) {
             if (cookies != null) {
                 try {
                     val url = HttpUrl.parse("http://$key") ?: continue
-                    val nonExpiredCookies = cookies.mapNotNull { Cookie.parse(url, it) }
-                            .filter { !it.hasExpired() }
+                    val nonExpiredCookies = cookies
+                            .mapNotNull {
+                                Cookie.parse(url, it)
+                            }
+                            .filter {
+                                !it.hasExpired()
+                            }
                     cookieMap.put(key, nonExpiredCookies)
                 } catch (e: Exception) {
                     // Ignore
@@ -47,7 +52,9 @@ class PersistentCookieStore(context: Context) {
 
         // Get cookies to be stored in disk
         val newValues = cookiesForDomain.asSequence()
-                .filter { it.persistent() && !it.hasExpired() }
+                .filter {
+                    it.persistent() && !it.hasExpired()
+                }
                 .map(Cookie::toString)
                 .toSet()
 
@@ -65,9 +72,12 @@ class PersistentCookieStore(context: Context) {
     fun get(uri: URI) = get(uri.host)
 
     private fun get(url: String): List<Cookie> {
-        return cookieMap[url].orEmpty().filter { !it.hasExpired() }
+        return cookieMap[url]
+                .orEmpty()
+                .filter {
+                    !it.hasExpired()
+                }
     }
 
     private fun Cookie.hasExpired() = System.currentTimeMillis() >= expiresAt()
-
 }

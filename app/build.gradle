@@ -168,4 +168,9 @@ dependencies {
     // Disk
     implementation 'com.jakewharton:disklrucache:2.0.2'
     implementation 'com.github.inorichi:unifile:e9ee588'
+
+    // Sort
+    implementation 'com.github.gpanther:java-nat-sort:natural-comparator-1.1'
+
+    implementation 'com.github.inorichi:junrar-android:634c1f5'
 }

@@ -15,9 +15,19 @@ import template.BuildConfig.APPLICATION_ID as ID
  */
 class NotificationReceiver : BroadcastReceiver() {
 
+    override fun onReceive(context: Context?, intent: Intent?) {
+    }
+
+
     companion object {
 
         private const val NAME = "NotificationReceiver"
+
+        // Called to launch share intent.
+        private const val ACTION_SHARE_IMAGE = "$ID.$NAME.SHARE_IMAGE"
+
+        // Called to delete image.
+        private const val ACTION_DELETE_IMAGE = "$ID.$NAME.DELETE_IMAGE"
 
         // Called to notify user shortcut is created.
         private const val ACTION_SHORTCUT_CREATED = "$ID.$NAME.ACTION_SHORTCUT_CREATED"
@@ -30,6 +40,12 @@ class NotificationReceiver : BroadcastReceiver() {
 
         // Called to open chapter
         private const val ACTION_OPEN_CHAPTER = "$ID.$NAME.ACTION_OPEN_CHAPTER"
+
+        // Value containing file location.
+        private const val EXTRA_FILE_LOCATION = "$ID.$NAME.FILE_LOCATION"
+
+        // Value containing notification id.
+        private const val EXTRA_NOTIFICATION_ID = "$ID.$NAME.NOTIFICATION_ID"
 
         // Value containing manga id.
         private const val EXTRA_MANGA_ID = "$ID.$NAME.EXTRA_MANGA_ID"
@@ -85,9 +101,39 @@ class NotificationReceiver : BroadcastReceiver() {
             }
             return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         }
-    }
 
-    override fun onReceive(context: Context?, intent: Intent?) {
-    }
+        /**
+         * Return [PendingIntent] that starts a service which cancels the notification and starts a share activity
+         *
+         * @param context context of application
+         * @param path location path of file
+         * @param notificationId id of notification
+         * @return [PendingIntent]
+         */
+        internal fun shareImagePendingBroadcast(context: Context, path: String, notificationId: Int): PendingIntent {
+            val intent = Intent(context, NotificationReceiver::class.java).apply {
+                action = ACTION_SHARE_IMAGE
+                putExtra(EXTRA_FILE_LOCATION, path)
+                putExtra(EXTRA_NOTIFICATION_ID, notificationId)
+            }
+            return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
 
+        /**
+         * Returns [PendingIntent] that starts a service which removes an image from disk
+         *
+         * @param context context of application
+         * @param path location path of file
+         * @param notificationId id of notification
+         * @return [PendingIntent]
+         */
+        internal fun deleteImagePendingBroadcast(context: Context, path: String, notificationId: Int): PendingIntent {
+            val intent = Intent(context, NotificationReceiver::class.java).apply {
+                action = ACTION_DELETE_IMAGE
+                putExtra(EXTRA_FILE_LOCATION, path)
+                putExtra(EXTRA_NOTIFICATION_ID, notificationId)
+            }
+            return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
+    }
 }

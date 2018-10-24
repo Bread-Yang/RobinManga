@@ -9,9 +9,6 @@ import template.source.model.Page
 import template.source.model.SChapter
 import template.source.model.SManga
 
-/**
- * Created by Robin Yeung on 8/24/18.
- */
 abstract class ParsedHttpSource: HttpSource() {
 
     /**

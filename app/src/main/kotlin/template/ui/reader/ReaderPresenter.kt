@@ -1,15 +1,22 @@
 package template.ui.reader
 
+import android.content.Context
 import android.os.Bundle
+import android.os.Environment
+import android.webkit.MimeTypeMap
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import template.R
 import template.data.cache.ChapterCache
+import template.data.cache.CoverCache
 import template.data.database.DatabaseHelper
 import template.data.database.models.Chapter
 import template.data.database.models.Manga
 import template.data.download.DownloadManager
+import template.extensions.toast
+import template.source.LocalSource
 import template.source.SourceManager
 import template.source.model.Page
 import template.source.online.HttpSource
@@ -19,6 +26,9 @@ import template.utils.DiskUtil
 import template.utils.RetryWithDelay
 import template.utils.SharedData
 import template.utils.preference.PreferencesHelper
+import timber.log.Timber
+import java.io.File
+import java.net.URLConnection
 import java.util.*
 import javax.inject.Inject
 
@@ -48,6 +58,13 @@ class ReaderPresenter : BasePresenter<ReaderActivity>() {
 
     @Inject
     lateinit var chapterCache: ChapterCache
+
+    @Inject
+    lateinit var coverCache: CoverCache
+
+    private val context: Context by lazy {
+        view!!.applicationContext
+    }
 
     /**
      * Manga being read.
@@ -448,5 +465,88 @@ class ReaderPresenter : BasePresenter<ReaderActivity>() {
         if (!chapter.isDownloaded && page.status == Page.QUEUE) {
             loader.loadPriorizedPage(page)
         }
+    }
+
+    /**
+     * Update cover with page file.
+     */
+    internal fun setImageAsCover(page: Page) {
+        try {
+            if (manga.source == LocalSource.ID) {
+                val input = context.contentResolver.openInputStream(page.uri)
+                LocalSource.updateCover(context, manga, input)
+                context.toast(R.string.cover_updated)
+                return
+            }
+
+            val thumbUrl = manga.thumbnail_url ?: throw Exception("Image url not found")
+            if (manga.favorite) {
+                val input = context.contentResolver.openInputStream(page.uri)
+                coverCache.copyToCache(thumbUrl, input)
+                context.toast(R.string.cover_updated)
+            } else {
+                context.toast(R.string.notification_first_add_to_library)
+            }
+        } catch (error: Exception) {
+            context.toast(R.string.notification_cover_update_failed)
+            Timber.e(error)
+        }
+    }
+
+    /**
+     * Save page to local storage.
+     */
+    internal fun savePage(page: Page) {
+        if (page.status != Page.READY)
+            return
+
+        // Used to show image notification.
+        val imageNotifier = SaveImageNotifier(context)
+
+        // Remove the notification if it already exists
+        imageNotifier.onClear()
+
+        // Pictures directory.
+        val pictureDirectory = Environment.getExternalStorageDirectory().absolutePath +
+                File.separator + Environment.DIRECTORY_PICTURES +
+                File.separator + context.getString(R.string.app_name)
+
+        // Copy file in background.
+        Observable
+                .fromCallable {
+                    // Folder where the image will be saved.
+                    val destDir = File(pictureDirectory)
+                    destDir.mkdirs()
+
+                    // Find out file mime type.
+                    val mime = context.contentResolver.getType(page.uri)
+                            ?: context.contentResolver.openInputStream(page.uri).buffered().use {
+                                URLConnection.guessContentTypeFromStream(it)
+                            }
+
+                    // Build destination file.
+                    val ext = MimeTypeMap.getSingleton().getExtensionFromMimeType(mime) ?: "jpg"
+                    val filename = DiskUtil.buildValidFilename(
+                            "${manga.title} - ${chapter.name}") + " - ${page.number}.$ext"
+                    val destFile = File(destDir, filename)
+
+                    context.contentResolver.openInputStream(page.uri).use { input ->
+                        destFile.outputStream().use { output ->
+                            input.copyTo(output)
+                        }
+                    }
+
+                    DiskUtil.scanMedia(context, destFile)
+
+                    imageNotifier.onComplete(destFile)
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    context.toast(R.string.picture_saved)
+                }, {
+                    Timber.e(it)
+                    imageNotifier.onError(it.message)
+                })
     }
 }

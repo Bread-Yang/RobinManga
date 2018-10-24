@@ -15,7 +15,9 @@ interface SChapter : Serializable {
 
     var chapter_number: Float
 
-    var scanlator: String? // A scanlator is a person or group of people who work collaboratively to scan and then translate manga so that fans all around the world can enjoy them.
+    // A scanlator is a person or group of people who work collaboratively to scan and then translate
+    // manga so that fans all around the world can enjoy them.
+    var scanlator: String?
 
     fun copyFrom(other: SChapter) {
         name = other.name

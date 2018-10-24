@@ -122,6 +122,7 @@ class DownloadCache(private val context: Context,
 
         val sourceDirs = rootDir.dir.listFiles()
                 .orEmpty()
+                // 通过指定的条件，把list转换成map
                 .associate {
                     it.name to SourceDirectory(it)
                 }

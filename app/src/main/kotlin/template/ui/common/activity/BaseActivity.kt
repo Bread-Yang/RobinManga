@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Router
+import template.annotation.Layout
 import template.di.Injector
 import template.di.component.ActivityComponent
-import template.annotation.Layout
 
+/**
+ * Not used.
+ */
 abstract class BaseActivity : AppCompatActivity() {
 
 //    @Inject

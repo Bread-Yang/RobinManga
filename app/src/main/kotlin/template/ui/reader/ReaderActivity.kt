@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import com.afollestad.materialdialogs.MaterialDialog
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.reader_activity.*
 import me.zhanghai.android.systemuihelper.SystemUiHelper
@@ -16,6 +17,7 @@ import template.annotation.Layout
 import template.data.database.models.Chapter
 import template.data.database.models.Manga
 import template.extensions.getOrDefault
+import template.extensions.getUriCompat
 import template.extensions.gone
 import template.extensions.toast
 import template.source.model.Page
@@ -28,6 +30,7 @@ import template.utils.GLUtil
 import template.utils.SharedData
 import template.widget.SimpleAnimationListener
 import timber.log.Timber
+import java.io.File
 import java.text.DecimalFormat
 
 @Layout(R.layout.reader_activity)
@@ -215,18 +218,17 @@ class ReaderActivity : NucleusDaggerActivity<ReaderPresenter>() {
     }
 
     fun onLongClick(page: Page) {
-        // TODO
-//        MaterialDialog.Builder(this)
-//                .title(getString(R.string.options))
-//                .items(R.array.reader_image_options)
-//                .itemsIds(R.array.reader_image_options_values)
-//                .itemsCallback { _, _, i, _ ->
-//                    when (i) {
-//                        0 -> setImageAsCover(page)
-//                        1 -> shareImage(page)
-//                        2 -> presenter.savePage(page)
-//                    }
-//                }.show()
+        MaterialDialog.Builder(this)
+                .title(getString(R.string.options))
+                .items(R.array.reader_image_options)
+                .itemsIds(R.array.reader_image_options_values)
+                .itemsCallback { _, _, i, _ ->
+                    when (i) {
+                        0 -> setImageAsCover(page)
+                        1 -> shareImage(page)
+                        2 -> presenter.savePage(page)
+                    }
+                }.show()
     }
 
     fun onChapterAppendError() {
@@ -394,4 +396,41 @@ class ReaderActivity : NucleusDaggerActivity<ReaderPresenter>() {
         }
     }
 
+    /**
+     * Start a share intent that lets user share image
+     *
+     * @param page page object containing image information.
+     */
+    private fun shareImage(page: Page) {
+        if (page.status != Page.READY)
+            return
+
+        var uri = page.uri ?: return
+        if (uri.toString().startsWith("file://")) {
+            uri = File(uri.toString().substringAfter("file://")).getUriCompat(this)
+        }
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            putExtra(Intent.EXTRA_STREAM, uri)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
+            type = "image/*"
+        }
+        startActivity(Intent.createChooser(intent, getString(R.string.action_share)))
+    }
+
+    /**
+     * Sets the given page as the cover of the manga.
+     *
+     * @param page the page containing the image to set as cover.
+     */
+    private fun setImageAsCover(page: Page) {
+        if (page.status != Page.READY)
+            return
+
+        MaterialDialog.Builder(this)
+                .content(getString(R.string.confirm_set_image_as_cover))
+                .positiveText(android.R.string.yes)
+                .negativeText(android.R.string.no)
+                .onPositive { _, _ -> presenter.setImageAsCover(page) }
+                .show()
+    }
 }
