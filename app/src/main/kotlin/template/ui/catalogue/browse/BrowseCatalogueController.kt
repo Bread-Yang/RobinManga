@@ -10,12 +10,12 @@ import eu.davidea.flexibleadapter.items.IFlexible
 import kotlinx.android.synthetic.main.catalogue_controller.*
 import nucleus5.factory.RequiresPresenter
 import template.R
+import template.annotation.Layout
 import template.data.database.models.Manga
 import template.extensions.gone
 import template.extensions.toast
 import template.extensions.visible
 import template.extensions.withFadeTransaction
-import template.annotation.Layout
 import template.ui.common.mvp.controller.NucleusDaggerController
 import template.ui.manga.MangaController
 import timber.log.Timber
@@ -35,7 +35,7 @@ class BrowseCatalogueController : NucleusDaggerController<BrowseCataloguePresent
     private var adapter: FlexibleAdapter<IFlexible<*>>? = null
 
     /**
-     * Recycler view with the list of resultsPublicSubject.
+     * Recycler view with the list of results.
      */
     private var recyclerView: RecyclerView? = null
 

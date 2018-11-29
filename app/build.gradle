@@ -141,6 +141,9 @@ dependencies {
     implementation 'eu.davidea:flexible-adapter:5.0.5'
     implementation 'eu.davidea:flexible-adapter-ui:1.0.0-b5'
 
+    // Saves and restores View states in ViewPagers
+    implementation 'com.nightlynexus.viewstatepageradapter:viewstatepageradapter:1.0.4'
+
     // HTML parser
     implementation 'org.jsoup:jsoup:1.10.2'
 

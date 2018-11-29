@@ -232,9 +232,9 @@ class DownloadController : NucleusDaggerController<DownloadPresenter>() {
      */
     private fun setEmptyInformationView() {
         if (presenter.downloadQueue.isEmpty()) {
-            empty_view?.show(R.drawable.ic_file_download_black_128dp, R.string.information_no_downloads)
+            emptyView?.show(R.drawable.ic_file_download_black_128dp, R.string.information_no_downloads)
         } else {
-            empty_view?.hide()
+            emptyView?.hide()
         }
     }
 

@@ -5,6 +5,7 @@ import template.di.module.ControllerModule
 import template.di.scopes.ControllerContext
 import template.ui.catalogue.browse.BrowseCataloguePresenter
 import template.ui.download.DownloadPresenter
+import template.ui.library.LibraryPresenter
 import template.ui.manga.MangaPresenter
 import template.ui.manga.chapter.ChaptersPresenter
 import template.ui.manga.info.MangaInfoPresenter
@@ -22,4 +23,6 @@ interface ControllerComponent {
     fun inject(presenter: ChaptersPresenter)
 
     fun inject(presenter: DownloadPresenter)
+
+    fun inject(presenter: LibraryPresenter)
 }

@@ -226,14 +226,13 @@ class ChaptersPresenter : BasePresenter<ChaptersController>() {
         // Create the model object.
         val model = ChapterItem(this, manga)
 
-        // TODO
         // Find an active download for this chapter.
-//        val download = downloadManager.queue.find { it.chapter.id == id }
-//
-//        if (download != null) {
-//            // If there's an active download, assign it.
-//            model.download = download
-//        }
+        val download = downloadManager.queue.find { it.chapter.id == id }
+
+        if (download != null) {
+            // If there's an active download, assign it.
+            model.download = download
+        }
         return model
     }
 
@@ -243,12 +242,11 @@ class ChaptersPresenter : BasePresenter<ChaptersController>() {
      * @param chapters the list of chapter from the database.
      */
     private fun setDownloadedChapters(chapters: List<ChapterItem>) {
-        //TODO
-//        for (chapter in chapters) {
-//            if (downloadManager.isChapterDownloaded(chapter, manga)) {
-//                chapter.status = Download.DOWNLOADED
-//            }
-//        }
+        for (chapter in chapters) {
+            if (downloadManager.isChapterDownloaded(chapter, manga)) {
+                chapter.status = Download.DOWNLOADED
+            }
+        }
     }
 
     /**

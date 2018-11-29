@@ -45,7 +45,7 @@ class BrowseCataloguePresenter : BasePresenter<BrowseCatalogueController>() {
     lateinit var source: CatalogueSource
 
     /**
-     * Pager containing a list of manga resultsPublicSubject.
+     * Pager containing a list of manga results.
      */
     private lateinit var pager: Pager
 

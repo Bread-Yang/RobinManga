@@ -6,6 +6,7 @@ import android.os.Environment
 import android.preference.PreferenceManager
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import template.R
+import template.data.track.TrackService
 import template.source.Source
 import java.io.File
 
@@ -102,18 +103,18 @@ open class PreferencesHelper(val context: Context) {
                 .apply()
     }
 
-//    fun trackUsername(sync: TrackService) = prefs.getString(PreferenceKeys.trackUsername(sync.id), "")
-//
-//    fun trackPassword(sync: TrackService) = prefs.getString(PreferenceKeys.trackPassword(sync.id), "")
-//
-//    fun setTrackCredentials(sync: TrackService, username: String, password: String) {
-//        prefs.edit()
-//                .putString(PreferenceKeys.trackUsername(sync.id), username)
-//                .putString(PreferenceKeys.trackPassword(sync.id), password)
-//                .apply()
-//    }
-//
-//    fun trackToken(sync: TrackService) = rxPrefs.getString(PreferenceKeys.trackToken(sync.id), "")
+    fun trackUsername(sync: TrackService) = prefs.getString(PreferenceKeys.trackUsername(sync.id), "")
+
+    fun trackPassword(sync: TrackService) = prefs.getString(PreferenceKeys.trackPassword(sync.id), "")
+
+    fun setTrackCredentials(sync: TrackService, username: String, password: String) {
+        prefs.edit()
+                .putString(PreferenceKeys.trackUsername(sync.id), username)
+                .putString(PreferenceKeys.trackPassword(sync.id), password)
+                .apply()
+    }
+
+    fun trackToken(sync: TrackService) = rxPrefs.getString(PreferenceKeys.trackToken(sync.id), "")
 
     fun anilistScoreType() = rxPrefs.getString("anilist_score_type", "POINT_10")
 

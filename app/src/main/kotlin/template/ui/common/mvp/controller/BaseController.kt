@@ -33,4 +33,8 @@ abstract class BaseController(bundle: Bundle? = null) : RestoreViewOnCreateContr
         }
         throw IllegalArgumentException("You should specify Layout annotation")
     }
+
+    open fun getTitle(): String? {
+        return null
+    }
 }

@@ -12,6 +12,7 @@ import com.bluelinelabs.conductor.support.RouterPagerAdapter
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.android.synthetic.main.manga_controller.*
 import nucleus5.factory.RequiresPresenter
 import template.App
@@ -94,7 +95,7 @@ class MangaController: NucleusDaggerController<MangaPresenter>, TabbedController
     override fun onChangeStarted(changeHandler: ControllerChangeHandler, changeType: ControllerChangeType) {
         super.onChangeStarted(changeHandler, changeType)
         if (changeType.isEnter) {
-            // TODO
+            activity?.tabLayout?.setupWithViewPager(viewPager)
             trackingIconDisposable = trackingIconSubject.subscribe {
                 setTrackingIconInternal(it)
             }

@@ -102,19 +102,15 @@ class ChapterLoader(
     private fun retrievePageList(chapter: ReaderChapter) = Observable.just(chapter)
             .flatMap {
                 // Check if the chapter is downloaded.
-                // TODO
-//                chapter.isDownloaded = downloadManager.isChapterDownloaded(chapter, manga, true)
+                chapter.isDownloaded = downloadManager.isChapterDownloaded(chapter, manga, true)
 
-                // TODO
-//                if (chapter.isDownloaded) {
-//                    // Fetch the page list from disk.
-//                    downloadManager.buildPageList(source, manga, chapter)
-//                } else {
-//                    (source as? HttpSource)?.fetchPageListFromCacheThenNet(chapter)
-//                            ?: source.fetchPageList(chapter)
-//                }
-                (source as? HttpSource)?.fetchPageListFromCacheThenNet(chapter)
-                        ?: source.fetchPageList(chapter)
+                if (chapter.isDownloaded) {
+                    // Fetch the page list from disk.
+                    downloadManager.buildPageList(source, manga, chapter)
+                } else {
+                    (source as? HttpSource)?.fetchPageListFromCacheThenNet(chapter)
+                            ?: source.fetchPageList(chapter)
+                }
             }
             .doOnNext { pages ->
                 chapter.pages = pages

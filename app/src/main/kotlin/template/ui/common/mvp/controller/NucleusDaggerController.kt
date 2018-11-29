@@ -33,7 +33,7 @@ abstract class NucleusDaggerController<P : RxPresenter<out Any>>(val bundle: Bun
             super.postCreateView(controller, view)
 
             onViewCreated(view)
-            // here presenter will be created, or if rotate screen, event(onNext()、onError()、onComplete()) will be send again.
+            // here presenter will be created, if rotate screen, event(onNext()、onError()、onComplete()) will be send again.
             presenterDelegate.onResume(this@NucleusDaggerController)
         }
     }
