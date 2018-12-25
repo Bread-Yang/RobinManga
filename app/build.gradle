@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
@@ -6,6 +8,14 @@ apply plugin: 'kotlin-android-extensions'
  * for Unit Test. [template.annotation.Mockable]
  */
 apply plugin: 'kotlin-allopen'
+
+ext {
+    getBuildTime = {
+        def df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'")
+        df.setTimeZone(TimeZone.getTimeZone("UTC"))
+        return df.format(new Date())
+    }
+}
 
 android {
     def android = rootProject.extensions.ext.android
@@ -22,6 +32,8 @@ android {
         minSdkVersion android.minSdk
         targetSdkVersion android.targetSdk
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "BUILD_TIME", "\"${getBuildTime()}\""
 
         vectorDrawables.useSupportLibrary = true
     }
@@ -105,7 +117,10 @@ dependencies {
     // dagger2
     kapt "com.google.dagger:dagger-compiler:$version.dagger"
     implementation "com.google.dagger:dagger:$version.dagger"
+
+    // JSON
     implementation "com.google.code.gson:gson:$version.gson"
+    implementation 'com.github.salomonbrys.kotson:kotson:2.5.0'
 
     // retrofit
     implementation "com.squareup.okhttp3:okhttp:$version.okhttp"

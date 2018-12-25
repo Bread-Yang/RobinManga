@@ -1,5 +1,6 @@
 package template.extensions
 
+import android.app.ActivityManager
 import android.app.NotificationManager
 import android.content.Context
 import android.net.ConnectivityManager
@@ -56,3 +57,16 @@ val Context.connectivityManager: ConnectivityManager
  */
 val Context.notificationManager: NotificationManager
     get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+/**
+ *  Returns true if the given service class is running.
+ */
+fun Context.isServiceRunning(serviceClass: Class<*>): Boolean {
+    val className = serviceClass.name
+    val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+    @Suppress("DEPRECATION")
+    return manager.getRunningServices(Integer.MAX_VALUE)
+            .any {
+                className == it.service.className
+            }
+}

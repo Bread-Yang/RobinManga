@@ -9,6 +9,7 @@ import template.data.cache.CoverCache
 import template.data.database.DatabaseHelper
 import template.data.download.DownloadManager
 import template.data.notification.Notifications
+import template.data.track.TrackManager
 import template.di.component.ApplicationComponent
 import template.di.component.DaggerApplicationComponent
 import template.di.module.ApplicationModule
@@ -48,6 +49,8 @@ class App : Application() {
     @Inject
     lateinit var lazyGson: dagger.`Lazy`<Gson>
 
+    @Inject
+    lateinit var lazyTrackManager: dagger.`Lazy`<TrackManager>
 
     val component: ApplicationComponent by lazy {
         DaggerApplicationComponent

@@ -34,7 +34,8 @@ import java.io.IOException
 @RequiresPresenter(LibraryPresenter::class)
 class LibraryController : NucleusDaggerController<LibraryPresenter>(),
         ActionMode.Callback,
-        ChangeMangaCategoriesDialog.Listener {
+        ChangeMangaCategoriesDialog.Listener,
+        DeleteLibraryMangasDialog.Listener {
 
     private companion object {
         /**
@@ -241,6 +242,15 @@ class LibraryController : NucleusDaggerController<LibraryPresenter>(),
                 .showDialog(router)
     }
 
+    private fun showDeleteMangaDialog() {
+        DeleteLibraryMangasDialog(this, selectedMangas.toList()).showDialog(router)
+    }
+
+    override fun deleteMangasFromLibrary(mangas: List<Manga>, deleteChapters: Boolean) {
+        presenter.removeMangaFromLibrary(mangas, deleteChapters)
+        destroyActionModeIfNeeded()
+    }
+
     override fun updateCategoriesForMangas(mangas: List<Manga>, categories: List<Category>) {
         presenter.moveMangasToCategories(categories, mangas)
         destroyActionModeIfNeeded()
@@ -259,10 +269,19 @@ class LibraryController : NucleusDaggerController<LibraryPresenter>(),
         return true
     }
 
-    override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+    override fun onCreateActionMode(mode: ActionMode, menu: Menu?): Boolean {
+        mode.menuInflater.inflate(R.menu.library_selection, menu)
+        return true
     }
 
     override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+        val count = selectedMangas.size
+        if (count == 0) {
+            // Destroy action mode if there are no items selected.
+            destroyActionModeIfNeeded()
+        } else {
+
+        }
     }
 
     override fun onDestroyActionMode(mode: ActionMode?) {

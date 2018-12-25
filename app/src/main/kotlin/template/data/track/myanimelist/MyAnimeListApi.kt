@@ -3,7 +3,6 @@ package template.data.track.myanimelist
 import android.net.Uri
 import android.util.Xml
 import io.reactivex.Observable
-import io.reactivex.Single
 import okhttp3.*
 import org.jsoup.Jsoup
 import org.jsoup.parser.Parser
@@ -19,7 +18,7 @@ import template.network.GET
 import template.network.POST
 import java.io.StringWriter
 
-class MyanimelistApi(private val client: OkHttpClient, username: String, password: String) {
+class MyAnimeListApi(private val client: OkHttpClient, username: String, password: String) {
 
     private var headers = createHeaders(username, password)
 
@@ -39,17 +38,18 @@ class MyanimelistApi(private val client: OkHttpClient, username: String, passwor
         }
     }
 
-    fun search(query: String, username: String): Single<List<TrackSearch>> {
+    fun search(query: String, username: String): Observable<List<TrackSearch>> {
         return if (query.startsWith(PREFIX_MY)) {
             val realQuery = query.substring(PREFIX_MY.length).toLowerCase().trim()
             getList(username)
-                    .flatMapObservable {
+                    .flatMap {
                         Observable.fromIterable(it)
                     }
                     .filter {
                         realQuery in it.title.toLowerCase()
                     }
                     .toList()
+                    .toObservable()
         } else {
             client.newCall(GET(getSearchUrl(query), headers))
                     .asObservable()
@@ -69,17 +69,18 @@ class MyanimelistApi(private val client: OkHttpClient, username: String, passwor
                             total_chapters = it.selectInt("chapters")
                             summary = it.selectText("synopsis")!!
                             cover_url = it.selectText("image")!!
-                            tracking_url = MyanimelistApi.mangaUrl(media_id)
+                            tracking_url = MyAnimeListApi.mangaUrl(media_id)
                             publishing_status = it.selectText("status")!!
                             publishing_type = it.selectText("type")!!
                             start_date = it.selectText("start_date")!!
                         }
                     }
                     .toList()
+                    .toObservable()
         }
     }
 
-    fun getList(username: String): Single<List<TrackSearch>> {
+    fun getList(username: String): Observable<List<TrackSearch>> {
         return client
                 .newCall(GET(getListUrl(username), headers))
                 .asObservable()
@@ -96,13 +97,14 @@ class MyanimelistApi(private val client: OkHttpClient, username: String, passwor
                         score = it.selectInt("my_score").toFloat()
                         total_chapters = it.selectInt("series_chapters")
                         cover_url = it.selectText("series_image")!!
-                        tracking_url = MyanimelistApi.mangaUrl(media_id)
+                        tracking_url = MyAnimeListApi.mangaUrl(media_id)
                     }
                 }
                 .toList()
+                .toObservable()
     }
 
-    fun findLibManga(track: Track, username: String): Single<Track?> {
+    fun findLibManga(track: Track, username: String): Observable<Track?> {
         return getList(username)
                 .map { list ->
                     list.find {
@@ -111,7 +113,7 @@ class MyanimelistApi(private val client: OkHttpClient, username: String, passwor
                 }
     }
 
-    fun getLibManga(track: Track, username: String): Single<Track> {
+    fun getLibManga(track: Track, username: String): Observable<Track> {
         return findLibManga(track, username)
                 .map {
                     it ?: throw Exception("Could not find manga")

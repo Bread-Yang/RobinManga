@@ -4,8 +4,11 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Handler
 import template.data.database.models.Chapter
 import template.data.database.models.Manga
+import template.data.library.LibraryUpdateService
+import template.extensions.notificationManager
 import template.BuildConfig.APPLICATION_ID as ID
 
 /**
@@ -15,9 +18,34 @@ import template.BuildConfig.APPLICATION_ID as ID
  */
 class NotificationReceiver : BroadcastReceiver() {
 
-    override fun onReceive(context: Context?, intent: Intent?) {
+    override fun onReceive(context: Context, intent: Intent) {
+        when (intent.action) {
+            // Cancel library update and dismiss notification
+            ACTION_CANCEL_LIBRARY_UPDATE -> cancelLibraryUpdate(context, Notifications.ID_LIBRARY_PROGRESS)
+        }
     }
 
+    /**
+     * Method called when user wants to stop a library update
+     *
+     * @param context context of application
+     * @param notificationId id of notification
+     */
+    private fun cancelLibraryUpdate(context: Context, notificationId: Int) {
+        LibraryUpdateService.stop(context)
+        Handler().post {
+            dismissNotification(context, notificationId)
+        }
+    }
+
+    /**
+     * Dismiss the notification
+     *
+     * @param notificationId the id of the notification
+     */
+    private fun dismissNotification(context: Context, notificationId: Int) {
+        context.notificationManager.cancel(notificationId)
+    }
 
     companion object {
 
@@ -28,6 +56,9 @@ class NotificationReceiver : BroadcastReceiver() {
 
         // Called to delete image.
         private const val ACTION_DELETE_IMAGE = "$ID.$NAME.DELETE_IMAGE"
+
+        // Called to cancel library update.
+        private const val ACTION_CANCEL_LIBRARY_UPDATE = "$ID.$NAME.CANCEL_LIBRARY_UPDATE"
 
         // Called to notify user shortcut is created.
         private const val ACTION_SHORTCUT_CREATED = "$ID.$NAME.ACTION_SHORTCUT_CREATED"
@@ -132,6 +163,19 @@ class NotificationReceiver : BroadcastReceiver() {
                 action = ACTION_DELETE_IMAGE
                 putExtra(EXTRA_FILE_LOCATION, path)
                 putExtra(EXTRA_NOTIFICATION_ID, notificationId)
+            }
+            return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
+
+        /**
+         * Returns [PendingIntent] that starts a service which stops the library update
+         *
+         * @param context context of appliation
+         * @return [PendingIntent]
+         */
+        internal fun cancelLibraryUpdatePendingBroadcast(context: Context): PendingIntent {
+            val intent = Intent(context, NotificationReceiver::class.java).apply {
+                action = ACTION_CANCEL_LIBRARY_UPDATE
             }
             return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         }
