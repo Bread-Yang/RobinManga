@@ -37,7 +37,7 @@ class CoverCache(private val context: Context) {
      *
      * @param thumbnailUrl url of the thumbnail.
      * @param inputStream the stream to copy.
-     * @param IOException if there's any error.
+     * @throws IOException if there's any error.
      */
     @Throws(IOException::class)
     fun copyToCache(thumbnailUrl: String, inputStream: InputStream) {

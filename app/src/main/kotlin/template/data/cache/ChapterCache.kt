@@ -19,7 +19,7 @@ import java.io.IOException
  * Class used to create chapter cache
  * For each image in a chapter a file is created.
  * For each chapter a Json list is created and converted to a file.
- * The files are in format *md5key*.0
+ * The files's name are in format "*md5key*.0"
  *
  * @param context the application context.
  * @constructor creates an instance of the chapter cache.
@@ -40,8 +40,8 @@ class ChapterCache(private val context: Context, private val gson: Gson) {
         const val PARAMETER_CACHE_SIZE = 75L * 1024 * 1024
     }
 
-    // getFileDir() -----> /data/data/cn.xxx.xxx(当前包)/files
-    // getCacheDir() -----> /data/data/cn.xxx.xxx（当前包）/cache
+    // getFileDir() -----> /data/data/com.xxx.xxx(当前包)/files
+    // getCacheDir() -----> /data/data/com.xxx.xxx(当前包)/cache
     // context.getExternalCacheDir() -----> /storage/emulated/0/Android/data/package_name/cache
     /** Cache class used for cache management.  */
     private val diskCache = DiskLruCache.open(

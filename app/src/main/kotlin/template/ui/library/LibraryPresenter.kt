@@ -96,6 +96,16 @@ class LibraryPresenter : BasePresenter<LibraryController>() {
     }
 
     /**
+     * Called when a manga is opened.
+     */
+    fun onOpenManga() {
+        // Avoid further db updates for the library when it's not needed.
+        libraryDisposable?.let {
+            remove(it)
+        }
+    }
+
+    /**
      * Returns the common categories for the given list of manga.
      *
      * @param mangas the list of manga.

@@ -29,7 +29,7 @@ class DeliverLatestCacheFlowable<View, T>(private val view: Flowable<OptionalVie
                         }
                 )
                 .concatMap { pack ->
-                    NucleusUtils.valideFlowable(pack[0] as OptionalView<View>, pack[1] as Notification<T>)
+                    NucleusUtils.validateFlowable(pack[0] as OptionalView<View>, pack[1] as Notification<T>)
                 }
     }
 }

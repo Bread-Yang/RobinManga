@@ -6,17 +6,15 @@ import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.LinearLayout
 import eu.davidea.flexibleadapter.FlexibleAdapter
 import eu.davidea.flexibleadapter.SelectableAdapter
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.internal.util.NotificationLite.disposable
 import kotlinx.android.synthetic.main.library_category.view.*
 import template.App
 import template.R
-import template.R.string.manga
 import template.data.database.models.Category
 import template.data.database.models.Manga
+import template.data.library.LibraryUpdateService
 import template.extensions.getOrDefault
 import template.extensions.inflate
 import template.extensions.plusAssign
@@ -229,7 +227,7 @@ class LibraryCategoryView @JvmOverloads constructor(context: Context, attrs: Att
         val item = adapter.getItem(position) ?: return false
         if (adapter.mode == SelectableAdapter.Mode.MULTI) {
             toggleSelection(position)
-            true
+            return true
         } else {
             openManga(item.manga)
             return false

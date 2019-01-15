@@ -9,6 +9,7 @@ import template.data.cache.ChapterCache
 import template.data.cache.CoverCache
 import template.data.database.DatabaseHelper
 import template.data.download.DownloadManager
+import template.data.track.TrackManager
 import template.di.scopes.ApplicationContext
 import template.network.NetworkHelper
 import template.source.SourceManager
@@ -62,4 +63,9 @@ class ApplicationModule(private val application: App) {
     @Singleton
     @ApplicationContext
     fun provideChapterCache(context: Context, gson: Gson): ChapterCache = ChapterCache(context, gson)
+
+    @Provides
+    @Singleton
+    @ApplicationContext
+    fun provideTrackManager(context: Context): TrackManager = TrackManager(context)
 }

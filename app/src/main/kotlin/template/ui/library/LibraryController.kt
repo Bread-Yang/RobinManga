@@ -23,7 +23,9 @@ import template.data.database.models.Category
 import template.data.database.models.Manga
 import template.extensions.getOrDefault
 import template.extensions.toast
+import template.extensions.withFadeTransaction
 import template.ui.common.mvp.controller.NucleusDaggerController
+import template.ui.manga.MangaController
 import timber.log.Timber
 import java.io.IOException
 
@@ -269,22 +271,60 @@ class LibraryController : NucleusDaggerController<LibraryPresenter>(),
         return true
     }
 
+    /**
+     * Invalidates the action mode, forcing it to refresh its content.
+     */
+    fun invalidateActionMode() {
+        actionMode?.invalidate()
+    }
+
     override fun onCreateActionMode(mode: ActionMode, menu: Menu?): Boolean {
         mode.menuInflater.inflate(R.menu.library_selection, menu)
         return true
     }
 
-    override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+    override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
         val count = selectedMangas.size
         if (count == 0) {
             // Destroy action mode if there are no items selected.
             destroyActionModeIfNeeded()
         } else {
-
+            mode.title = resources?.getString(R.string.label_selected, count)
+            menu.findItem(R.id.action_edit_cover)?.isVisible = count == 1
         }
+        return false
     }
 
     override fun onDestroyActionMode(mode: ActionMode?) {
+        // Clear all the manga selections and notify child views.
+        selectedMangas.clear()
+        selectionUpdateSubject.onNext(LibrarySelectionEvent.Cleared())
+        actionMode = null
+    }
+
+    fun openManga(manga: Manga) {
+        // notify the presenter a manga is being opened.
+        presenter.onOpenManga()
+
+        router.pushController(MangaController(manga).withFadeTransaction())
+    }
+
+    /**
+     * Sets the selection for a given manga.
+     *
+     * @param manga the manga whose selection has changed.
+     * @param selected whether it's now selected or not.
+     */
+    fun setSelection(manga: Manga, selected: Boolean) {
+        if (selected) {
+            if (selectedMangas.add(manga)) {
+                selectionUpdateSubject.onNext(LibrarySelectionEvent.Selected(manga))
+            }
+        } else {
+            if (selectedMangas.remove(manga)) {
+                selectionUpdateSubject.onNext(LibrarySelectionEvent.Unselected(manga))
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

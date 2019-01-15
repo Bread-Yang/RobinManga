@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
 import android.support.v4.app.NotificationCompat
@@ -11,7 +12,9 @@ import io.reactivex.disposables.Disposable
 import template.App
 import template.R
 import template.data.database.DatabaseHelper
+import template.data.database.models.Category
 import template.data.download.DownloadManager
+import template.data.library.LibraryUpdateService.Companion.start
 import template.data.notification.NotificationReceiver
 import template.data.notification.Notifications
 import template.data.track.TrackManager
@@ -34,6 +37,15 @@ class LibraryUpdateService(
         val downloadManager: DownloadManager = App.app.lazyDownloaderManager.get(),
         val trackManager: TrackManager = App.app.lazyTrackManager.get()
 ) : Service() {
+
+    /**
+     * Defines what should be updated within a service execution.
+     */
+    enum class Target {
+        CHAPTERS, // Manga chapters
+        DETAILS,  // Manga metadata
+        TRACKING  // Tracking metadata
+    }
 
     /**
      * Wake lock that will be held unitl the service is destroyed.
@@ -96,6 +108,30 @@ class LibraryUpdateService(
          */
         fun isRunning(context: Context): Boolean {
             return context.isServiceRunning(LibraryUpdateService::class.java)
+        }
+
+        /**
+         * Starts the service. It will be started only if there isn't another instance already
+         * running.
+         *
+         * @param context the application context.
+         * @param category a specific category to update, or null for global update.
+         * @param target defines what should be updated.
+         */
+        fun start(context: Context, category: Category? = null, target: Target = Target.CHAPTERS) {
+            if (!isRunning(context)) {
+                val intent = Intent(context, LibraryUpdateService::class.java).apply {
+                    putExtra(KEY_TARGET, target)
+                    category?.let {
+                        putExtra(KEY_CATEGORY, it.id)
+                    }
+                }
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                    context.startService(intent)
+                } else {
+                    context.startForegroundService(intent)
+                }
+            }
         }
 
         /**

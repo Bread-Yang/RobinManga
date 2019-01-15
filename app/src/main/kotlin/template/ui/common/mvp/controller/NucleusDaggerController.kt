@@ -14,6 +14,7 @@ import template.ui.common.mvp.DaggerPresenterFactory
 import template.ui.common.mvp.NucleusConductorDelegate
 import template.ui.common.mvp.NucleusDaggerView
 import template.ui.common.mvp.activity.NucleusDaggerActivity
+import timber.log.Timber
 
 abstract class NucleusDaggerController<P : RxPresenter<out Any>>(val bundle: Bundle? = null)
     : RxController(bundle), ViewWithPresenter<P>, NucleusDaggerView {
@@ -32,6 +33,7 @@ abstract class NucleusDaggerController<P : RxPresenter<out Any>>(val bundle: Bun
         override fun postCreateView(controller: Controller, view: View) {
             super.postCreateView(controller, view)
 
+            Timber.e("当前的Controller是 : ${controller::class.java.simpleName}")
             onViewCreated(view)
             // here presenter will be created, if rotate screen, event(onNext()、onError()、onComplete()) will be send again.
             presenterDelegate.onResume(this@NucleusDaggerController)

@@ -5,6 +5,8 @@ import io.reactivex.processors.PublishProcessor
 import template.data.database.models.Chapter
 import template.data.download.DownloadStore
 import template.source.model.Page
+import template.source.model.Page.Companion.DOWNLOAD_IMAGE
+import template.source.model.Page.Companion.READY
 import java.util.concurrent.CopyOnWriteArrayList
 
 /**
@@ -77,7 +79,7 @@ class DownloadQueue(
             }
 
     /**
-     * 当Download里面的Pages任何一个page status发生变化时(如 状态DOWNLOAD_IMAGE -> 状态READY),
+     * 当Download里面的Pages任何一个page[Page] -> status发生变化时(如 状态[DOWNLOAD_IMAGE] -> 状态[READY]),
      * singleDownloadStatusProcessor就会通知订阅它的observable
      */
     fun getDownloadProgressFlowable(): Flowable<Download> {

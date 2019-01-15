@@ -139,6 +139,7 @@ dependencies {
     // RxBinding
     implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$version.rxbinding"
     implementation "com.jakewharton.rxbinding2:rxbinding-support-v4-kotlin:$version.rxbinding"
+    implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$version.rxbinding"
 
     // RxNetwork
     implementation 'com.github.pwittchen:reactivenetwork-rx2:3.0.0'
@@ -183,12 +184,12 @@ dependencies {
     // toggle system ui
     implementation 'me.zhanghai.android.systemuihelper:library:1.0.0'
 
+    // Sort
+    implementation 'com.github.gpanther:java-nat-sort:natural-comparator-1.1'
+
     // Disk
     implementation 'com.jakewharton:disklrucache:2.0.2'
     implementation 'com.github.inorichi:unifile:e9ee588'
-
-    // Sort
-    implementation 'com.github.gpanther:java-nat-sort:natural-comparator-1.1'
 
     implementation 'com.github.inorichi:junrar-android:634c1f5'
 }

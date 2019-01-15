@@ -51,7 +51,7 @@ class Page(
     var imageDownloadProgress: Int = 0
 
     @Transient
-    private var statusProcessor: FlowableProcessor<Int>? = null
+    private var statusProcessor: FlowableProcessor<Int>? = null // FlowableProcessor是PublicProcessor等等的基类
 
     override fun updateProgress(bytesRead: Long, contentLength: Long, done: Boolean) {
         imageDownloadProgress =

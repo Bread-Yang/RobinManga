@@ -255,7 +255,7 @@ class DownloadCache(private val context: Context,
         for (element in this) {
             val (key, value) = transform(element)
             if (key != null) {
-                destination.put(key, value)
+                destination[key] = value
             }
         }
         return destination

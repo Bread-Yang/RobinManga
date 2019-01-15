@@ -16,7 +16,7 @@ import javax.inject.Singleton
 
 
 @Module
-class ApiModule() {
+class ApiModule {
 
     @Provides
     @Singleton internal fun provideOkHttp(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {

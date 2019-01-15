@@ -42,6 +42,8 @@ import template.source.online.HttpSource
 import template.ui.main.MainActivity
 import template.ui.base.controller.DialogController
 import template.annotation.Layout
+import template.extensions.withFadeTransaction
+import template.ui.catalogue.global_search.CatalogueSearchController
 import template.ui.common.mvp.controller.NucleusDaggerController
 import template.ui.manga.MangaController
 import java.text.DateFormat
@@ -473,7 +475,7 @@ class MangaInfoController : NucleusDaggerController<MangaInfoPresenter>() {
      */
     fun performGlobalSearch(query: String) {
         val router = parentController?.router ?: return
-//        router.pushController(CatalogueSearchController(query).withFadeTransaction())
+        router.pushController(CatalogueSearchController(query).withFadeTransaction())
     }
 
     /**

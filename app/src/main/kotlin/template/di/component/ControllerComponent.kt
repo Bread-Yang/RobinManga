@@ -4,6 +4,7 @@ import dagger.Subcomponent
 import template.di.module.ControllerModule
 import template.di.scopes.ControllerContext
 import template.ui.catalogue.browse.BrowseCataloguePresenter
+import template.ui.catalogue.global_search.CatalogueSearchPresenter
 import template.ui.download.DownloadPresenter
 import template.ui.library.LibraryPresenter
 import template.ui.manga.MangaPresenter
@@ -25,4 +26,6 @@ interface ControllerComponent {
     fun inject(presenter: DownloadPresenter)
 
     fun inject(presenter: LibraryPresenter)
+
+    fun inject(presenter: CatalogueSearchPresenter)
 }

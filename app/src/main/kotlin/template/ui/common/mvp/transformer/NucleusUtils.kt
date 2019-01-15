@@ -10,7 +10,7 @@ import nucleus5.view.OptionalView
  */
 object NucleusUtils {
 
-    fun <View, T> valideFlowable(view: OptionalView<View>, notification: Notification<T>)
+    fun <View, T> validateFlowable(view: OptionalView<View>, notification: Notification<T>)
             : Flowable<Delivery<View, T>> {
         return if (Delivery.isValid(view, notification))
             Flowable.just(Delivery<View, T>(view.view, notification))
