@@ -22,7 +22,7 @@ import template.extensions.connectivityManager
 import template.extensions.plusAssign
 import template.extensions.powerManager
 import template.extensions.toast
-import template.utils.preference.PreferencesHelper
+import template.data.preference.PreferencesHelper
 
 /**
  * This service is used to manage the downloader. The system can decide to stop the service, in

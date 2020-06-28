@@ -58,12 +58,6 @@ android {
     }
 }
 
-kotlin {
-    experimental {
-        coroutines 'enable'
-    }
-}
-
 androidExtensions {
     experimental = true
 }
@@ -163,11 +157,14 @@ dependencies {
     // HTML parser
     implementation 'org.jsoup:jsoup:1.10.2'
 
+    // Job scheduling
+    implementation 'com.evernote:android-job:1.2.6'
+
     // material design dimens
     implementation 'com.dmitrymalkovich.android:material-design-dimens:1.4'
 
     // file picker
-    implementation 'com.nononsenseapps:filepicker:4.1.0'
+    implementation 'com.nononsenseapps:filepicker:2.5.2'
 
     // Tag
     implementation 'me.gujun.android.taggroup:library:1.4@aar'
@@ -192,4 +189,7 @@ dependencies {
     implementation 'com.github.inorichi:unifile:e9ee588'
 
     implementation 'com.github.inorichi:junrar-android:634c1f5'
+
+    // UI
+    implementation 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
 }

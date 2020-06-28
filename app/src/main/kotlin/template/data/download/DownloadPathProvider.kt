@@ -9,7 +9,7 @@ import template.data.database.models.Manga
 import template.extensions.getOrDefault
 import template.source.Source
 import template.utils.DiskUtil
-import template.utils.preference.PreferencesHelper
+import template.data.preference.PreferencesHelper
 
 /**
  * This class is used to provide the directories where the downloads should be saved.

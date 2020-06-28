@@ -95,8 +95,8 @@ public final class NucleusConductorDelegate<P extends Presenter> {
      * {@link android.app.Activity#onCreate(Bundle)}, {@link android.app.Fragment#onCreate(Bundle)}, {@link android.view.View#onSaveInstanceState()}.
      */
     public void onRestoreInstanceState(Bundle presenterState) {
-        if (presenter != null)
-            throw new IllegalArgumentException("onRestoreInstanceState() should be called before onResume()");
+//        if (presenter != null)
+//            throw new IllegalArgumentException("onRestoreInstanceState() should be called before onResume()");
         this.bundle = ParcelFn.unmarshall(ParcelFn.marshall(presenterState));
     }
 

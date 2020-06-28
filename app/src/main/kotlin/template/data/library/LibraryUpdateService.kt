@@ -17,10 +17,10 @@ import template.data.download.DownloadManager
 import template.data.library.LibraryUpdateService.Companion.start
 import template.data.notification.NotificationReceiver
 import template.data.notification.Notifications
+import template.data.preference.PreferencesHelper
 import template.data.track.TrackManager
 import template.extensions.isServiceRunning
 import template.source.SourceManager
-import template.utils.preference.PreferencesHelper
 
 /**
  * This class will take care of updating the chapters of the manga from the library. It can be

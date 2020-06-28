@@ -16,12 +16,13 @@ import template.extensions.gone
 import template.extensions.toast
 import template.extensions.visible
 import template.extensions.withFadeTransaction
+import template.source.CatalogueSource
 import template.ui.common.mvp.controller.NucleusDaggerController
 import template.ui.manga.MangaController
 import timber.log.Timber
 
 /**
- * Created by Robin Yeung on 8/22/18.
+ * Controller to manage the catalogues available in the app.
  */
 @Layout(R.layout.catalogue_controller)
 @RequiresPresenter(BrowseCataloguePresenter::class)

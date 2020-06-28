@@ -6,9 +6,6 @@ import template.network.DownloadProgressListener
 import template.ui.reader.ReaderChapter
 
 
-/**
- * Created by Robin Yeung on 8/22/18.
- */
 class Page(
         val index: Int,
         val url: String = "",

@@ -21,9 +21,6 @@ import template.ui.common.mvp.controller.NucleusDaggerController
 import template.ui.manga.MangaController
 import template.ui.reader.ReaderActivity
 
-/**
- * Created by Robin Yeung on 9/7/18.
- */
 @Layout(R.layout.chapters_controller)
 @RequiresPresenter(ChaptersPresenter::class)
 class ChaptersController : NucleusDaggerController<ChaptersPresenter>(),

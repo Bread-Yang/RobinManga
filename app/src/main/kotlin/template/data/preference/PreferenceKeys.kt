@@ -1,4 +1,4 @@
-package template.utils.preference
+package template.data.preference
 
 /**
  * This class stores the keys for the preferences in the application.

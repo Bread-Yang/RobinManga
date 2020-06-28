@@ -10,9 +10,6 @@ import template.data.database.models.Chapter
 import template.data.database.models.Manga
 import template.data.download.model.Download
 
-/**
- * Created by Robin Yeung on 9/7/18.
- */
 class ChapterItem(val chapter: Chapter, val manga: Manga) : AbstractFlexibleItem<ChapterHolder>(),
         Chapter by chapter {
 

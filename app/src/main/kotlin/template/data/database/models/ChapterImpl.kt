@@ -1,8 +1,5 @@
 package template.data.database.models
 
-/**
- * Created by Robin Yeung on 8/22/18.
- */
 class ChapterImpl : Chapter {
 
     override var id: Long? = null

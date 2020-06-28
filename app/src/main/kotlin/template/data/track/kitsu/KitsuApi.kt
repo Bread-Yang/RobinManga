@@ -15,9 +15,6 @@ import retrofit2.http.*
 import template.data.database.models.Track
 import template.network.POST
 
-/**
- * Created by Robin Yeung on 19/12/2018.
- */
 class KitsuApi(private val client: OkHttpClient, interceptor: KitsuInterceptor) {
 
     companion object {

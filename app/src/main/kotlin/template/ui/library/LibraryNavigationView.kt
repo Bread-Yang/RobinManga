@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import template.App
 import template.R
 import template.extensions.getOrDefault
-import template.utils.preference.PreferencesHelper
+import template.data.preference.PreferencesHelper
 import template.widget.ExtendedNavigationView
 import template.widget.ExtendedNavigationView.Item.MultiSort.Companion.SORT_ASC
 import template.widget.ExtendedNavigationView.Item.MultiSort.Companion.SORT_DESC

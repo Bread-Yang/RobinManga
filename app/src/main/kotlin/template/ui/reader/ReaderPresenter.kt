@@ -25,16 +25,13 @@ import template.ui.reader.viewer.ChapterLoader
 import template.utils.DiskUtil
 import template.utils.RetryWithDelay
 import template.utils.SharedData
-import template.utils.preference.PreferencesHelper
+import template.data.preference.PreferencesHelper
 import timber.log.Timber
 import java.io.File
 import java.net.URLConnection
 import java.util.*
 import javax.inject.Inject
 
-/**
- * Created by Robin Yeung on 9/11/18.
- */
 class ReaderPresenter : BasePresenter<ReaderActivity>() {
 
     companion object {

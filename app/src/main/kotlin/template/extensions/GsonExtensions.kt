@@ -6,9 +6,6 @@ import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import java.lang.reflect.WildcardType
 
-/**
- * Created by Robin Yeung on 9/14/18.
- */
 inline fun <reified T : Any> gsonTypeToken(): Type = object : TypeToken<T>() {}.type
 
 fun ParameterizedType.isWildcard() : Boolean {

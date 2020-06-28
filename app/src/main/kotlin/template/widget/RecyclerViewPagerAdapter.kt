@@ -5,9 +5,6 @@ import android.view.ViewGroup
 import com.nightlynexus.viewstatepageradapter.ViewStatePagerAdapter
 import java.util.*
 
-/**
- * Created by Robin Yeung on 24/10/2018.
- */
 abstract class RecyclerViewPagerAdapter : ViewStatePagerAdapter() {
 
     private val pool = Stack<View>()

@@ -10,9 +10,6 @@ import eu.davidea.flexibleadapter.items.IFlexible
 import eu.davidea.viewholders.FlexibleViewHolder
 import template.R
 
-/**
- * Created by Robin Yeung on 9/6/18.
- */
 class ProgressItem : AbstractFlexibleItem<ProgressItem.Holder>() {
 
     private var loadMore = true

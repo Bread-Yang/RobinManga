@@ -1,8 +1,5 @@
 package template.data.database.tables
 
-/**
- * Created by Robin Yeung on 8/25/18.
- */
 object MangaTable {
 
     const val TABLE = "mangas"

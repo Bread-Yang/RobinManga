@@ -16,7 +16,7 @@ import template.source.LocalSource
 import template.source.SourceManager
 import template.source.online.HttpSource
 import template.ui.common.mvp.BasePresenter
-import template.utils.preference.PreferencesHelper
+import template.data.preference.PreferencesHelper
 import java.io.IOException
 import java.io.InputStream
 import javax.inject.Inject

@@ -17,6 +17,7 @@ import template.extensions.withFadeTransaction
 import template.ui.catalogue.browse.BrowseCatalogueController
 import template.ui.common.mvp.activity.NucleusDaggerActivity
 import template.ui.download.DownloadController
+import template.ui.setting.SettingsMainController
 
 @Mockable
 @Layout(R.layout.main_activity)
@@ -38,6 +39,11 @@ class MainActivity : NucleusDaggerActivity<MainPresenter>() {
     private var drawerArrow: DrawerArrowDrawable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(when (presenter.preferencesHelper.theme()) {
+            2 -> R.style.Theme_Tachiyomi_Dark
+            3 -> R.style.Theme_Tachiyomi_Amoled
+            else -> R.style.Theme_Tachiyomi
+        })
         super.onCreate(savedInstanceState)
 
         setSupportActionBar(toolbar)
@@ -60,6 +66,9 @@ class MainActivity : NucleusDaggerActivity<MainPresenter>() {
                     R.id.nav_drawer_downloads -> {
                         router.pushController(DownloadController().withFadeTransaction())
                     }
+                    R.id.nav_drawer_settings -> {
+                        router.pushController(SettingsMainController().withFadeTransaction())
+                    }
                 }
             }
             drawerLayout.closeDrawer(GravityCompat.START)
@@ -77,6 +86,9 @@ class MainActivity : NucleusDaggerActivity<MainPresenter>() {
                 onBackPressed()
             }
         }
+    }
+
+    override fun initPresenterOnce() {
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -110,9 +122,6 @@ class MainActivity : NucleusDaggerActivity<MainPresenter>() {
         } else if (backstackSize == 1 || !router.handleBack()) {
             super.onBackPressed()
         }
-    }
-
-    override fun initPresenterOnce() {
     }
 
     fun callByPresenter() {

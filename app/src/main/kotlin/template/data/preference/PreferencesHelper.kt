@@ -1,4 +1,4 @@
-package template.utils.preference
+package template.data.preference
 
 import android.content.Context
 import android.net.Uri
@@ -10,12 +10,9 @@ import template.data.track.TrackService
 import template.source.Source
 import java.io.File
 
-/**
- * Created by Robin Yeung on 8/22/18.
- */
 open class PreferencesHelper(val context: Context) {
 
-        private val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+    private val prefs = PreferenceManager.getDefaultSharedPreferences(context)
     private val rxPrefs = RxSharedPreferences.create(prefs)
 
     private val defaultDownloadsDir = Uri.fromFile(

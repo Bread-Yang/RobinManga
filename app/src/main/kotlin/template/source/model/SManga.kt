@@ -2,9 +2,6 @@ package template.source.model
 
 import java.io.Serializable
 
-/**
- * Created by Robin Yeung on 8/22/18.
- */
 interface SManga : Serializable {
 
     var url: String

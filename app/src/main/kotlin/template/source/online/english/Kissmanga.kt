@@ -13,9 +13,6 @@ import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.regex.Pattern
 
-/**
- * Created by Robin Yeung on 8/23/18.
- */
 class Kissmanga(override val network: NetworkHelper) : ParsedHttpSource() {
 
     override val id: Long = 4

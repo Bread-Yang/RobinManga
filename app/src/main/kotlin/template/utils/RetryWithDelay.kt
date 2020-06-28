@@ -6,9 +6,6 @@ import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
-/**
- * Created by Robin Yeung on 9/18/18.
- */
 class RetryWithDelay(
         private val maxRetries: Int = 1,
         private val retryStrategy: (Int) -> Int = { 1000 },

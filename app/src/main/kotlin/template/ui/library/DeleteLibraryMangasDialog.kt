@@ -9,9 +9,6 @@ import template.data.database.models.Manga
 import template.ui.base.controller.DialogController
 import template.widget.DialogCheckboxView
 
-/**
- * Created by Robin Yeung on 12/20/18.
- */
 class DeleteLibraryMangasDialog<T>(bundle: Bundle? = null) :
         DialogController(bundle) where T : Controller, T : DeleteLibraryMangasDialog.Listener {
 

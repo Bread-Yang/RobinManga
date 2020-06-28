@@ -19,7 +19,7 @@ import template.source.model.SManga
 import template.source.online.LoginSource
 import template.ui.catalogue.browse.BrowseCataloguePresenter
 import template.ui.common.mvp.BasePresenter
-import template.utils.preference.PreferencesHelper
+import template.data.preference.PreferencesHelper
 import javax.inject.Inject
 
 /**

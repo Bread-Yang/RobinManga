@@ -1,8 +1,5 @@
 package template.source.model
 
-/**
- * Created by Robin Yeung on 8/23/18.
- */
 sealed class Filter<T>(val name: String, var state: T) {
 
     open class Header(name: String) : Filter<Any>(name, 0)

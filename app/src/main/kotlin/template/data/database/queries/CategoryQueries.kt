@@ -18,7 +18,7 @@ interface CategoryQueries : DbProvider {
                     .build())
             .prepare()
 
-    fun getCategoriesForManga(manga: Manga) : PreparedGetListOfObjects<Category> = db.get()
+    fun getCategoriesForManga(manga: Manga): PreparedGetListOfObjects<Category> = db.get()
             .listOfObjects(Category::class.java)
             .withQuery(RawQuery.builder()
                     .query(getCategoriesForMangaQuery())

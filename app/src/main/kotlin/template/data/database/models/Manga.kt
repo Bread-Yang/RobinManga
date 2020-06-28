@@ -2,9 +2,6 @@ package template.data.database.models
 
 import template.source.model.SManga
 
-/**
- * Created by Robin Yeung on 8/25/18.
- */
 interface Manga : SManga {
 
     var id: Long?

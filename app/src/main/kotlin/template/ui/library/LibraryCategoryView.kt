@@ -19,7 +19,7 @@ import template.extensions.getOrDefault
 import template.extensions.inflate
 import template.extensions.plusAssign
 import template.extensions.toast
-import template.utils.preference.PreferencesHelper
+import template.data.preference.PreferencesHelper
 import template.widget.AutofitRecyclerView
 
 /**

@@ -10,9 +10,6 @@ import template.R
 import template.data.database.models.Manga
 import template.extensions.getOrDefault
 
-/**
- * Created by Robin Yeung on 8/26/18.
- */
 class CatalogueItem(val manga: Manga, private val catalogueAsList: Preference<Boolean>) :
         AbstractFlexibleItem<CatalogueHolder>() {
 

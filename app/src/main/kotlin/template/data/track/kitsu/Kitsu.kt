@@ -12,9 +12,6 @@ import template.data.track.TrackService
 import template.data.track.model.TrackSearch
 import java.text.DecimalFormat
 
-/**
- * Created by Robin Yeung on 19/12/2018.
- */
 class Kitsu(private val context: Context, id: Int) : TrackService(id) {
 
     companion object {

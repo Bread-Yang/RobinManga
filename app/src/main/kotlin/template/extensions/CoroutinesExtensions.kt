@@ -1,10 +1,9 @@
 package template.extensions
 
-import kotlinx.coroutines.experimental.*
-import kotlinx.coroutines.experimental.android.Main
+import kotlinx.coroutines.*
 
 fun launchUI(block: suspend CoroutineScope.() -> Unit): Job =
-        GlobalScope.launch(Dispatchers.Main, CoroutineStart.DEFAULT, null, block)
+        GlobalScope.launch(Dispatchers.Main, CoroutineStart.DEFAULT, block)
 
 // Setting it to the value of CoroutineStart.UNDISPATCHED has the effect of starting to execute
 // coroutine immediately until its first suspension point as the following example shows:
@@ -25,4 +24,4 @@ fun launchUI(block: suspend CoroutineScope.() -> Unit): Job =
 //  After launch
 //  After delay
 fun launchNow(block: suspend CoroutineScope.() -> Unit): Job =
-        GlobalScope.launch(Dispatchers.Main, CoroutineStart.UNDISPATCHED, null, block)
+        GlobalScope.launch(Dispatchers.Main, CoroutineStart.UNDISPATCHED, block)

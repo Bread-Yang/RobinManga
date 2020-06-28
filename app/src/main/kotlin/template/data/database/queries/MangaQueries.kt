@@ -1,14 +1,12 @@
 package template.data.database.queries
 
+import com.pushtorefresh.storio3.sqlite.queries.DeleteQuery
 import com.pushtorefresh.storio3.sqlite.queries.Query
 import template.data.database.DbProvider
 import template.data.database.models.Manga
 import template.data.database.resolvers.MangaLastUpdatedPutResolver
 import template.data.database.tables.MangaTable
 
-/**
- * Created by Robin Yeung on 8/25/18.
- */
 interface MangaQueries : DbProvider {
 
     fun getMangas() = db.get()
@@ -49,4 +47,13 @@ interface MangaQueries : DbProvider {
             .`object`(manga)
             .withPutResolver(MangaLastUpdatedPutResolver())
             .prepare()
+
+    fun deleteMangasNotInLibrary() = db.delete()
+            .byQuery(DeleteQuery.builder()
+                    .table(MangaTable.TABLE)
+                    .where("${MangaTable.COL_FAVORITE} = ?")
+                    .whereArgs(0)
+                    .build())
+            .prepare()
+
 }

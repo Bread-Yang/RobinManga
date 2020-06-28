@@ -9,9 +9,6 @@ import template.data.database.models.Category
 import template.data.database.models.Manga
 import template.ui.base.controller.DialogController
 
-/**
- * Created by Robin Yeung on 1/11/2018.
- */
 class ChangeMangaCategoriesDialog<T>(bundle: Bundle? = null) :
         DialogController(bundle) where T : Controller, T : ChangeMangaCategoriesDialog.Listener {
 

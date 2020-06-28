@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cvManga"
+    style="@style/Theme.Widget.CardView.Item"
+    android:padding="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/ivCover"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:contentDescription="@string/description_cover"
+            android:scaleType="centerCrop" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tvMangaTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:textAppearance="@style/TextAppearance.Medium.Title" />
+
+                <TextView
+                    android:id="@+id/tvMangaSource"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvMangaTitle"
+                    android:textAppearance="@style/TextAppearance.Medium.Body2" />
+
+                <TextView
+                    android:id="@+id/tvLastRead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvMangaSource"
+                    android:textAppearance="@style/TextAppearance.Medium.Body2.Hint" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/btnRemove"
+                style="@style/Theme.Widget.Button.Borderless.Negative"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="@string/action_remove" />
+
+            <Button
+                android:id="@+id/btnResume"
+                style="@style/Theme.Widget.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_toEndOf="@id/btnRemove"
+                android:layout_toRightOf="@id/btnRemove"
+                android:text="@string/action_resume" />
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

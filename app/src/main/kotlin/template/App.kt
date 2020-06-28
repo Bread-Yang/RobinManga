@@ -9,18 +9,19 @@ import template.data.cache.CoverCache
 import template.data.database.DatabaseHelper
 import template.data.download.DownloadManager
 import template.data.notification.Notifications
+import template.data.preference.PreferencesHelper
 import template.data.track.TrackManager
 import template.di.component.ApplicationComponent
 import template.di.component.DaggerApplicationComponent
 import template.di.module.ApplicationModule
 import template.network.NetworkHelper
 import template.source.SourceManager
-import template.utils.preference.PreferencesHelper
 import timber.log.Timber
 import javax.inject.Inject
 
 class App : Application() {
 
+    // 静态变量
     companion object {
         lateinit var app: App
     }
@@ -92,7 +93,7 @@ class App : Application() {
         }
     }
 
-    protected open fun setupNotificationChannels() {
+    private fun setupNotificationChannels() {
         Notifications.createChannel(this)
     }
 }

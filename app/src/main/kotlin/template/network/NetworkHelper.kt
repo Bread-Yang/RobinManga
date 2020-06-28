@@ -13,9 +13,6 @@ import java.security.KeyStore
 import java.security.NoSuchAlgorithmException
 import javax.net.ssl.*
 
-/**
- * Created by Robin Yeung on 8/23/18.
- */
 class NetworkHelper(context: Context) {
 
     private val cacheDir = File(context.cacheDir, "network_cache")

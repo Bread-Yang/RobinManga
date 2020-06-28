@@ -16,15 +16,16 @@ class DeliverLatestCacheFlowable<View, T>(private val view: Flowable<OptionalVie
 
 
     override fun apply(flowable: Flowable<T>): Publisher<Delivery<View, T>> {
+        // combineLatest RxJava2 用法 : https://dev.to/amay077/rxjava-combinelatest-quick-example-e8b
         return Flowable
-                .combineLatest(
+                .combineLatest<OptionalView<View>, Notification<T>, Array<Any>>(
                         view,
                         flowable
                                 .materialize()
                                 .filter {
                                     !it.isOnComplete
                                 },
-                        BiFunction<OptionalView<View>, Notification<T>, Array<Any>> { view, notification ->
+                        BiFunction { view, notification ->
                             arrayOf(view, notification)
                         }
                 )

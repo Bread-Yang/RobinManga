@@ -3,9 +3,6 @@ package template.data.track.anilist
 import okhttp3.Interceptor
 import okhttp3.Response
 
-/**
- * Created by Robin Yeung on 12/20/18.
- */
 class AnilistInterceptor(val anilist: Anilist, private var token: String?) : Interceptor {
 
     /**

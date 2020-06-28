@@ -4,12 +4,19 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.support.v4.content.ContextCompat
 import com.bluelinelabs.conductor.Controller
+import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
 
-/**
- * Created by Robin Yeung on 8/22/18.
- */
+fun Router.popControllerWithTag(tag: String): Boolean {
+    val controller = getControllerWithTag(tag)
+    if (controller != null) {
+        popController(controller)
+        return true
+    }
+    return false
+}
+
 fun Controller.requestPermissionsSafe(permissions: Array<String>, requestCode: Int) {
     val activity = activity ?: return
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

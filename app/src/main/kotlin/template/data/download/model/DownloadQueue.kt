@@ -9,9 +9,6 @@ import template.source.model.Page.Companion.DOWNLOAD_IMAGE
 import template.source.model.Page.Companion.READY
 import java.util.concurrent.CopyOnWriteArrayList
 
-/**
- * Created by Robin Yeung on 9/20/18.
- */
 class DownloadQueue(
         private val store: DownloadStore,
         private val queue: MutableList<Download> = CopyOnWriteArrayList<Download>())

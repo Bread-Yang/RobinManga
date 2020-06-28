@@ -12,9 +12,6 @@ import template.extensions.setVectorCompat
 import template.ui.base.holder.BaseFlexibleViewHolder
 import java.util.*
 
-/**
- * Created by Robin Yeung on 9/7/18.
- */
 class ChapterHolder(private val view: View, private val adapter: ChaptersAdapter)
     : BaseFlexibleViewHolder(view, adapter) {
 

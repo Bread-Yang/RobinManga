@@ -4,9 +4,6 @@ import io.reactivex.Observable
 import template.source.model.FilterList
 import template.source.model.MangasPage
 
-/**
- * Created by Robin Yeung on 8/23/18.
- */
 interface CatalogueSource : Source {
     /**
      * An ISO 639-1 compliant language code (two letters in lower case).

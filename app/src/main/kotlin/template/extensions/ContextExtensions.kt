@@ -3,10 +3,15 @@ package template.extensions
 import android.app.ActivityManager
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.os.PowerManager
 import android.support.annotation.StringRes
+import android.support.v4.content.ContextCompat
 import android.widget.Toast
+import com.nononsenseapps.filepicker.FilePickerActivity
+import template.widget.CustomLayoutPickerActivity
 
 /**
  * Display a toast in this context.
@@ -27,6 +32,27 @@ fun Context.toast(@StringRes resource: Int, duration: Int = Toast.LENGTH_SHORT) 
 fun Context.toast(text: String?, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, text.orEmpty(), duration).show()
 }
+
+/**
+ * Helper method to construct an Intent to use a custom file picker.
+ * @param currentDir the path the file picker will open with.
+ * @return an Intent to start the file picker activity.
+ */
+fun Context.getFilePicker(currentDir: String): Intent {
+    return Intent(this, CustomLayoutPickerActivity::class.java)
+            .putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false)
+            .putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, true)
+            .putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_DIR)
+            .putExtra(FilePickerActivity.EXTRA_START_PATH, currentDir)
+}
+
+/**
+ * Checks if the give permission is granted.
+ *
+ * @param permission the permission to check.
+ * @return true if it has permissions.
+ */
+fun Context.hasPermission(permission: String) = ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 
 /**
  * Returns the color for the given attribute.

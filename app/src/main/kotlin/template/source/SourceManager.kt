@@ -10,9 +10,6 @@ import template.source.model.SManga
 import template.source.online.HttpSource
 import template.source.online.english.Kissmanga
 
-/**
- * Created by Robin Yeung on 8/23/18.
- */
 open class SourceManager(private val context: Context, private val networkHelper: NetworkHelper) {
 
     private val sourcesMap = mutableMapOf<Long, Source>()
@@ -39,19 +36,22 @@ open class SourceManager(private val context: Context, private val networkHelper
 
     fun getCatalogueSources() = sourcesMap.values.filterIsInstance<CatalogueSource>()
 
-    private fun createInternalSources(): List<Source> = listOf(
-            Kissmanga(networkHelper)
-    )
-
     internal fun registerSource(source: Source, overwrite: Boolean = false) {
         if (overwrite || !sourcesMap.containsKey(source.id)) {
             sourcesMap[source.id] = source
+        }
+        if (overwrite || !stubSourcesMap.containsKey(source.id)) {
+            stubSourcesMap[source.id] = StubSource(source.id)
         }
     }
 
     internal fun unregisterSource(source: Source) {
         sourcesMap.remove(source.id)
     }
+
+    private fun createInternalSources(): List<Source> = listOf(
+            LocalSource(context)
+    )
 
     private inner class StubSource(override val id: Long) : Source {
 

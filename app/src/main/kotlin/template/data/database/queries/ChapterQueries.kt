@@ -7,9 +7,6 @@ import template.data.database.models.Manga
 import template.data.database.resolvers.ChapterSourceOrderPutResolver
 import template.data.database.tables.ChapterTable
 
-/**
- * Created by Robin Yeung on 9/10/18.
- */
 interface ChapterQueries : DbProvider {
 
     fun getChapters(manga: Manga) = db.get()

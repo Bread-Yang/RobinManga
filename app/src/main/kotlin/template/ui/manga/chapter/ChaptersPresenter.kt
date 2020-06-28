@@ -21,9 +21,6 @@ import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
-/**
- * Created by Robin Yeung on 9/7/18.
- */
 class ChaptersPresenter : BasePresenter<ChaptersController>() {
 
     @Inject

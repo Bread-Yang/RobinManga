@@ -278,6 +278,7 @@ class MangaInfoController : NucleusDaggerController<MangaInfoPresenter>() {
 
         try {
             val url = Uri.parse(source.mangaDetailsRequest(presenter.manga).url().toString())
+            // Chrome Custom Tabs
             val intent = CustomTabsIntent.Builder()
                     .setToolbarColor(context.getResourceColor(R.attr.colorPrimary))
                     .build()

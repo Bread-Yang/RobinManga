@@ -13,12 +13,12 @@ import template.source.SourceManager
 import template.source.model.FilterList
 import template.source.model.SManga
 import template.ui.common.mvp.BasePresenter
-import template.utils.preference.PreferencesHelper
+import template.data.preference.PreferencesHelper
 import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * Created by Robin Yeung on 8/22/18.
+ * Presenter of [BrowseCatalogueController].
  */
 //class BrowseCataloguePresenter @Inject constructor(
 //        sourceId: Long,
@@ -170,17 +170,23 @@ class BrowseCataloguePresenter : BasePresenter<BrowseCatalogueController>() {
         mangaDetailDisposable = mangaDetailSubject
                 .observeOn(Schedulers.io())
                 .flatMap {
+                    // When to use flatMap operator :
+                    // 1. When you're working with a list of data within a page, activity, or fragment and want to send some data to a server or a database per item of the list. The concatMap operator will also do here; however, as the flatMap operator works asynchronously, it'll be faster, and, as you're sending data, the order doesn't really matter.
+                    // 2. Whenever you want to perform any operation on list items asynchronously and in a comparatively short time period.
                     Observable.fromIterable(it)
                 }
                 .filter {
                     it.thumbnail_url == null && !it.initialized
                 }
                 .concatMap {
+                    // When to use concatMap operator :
+                    // 1. When you are downloading the list of data to display to the user. The order really matters here, you will surely not want to load and display the second item of the list after the third and fourth one are already displayed, would you?
+                    // 2. Performing some operation on a sorted list, making sure the list stays the same.
                     Timber.e("getMangaDetailsObservable")
                     getMangaDetailsObservable(it)
                 }
-                .toFlowable(BackpressureStrategy.LATEST)
-                .onBackpressureDrop {
+                .toFlowable(BackpressureStrategy.MISSING)
+                .onBackpressureDrop() {
                     Timber.e("BackpressureDrop : ${it.thumbnail_url}" )
                 }
                 .observeOn(AndroidSchedulers.mainThread())

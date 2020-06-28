@@ -7,9 +7,6 @@ import template.source.CatalogueSource
 import template.source.model.FilterList
 import template.source.model.MangasPage
 
-/**
- * Created by Robin Yeung on 8/25/18.
- */
 open class CataloguePager(val source: CatalogueSource, val query: String, val filters: FilterList) : Pager() {
 
     override fun requestNext(): Observable<MangasPage> {

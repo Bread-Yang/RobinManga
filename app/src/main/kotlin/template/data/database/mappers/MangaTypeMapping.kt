@@ -29,9 +29,6 @@ import template.data.database.tables.MangaTable.COL_URL
 import template.data.database.tables.MangaTable.COL_VIEWER
 import template.data.database.tables.MangaTable.TABLE
 
-/**
- * Created by Robin Yeung on 8/26/18.
- */
 open class MangaTypeMapping : SQLiteTypeMapping<Manga>(
         MangaPutResolver(),
         MangaGetResolver(),

@@ -6,7 +6,6 @@ import template.source.model.Page
 /**
  * Chapter的代理类
  *
- * Created by Robin Yeung on 8/22/18.
  */
 class ReaderChapter(c: Chapter) : Chapter by c {
 

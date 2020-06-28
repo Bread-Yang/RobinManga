@@ -8,7 +8,7 @@ import template.data.database.models.Chapter
 import template.data.database.models.Manga
 import template.extensions.getOrDefault
 import template.source.SourceManager
-import template.utils.preference.PreferencesHelper
+import template.data.preference.PreferencesHelper
 import java.util.concurrent.TimeUnit
 
 /**

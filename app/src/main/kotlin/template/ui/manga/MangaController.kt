@@ -28,9 +28,6 @@ import template.ui.manga.chapter.ChaptersController
 import template.ui.manga.info.MangaInfoController
 import java.util.*
 
-/**
- * Created by Robin Yeung on 9/6/18.
- */
 @Layout(R.layout.manga_controller)
 @RequiresPresenter(MangaPresenter::class)
 class MangaController: NucleusDaggerController<MangaPresenter>, TabbedController {

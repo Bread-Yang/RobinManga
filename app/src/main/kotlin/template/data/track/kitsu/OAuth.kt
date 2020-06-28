@@ -1,8 +1,5 @@
 package template.data.track.kitsu
 
-/**
- * Created by Robin Yeung on 19/12/2018.
- */
 data class OAuth(
         val access_token: String,
         val token_type: String,

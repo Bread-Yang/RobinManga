@@ -9,7 +9,7 @@ import template.App
 import template.data.database.models.Track
 import template.data.track.model.TrackSearch
 import template.network.NetworkHelper
-import template.utils.preference.PreferencesHelper
+import template.data.preference.PreferencesHelper
 
 abstract class TrackService(val id: Int) {
 

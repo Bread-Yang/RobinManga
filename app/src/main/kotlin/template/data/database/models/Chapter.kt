@@ -3,9 +3,6 @@ package template.data.database.models
 import template.source.model.SChapter
 import java.io.Serializable
 
-/**
- * Created by Robin Yeung on 8/22/18.
- */
 interface Chapter : SChapter, Serializable {
 
     var id: Long?

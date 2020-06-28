@@ -4,9 +4,6 @@ import android.support.v4.view.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
 
-/**
- * Created by Robin Yeung on 9/12/18.
- */
 abstract class ViewPagerAdapter : PagerAdapter() {
 
     protected abstract fun createView(container: ViewGroup, position: Int): View

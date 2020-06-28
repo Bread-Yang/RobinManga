@@ -1,8 +1,5 @@
 package template.data.database.models
 
-/**
- * Created by Robin Yeung on 24/10/2018.
- */
 class CategoryImpl : Category {
 
     override var id: Int? = null

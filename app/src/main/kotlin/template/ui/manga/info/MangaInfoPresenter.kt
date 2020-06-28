@@ -17,9 +17,6 @@ import template.ui.manga.MangaController
 import java.util.*
 import javax.inject.Inject
 
-/**
- * Created by Robin Yeung on 9/6/18.
- */
 class MangaInfoPresenter : BasePresenter<MangaInfoController>() {
 
     @Inject

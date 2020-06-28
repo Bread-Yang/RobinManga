@@ -13,7 +13,7 @@ import template.data.track.TrackManager
 import template.di.scopes.ApplicationContext
 import template.network.NetworkHelper
 import template.source.SourceManager
-import template.utils.preference.PreferencesHelper
+import template.data.preference.PreferencesHelper
 import javax.inject.Singleton
 
 @Module

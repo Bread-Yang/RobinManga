@@ -1,8 +1,5 @@
 package template.data.track.anilist
 
-/**
- * Created by Robin Yeung on 12/20/18.
- */
 data class OAuth(
         val access_token: String,
         val token_type: String,

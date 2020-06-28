@@ -1,8 +1,5 @@
 package template.source.model
 
-/**
- * Created by Robin Yeung on 8/22/18.
- */
 class SChapterImpl : SChapter {
 
     override lateinit var url: String

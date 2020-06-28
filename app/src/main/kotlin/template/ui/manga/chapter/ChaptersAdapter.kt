@@ -9,9 +9,6 @@ import java.text.DateFormat
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 
-/**
- * Created by Robin Yeung on 9/7/18.
- */
 class ChaptersAdapter(controller: ChaptersController, context: Context) :
         FlexibleAdapter<ChapterItem>(null, controller, true) {
 

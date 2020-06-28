@@ -13,7 +13,7 @@ open class BasePresenter<View> : RxPresenter<View>() {
 
     /**
      * Subscribes an observable with [deliverFirst] and adds it to the presenter's lifecycle
-     * disposeble list.
+     * disposable list.
      *
      * @param onNext function to execute when the observable emits an item.
      * @param onError function to execute when the observable throws an error.

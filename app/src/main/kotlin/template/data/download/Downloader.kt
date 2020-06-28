@@ -10,7 +10,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.processors.PublishProcessor
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.async
 import okhttp3.Response
 import template.App
 import template.data.database.models.Chapter
@@ -251,7 +251,7 @@ class Downloader(
                     }
         }
 
-        // Runs in mian thread (synchronization needed).
+        // Runs in main thread (synchronization needed).
         val chaptersToQueue = chaptersWithoutDir.await()
                 .filter { chapter ->
                     // Filter out those already enqueued.

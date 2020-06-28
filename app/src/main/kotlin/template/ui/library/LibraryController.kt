@@ -29,9 +29,6 @@ import template.ui.manga.MangaController
 import timber.log.Timber
 import java.io.IOException
 
-/**
- * Created by Robin Yeung on 24/10/2018.
- */
 @Layout(R.layout.library_controller)
 @RequiresPresenter(LibraryPresenter::class)
 class LibraryController : NucleusDaggerController<LibraryPresenter>(),

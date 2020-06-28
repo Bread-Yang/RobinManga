@@ -12,9 +12,6 @@ import java.net.URL
 import java.net.URLConnection
 import java.util.concurrent.Executors
 
-/**
- * Created by Robin Yeung on 10/23/18.
- */
 class ZipContentProvider : ContentProvider() {
 
     private val pool by lazy { Executors.newCachedThreadPool() }

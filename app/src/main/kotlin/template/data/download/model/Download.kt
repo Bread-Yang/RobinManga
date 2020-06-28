@@ -6,9 +6,6 @@ import template.data.database.models.Manga
 import template.source.model.Page
 import template.source.online.HttpSource
 
-/**
- * Created by Robin Yeung on 9/8/18.
- */
 class Download(val source: HttpSource, val manga: Manga, val chapter: Chapter) {
 
     companion object {

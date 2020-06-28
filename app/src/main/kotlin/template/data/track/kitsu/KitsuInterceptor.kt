@@ -4,9 +4,6 @@ import com.google.gson.Gson
 import okhttp3.Interceptor
 import okhttp3.Response
 
-/**
- * Created by Robin Yeung on 19/12/2018.
- */
 class KitsuInterceptor(val kitsu: Kitsu, val gson: Gson) : Interceptor {
 
     /**

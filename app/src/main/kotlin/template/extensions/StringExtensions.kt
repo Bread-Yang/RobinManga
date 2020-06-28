@@ -23,3 +23,10 @@ fun String.truncateCenter(count: Int, replacement: String = "..."): String {
 
     return "${take(pieceLength)}$replacement${takeLast(pieceLength)}"
 }
+
+/**
+ * Case-insensitive natural comparator for Strings.
+ */
+fun String.compareToCaseInsensitiveNaturalOrder(other: String): Int {
+    return String.CASE_INSENSITIVE_ORDER.then(naturalOrder()).compare(this, other)
+}

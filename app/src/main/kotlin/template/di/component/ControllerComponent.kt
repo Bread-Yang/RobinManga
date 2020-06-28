@@ -10,6 +10,7 @@ import template.ui.library.LibraryPresenter
 import template.ui.manga.MangaPresenter
 import template.ui.manga.chapter.ChaptersPresenter
 import template.ui.manga.info.MangaInfoPresenter
+import template.ui.recently_read.RecentlyReadPresenter
 
 @ControllerContext
 @Subcomponent(modules = arrayOf(ControllerModule::class))
@@ -28,4 +29,6 @@ interface ControllerComponent {
     fun inject(presenter: LibraryPresenter)
 
     fun inject(presenter: CatalogueSearchPresenter)
+
+    fun inject(presenter: RecentlyReadPresenter)
 }

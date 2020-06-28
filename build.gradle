@@ -7,7 +7,7 @@ buildscript {
         apply from: 'dependencies.gradle'
         def version = rootProject.extensions.ext.version
 
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:4.0.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$version.kotlin"
         /**
          * for Unit Test. [template.annotation.Mockable]

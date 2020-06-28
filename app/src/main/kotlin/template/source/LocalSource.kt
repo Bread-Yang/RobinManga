@@ -9,6 +9,7 @@ import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import template.R
+import template.extensions.compareToCaseInsensitiveNaturalOrder
 import template.source.model.*
 import template.utils.ChapterRecognition
 import template.utils.DiskUtil
@@ -22,10 +23,8 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
+import kotlin.Comparator
 
-/**
- * Created by Robin Yeung on 10/16/18.
- */
 class LocalSource(private val context: Context) : CatalogueSource {
     companion object {
         private val COVER_NAME = "cover.jpg"
@@ -195,10 +194,6 @@ class LocalSource(private val context: Context) : CatalogueSource {
         }
     }
 
-    private class OrderBy : Filter.Sort("Order by", arrayOf("Title", "Date"), Filter.Sort.Selection(0, true))
-
-    override fun getFilterList() = FilterList(OrderBy())
-
     interface Loader {
         fun load(): List<Page>
     }
@@ -320,5 +315,54 @@ class LocalSource(private val context: Context) : CatalogueSource {
                 }
             }
         }
+    }
+
+    fun getFormat(chapter: SChapter): Format {
+        val baseDirs = getBaseDirectories(context)
+
+        for (dir in baseDirs) {
+            val chapFile = File(dir, chapter.url)
+            if (!chapFile.exists()) continue
+
+            return getFormat(chapFile)
+        }
+        throw Exception("Chapter not found")
+    }
+
+    private fun getFormat(file: File): Format {
+        val extension = file.extension
+        return if (file.isDirectory) {
+            Format.Directory(file)
+        } else if (extension.equals("zip", true) || extension.equals("cbz", true)) {
+            Format.Zip(file)
+        } else if (extension.equals("rar", true) || extension.equals("cbr", true)) {
+            Format.Rar(file)
+        } else if (extension.equals("epub", true)) {
+            Format.Epub(file)
+        } else {
+            throw Exception("Invalid chapter format")
+        }
+    }
+
+    private fun updateCover(chapter: SChapter, manga: SManga): File? {
+        val format = getFormat(chapter)
+        return when (format) {
+            is Format.Directory -> {
+                val entry = format.file.listFiles()
+                        .sortedWith(Comparator<File> { f1, f2 -> f1.name.compareToCaseInsensitiveNaturalOrder(f2.name)})
+                        .find { !it.isDirectory && Imageut }
+            }
+        }
+    }
+
+    private class OrderBy : Filter.Sort("Order by", arrayOf("Title", "Date"), Filter.Sort.Selection(0, true))
+
+    override fun getFilterList() = FilterList(OrderBy())
+
+    sealed class Format {
+        data class Directory(val file: File) : Format()
+        data class Zip(val file: File) : Format()
+        data class Rar(val file: File) : Format()
+        data class Epub(val file: File) : Format()
     }
 }
