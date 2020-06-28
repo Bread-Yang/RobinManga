@@ -1,6 +1,6 @@
 package template.ui.download
 
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -55,7 +55,7 @@ class DownloadController : NucleusDaggerController<DownloadPresenter>() {
         recyclerView.adapter = adapter
 
         // Set the layout manager for the recycler and fixed size.
-        recyclerView.layoutManager = LinearLayoutManager(view.context)
+        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(view.context)
         recyclerView.setHasFixedSize(true)
 
         // Subscribe to changes

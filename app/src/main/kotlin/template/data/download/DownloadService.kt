@@ -8,7 +8,7 @@ import android.net.NetworkInfo
 import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
-import android.support.v4.app.NotificationCompat
+import androidx.core.app.NotificationCompat
 import com.github.pwittchen.reactivenetwork.library.rx2.Connectivity
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork
 import io.reactivex.android.schedulers.AndroidSchedulers

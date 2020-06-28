@@ -7,8 +7,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.os.PowerManager
-import android.support.annotation.StringRes
-import android.support.v4.content.ContextCompat
+import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import android.widget.Toast
 import com.nononsenseapps.filepicker.FilePickerActivity
 import template.widget.CustomLayoutPickerActivity

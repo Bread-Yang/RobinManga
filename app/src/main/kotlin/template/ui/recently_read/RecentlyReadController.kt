@@ -1,6 +1,6 @@
 package template.ui.recently_read
 
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import eu.davidea.flexibleadapter.FlexibleAdapter
 import kotlinx.android.synthetic.main.recently_read_controller.*
@@ -38,7 +38,7 @@ class RecentlyReadController : NucleusDaggerController<RecentlyReadPresenter>(),
 
     override fun onViewCreated(view: View) {
         // Initialize adapter
-        recyclerView.layoutManager = LinearLayoutManager(view.context)
+        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(view.context)
         adapter = RecentlyReadAdapter(this@RecentlyReadController)
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter

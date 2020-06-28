@@ -1,6 +1,6 @@
 package template.ui.catalogue.browse
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -18,11 +18,11 @@ class ProgressItem : AbstractFlexibleItem<ProgressItem.Holder>() {
         return R.layout.catalogue_progress_item
     }
 
-    override fun createViewHolder(view: View, adapter: FlexibleAdapter<IFlexible<RecyclerView.ViewHolder>>): Holder {
+    override fun createViewHolder(view: View, adapter: FlexibleAdapter<IFlexible<androidx.recyclerview.widget.RecyclerView.ViewHolder>>): Holder {
         return Holder(view, adapter)
     }
 
-    override fun bindViewHolder(adapter: FlexibleAdapter<IFlexible<RecyclerView.ViewHolder>>, holder: Holder, position: Int, payloads: MutableList<Any>?) {
+    override fun bindViewHolder(adapter: FlexibleAdapter<IFlexible<androidx.recyclerview.widget.RecyclerView.ViewHolder>>, holder: Holder, position: Int, payloads: MutableList<Any>?) {
         holder.progressBar.visibility = View.GONE
         holder.progressMessage.visibility = View.GONE
 

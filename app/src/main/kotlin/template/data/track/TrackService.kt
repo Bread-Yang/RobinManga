@@ -1,7 +1,7 @@
 package template.data.track
 
-import android.support.annotation.CallSuper
-import android.support.annotation.DrawableRes
+import androidx.annotation.CallSuper
+import androidx.annotation.DrawableRes
 import io.reactivex.Completable
 import io.reactivex.Observable
 import okhttp3.OkHttpClient

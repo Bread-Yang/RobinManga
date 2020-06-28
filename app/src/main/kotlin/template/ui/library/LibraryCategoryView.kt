@@ -1,8 +1,8 @@
 package template.ui.library
 
 import android.content.Context
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
@@ -49,7 +49,7 @@ class LibraryCategoryView @JvmOverloads constructor(context: Context, attrs: Att
     /**
      * Recycler view of the list of manga.
      */
-    private lateinit var recycler: RecyclerView
+    private lateinit var recycler: androidx.recyclerview.widget.RecyclerView
 
     /**
      * Adapter to hold the manga in this category.
@@ -65,8 +65,8 @@ class LibraryCategoryView @JvmOverloads constructor(context: Context, attrs: Att
         this.controller = controller
 
         recycler = if (preferences.libraryAsList().getOrDefault()) {
-            (swipeRefresh.inflate(R.layout.library_list_recycler) as RecyclerView).apply {
-                layoutManager = LinearLayoutManager(context)
+            (swipeRefresh.inflate(R.layout.library_list_recycler) as androidx.recyclerview.widget.RecyclerView).apply {
+                layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
             }
         } else {
             (swipeRefresh.inflate(R.layout.library_grid_recycler) as AutofitRecyclerView).apply {
@@ -80,10 +80,10 @@ class LibraryCategoryView @JvmOverloads constructor(context: Context, attrs: Att
         recycler.adapter = adapter
         swipeRefresh.addView(recycler)
 
-        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+        recycler.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: androidx.recyclerview.widget.RecyclerView, newState: Int) {
                 // Disable swipe refresh when view is not at the top
-                val firstPos = (recyclerView.layoutManager as LinearLayoutManager)
+                val firstPos = (recyclerView.layoutManager as androidx.recyclerview.widget.LinearLayoutManager)
                         .findFirstCompletelyVisibleItemPosition()
                 swipeRefresh.isEnabled = firstPos <= 0
             }

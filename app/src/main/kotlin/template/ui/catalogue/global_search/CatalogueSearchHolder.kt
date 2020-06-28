@@ -1,6 +1,6 @@
 package template.ui.catalogue.global_search
 
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import kotlinx.android.synthetic.main.catalogue_global_search_controller_card.*
 import template.R
@@ -29,7 +29,7 @@ class CatalogueSearchHolder(view: View, val adapter: CatalogueSearchAdapter) :
 
     init {
         // Set layout horizontal.
-        recyclerView.layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(view.context, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = mangaAdapter
 
         nothing_found_icon.setVectorCompat(R.drawable.ic_search_black_112dp,

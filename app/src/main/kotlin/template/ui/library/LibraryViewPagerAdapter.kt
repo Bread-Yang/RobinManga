@@ -1,6 +1,6 @@
 package template.ui.library
 
-import android.support.v4.view.PagerAdapter
+import androidx.viewpager.widget.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
 import template.R
@@ -76,9 +76,9 @@ class LibraryViewPagerAdapter(private val controller: LibraryController) : Recyc
     }
 
     override fun getItemPosition(obj: Any): Int {
-        val view = obj as? LibraryCategoryView ?: return PagerAdapter.POSITION_NONE
+        val view = obj as? LibraryCategoryView ?: return androidx.viewpager.widget.PagerAdapter.POSITION_NONE
         val index = categories.indexOfFirst { it.id == view.category.id }
-        return if (index == -1) PagerAdapter.POSITION_NONE else index
+        return if (index == -1) androidx.viewpager.widget.PagerAdapter.POSITION_NONE else index
     }
 
     /**

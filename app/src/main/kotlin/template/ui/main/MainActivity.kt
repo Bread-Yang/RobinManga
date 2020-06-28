@@ -3,8 +3,8 @@ package template.ui.main
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.view.GravityCompat
-import android.support.v7.graphics.drawable.DrawerArrowDrawable
+import androidx.core.view.GravityCompat
+import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction

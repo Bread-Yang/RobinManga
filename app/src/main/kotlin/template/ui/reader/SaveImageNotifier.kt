@@ -2,7 +2,7 @@ package template.ui.reader
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.support.v4.app.NotificationCompat
+import androidx.core.app.NotificationCompat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import template.R
 import template.data.notification.NotificationHandler

@@ -1,7 +1,7 @@
 package template.ui.common.mvp.activity
 
 import android.os.Bundle
-import android.support.annotation.CallSuper
+import androidx.annotation.CallSuper
 import android.view.View
 import nucleus5.factory.PresenterFactory
 import nucleus5.factory.ReflectionPresenterFactory

@@ -1,6 +1,6 @@
 package template.ui.download
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import template.R
 import template.data.download.model.Download
@@ -11,7 +11,7 @@ import template.extensions.inflate
  *
  * @param context the context of the controller containing the adapter.
  */
-class DownloadAdapter : RecyclerView.Adapter<DownloadHolder>() {
+class DownloadAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<DownloadHolder>() {
 
     private var items = emptyList<Download>()
 

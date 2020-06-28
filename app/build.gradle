@@ -31,7 +31,7 @@ android {
 
         minSdkVersion android.minSdk
         targetSdkVersion android.targetSdk
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         buildConfigField "String", "BUILD_TIME", "\"${getBuildTime()}\""
 
@@ -73,19 +73,21 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     def version = rootProject.extensions.ext.version
 
-    testImplementation "junit:junit:$version.junit"
+    androidTestImplementation "androidx.test.ext:junit:$version.androidx_junit"
+    testImplementation "androidx.test.ext:junit:$version.androidx_junit"
     testImplementation "org.mockito:mockito-core:2.+"
-    androidTestImplementation("com.android.support.test.espresso:espresso-core:$version.espresso", {
+    androidTestImplementation("androidx.test.espresso:espresso-core:$version.espresso", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
     // android support library
-    implementation "com.android.support:appcompat-v7:$version.support_v7"
-    implementation "com.android.support:recyclerview-v7:$version.support_v7"
-    implementation "com.android.support:cardview-v7:$version.support_v7"
-    implementation "com.android.support:design:$version.support_v7"
-    implementation "com.android.support:customtabs:$version.support_v7"
-    implementation "com.android.support.constraint:constraint-layout:$version.constraintlayout"
+    implementation "androidx.appcompat:appcompat:$version.androidx"
+    implementation "androidx.recyclerview:recyclerview:$version.androidx"
+    implementation "com.google.android.material:material:$version.androidx"
+    implementation "androidx.cardview:cardview:$version.androidx_cardview"
+    implementation "androidx.browser:browser:$version.androidx_browser"
+    implementation "androidx.preference:preference:$version.androidx_preference"
+    implementation "androidx.constraintlayout:constraintlayout:$version.androidx_constraintlayout"
 
     // kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version.kotlin"

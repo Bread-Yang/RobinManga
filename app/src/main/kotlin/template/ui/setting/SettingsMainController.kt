@@ -1,6 +1,6 @@
 package template.ui.setting
 
-import android.support.v7.preference.PreferenceScreen
+import androidx.preference.PreferenceScreen
 import template.R
 import template.extensions.getResourceColor
 import template.extensions.withFadeTransaction

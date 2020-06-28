@@ -1,6 +1,6 @@
 package template.ui.reader.viewer.base
 
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import com.davemorrissey.labs.subscaleview.decoder.*
 import template.extensions.getOrDefault
 import template.source.model.Page
@@ -11,7 +11,7 @@ import template.ui.reader.ReaderChapter
  * Base reader containing the common data that can be used by its implementations. It dose not
  * contain any UI related action.
  */
-abstract class BaseReader : Fragment() {
+abstract class BaseReader : androidx.fragment.app.Fragment() {
 
     companion object {
         /**

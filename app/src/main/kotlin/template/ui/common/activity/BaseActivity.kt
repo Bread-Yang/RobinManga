@@ -1,7 +1,7 @@
 package template.ui.common.activity
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Router
 import template.annotation.Layout

@@ -1,7 +1,7 @@
 package template.ui.reader.viewer.pager.horizontal
 
 import android.content.Context
-import android.support.v4.view.ViewPager
+import androidx.viewpager.widget.ViewPager
 import android.view.MotionEvent
 import io.reactivex.functions.Consumer
 import template.ui.reader.viewer.pager.OnChapterBoundariesOutListener
@@ -10,7 +10,7 @@ import template.ui.reader.viewer.pager.Pager
 /**
  * Implementation of a [ViewPager] to add custom behavior on touch events.
  */
-class HorizontalViewPager(context: Context) : ViewPager(context), Pager {
+class HorizontalViewPager(context: Context) : androidx.viewpager.widget.ViewPager(context), Pager {
 
     companion object {
 
@@ -75,7 +75,7 @@ class HorizontalViewPager(context: Context) : ViewPager(context), Pager {
     }
 
     override fun setOnPageChangeListener(onPageChanged: Consumer<Int>) {
-        addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+        addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 onPageChanged.accept(position)
             }

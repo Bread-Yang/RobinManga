@@ -5,7 +5,7 @@ package template.ui.common.mvp;
  */
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import nucleus5.factory.PresenterFactory;
 import nucleus5.factory.PresenterStorage;

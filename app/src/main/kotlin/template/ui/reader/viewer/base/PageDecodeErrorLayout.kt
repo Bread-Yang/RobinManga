@@ -1,7 +1,7 @@
 package template.ui.reader.viewer.base
 
 import android.net.Uri
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.view.View
 import kotlinx.android.synthetic.main.reader_page_decode_error.view.*
 import template.R

@@ -1,6 +1,6 @@
 package template.ui.reader.viewer.pager;
 
-import android.support.v4.view.PagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
 import android.view.ViewGroup;
 
 import io.reactivex.functions.Consumer;

@@ -1,6 +1,6 @@
 package template.ui.recently_read
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import eu.davidea.flexibleadapter.FlexibleAdapter
 import eu.davidea.flexibleadapter.items.AbstractFlexibleItem
@@ -15,12 +15,12 @@ class RecentlyReadItem(val mch: MangaChapterHistory) : AbstractFlexibleItem<Rece
     }
 
     override fun createViewHolder(view: View,
-                                  adapter: FlexibleAdapter<IFlexible<RecyclerView.ViewHolder>>)
+                                  adapter: FlexibleAdapter<IFlexible<androidx.recyclerview.widget.RecyclerView.ViewHolder>>)
             : RecentlyReadHolder {
         return RecentlyReadHolder(view, adapter as RecentlyReadAdapter)
     }
 
-    override fun bindViewHolder(adapter: FlexibleAdapter<IFlexible<RecyclerView.ViewHolder>>?,
+    override fun bindViewHolder(adapter: FlexibleAdapter<IFlexible<androidx.recyclerview.widget.RecyclerView.ViewHolder>>?,
                                 holder: RecentlyReadHolder,
                                 position: Int,
                                 payloads: MutableList<Any>?) {

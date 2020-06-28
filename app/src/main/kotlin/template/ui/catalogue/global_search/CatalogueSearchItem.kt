@@ -1,6 +1,6 @@
 package template.ui.catalogue.global_search
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import eu.davidea.flexibleadapter.FlexibleAdapter
 import eu.davidea.flexibleadapter.items.AbstractFlexibleItem
@@ -21,7 +21,7 @@ class CatalogueSearchItem(val source: CatalogueSource, val results: List<Catalog
      *
      * @return holder of view.
      */
-    override fun createViewHolder(view: View, adapter: FlexibleAdapter<IFlexible<RecyclerView.ViewHolder>>?)
+    override fun createViewHolder(view: View, adapter: FlexibleAdapter<IFlexible<androidx.recyclerview.widget.RecyclerView.ViewHolder>>?)
             : CatalogueSearchHolder {
         return CatalogueSearchHolder(view, adapter as CatalogueSearchAdapter)
     }
@@ -29,7 +29,7 @@ class CatalogueSearchItem(val source: CatalogueSource, val results: List<Catalog
     /**
      * Bind item to view.
      */
-    override fun bindViewHolder(adapter: FlexibleAdapter<IFlexible<RecyclerView.ViewHolder>>?,
+    override fun bindViewHolder(adapter: FlexibleAdapter<IFlexible<androidx.recyclerview.widget.RecyclerView.ViewHolder>>?,
                                 holder: CatalogueSearchHolder, position: Int, payloads: MutableList<Any>?) {
         holder.bind(this)
     }

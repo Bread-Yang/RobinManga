@@ -1,8 +1,8 @@
 package template.ui.catalogue.global_search
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.SearchView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.widget.SearchView
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -45,7 +45,7 @@ open class CatalogueSearchController(protected val initialQuery: String? = null)
         adapter = CatalogueSearchAdapter(this)
 
         // Create recycler and set adapter.
-        recyclerView.layoutManager = LinearLayoutManager(view.context)
+        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(view.context)
         recyclerView.adapter = adapter
     }
 

@@ -2,8 +2,8 @@ package template.ui.setting
 
 import android.app.Activity
 import android.content.Intent
-import android.support.customtabs.CustomTabsIntent
-import android.support.v7.preference.PreferenceScreen
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.preference.PreferenceScreen
 import template.App
 import template.R
 import template.data.preference.PreferenceKeys

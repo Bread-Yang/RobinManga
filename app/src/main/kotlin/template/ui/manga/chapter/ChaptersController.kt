@@ -1,9 +1,9 @@
 package template.ui.manga.chapter
 
 import android.content.Intent
-import android.support.v7.view.ActionMode
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
+import androidx.appcompat.view.ActionMode
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -46,8 +46,8 @@ class ChaptersController : NucleusDaggerController<ChaptersPresenter>(),
         adapter = ChaptersAdapter(this, view.context)
 
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(view.context)
-        recyclerView.addItemDecoration(DividerItemDecoration(view.context, DividerItemDecoration.VERTICAL))
+        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(view.context)
+        recyclerView.addItemDecoration(androidx.recyclerview.widget.DividerItemDecoration(view.context, androidx.recyclerview.widget.DividerItemDecoration.VERTICAL))
         recyclerView.setHasFixedSize(true)
         adapter?.fastScroller = fastScroller
 

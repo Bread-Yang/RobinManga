@@ -1,6 +1,6 @@
 package template.ui.base.controller
 
-import android.support.design.widget.TabLayout
+import com.google.android.material.tabs.TabLayout
 
 interface TabbedController {
 

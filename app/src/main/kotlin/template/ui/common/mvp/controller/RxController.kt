@@ -1,7 +1,7 @@
 package template.ui.common.mvp.controller
 
 import android.os.Bundle
-import android.support.annotation.CallSuper
+import androidx.annotation.CallSuper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

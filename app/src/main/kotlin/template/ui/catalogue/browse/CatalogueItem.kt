@@ -1,6 +1,6 @@
 package template.ui.catalogue.browse
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.f2prateek.rx.preferences2.Preference
 import eu.davidea.flexibleadapter.FlexibleAdapter
@@ -21,13 +21,13 @@ class CatalogueItem(val manga: Manga, private val catalogueAsList: Preference<Bo
     }
 
     override fun createViewHolder(view: View,
-                                  adapter: FlexibleAdapter<IFlexible<RecyclerView.ViewHolder>>): CatalogueHolder {
+                                  adapter: FlexibleAdapter<IFlexible<androidx.recyclerview.widget.RecyclerView.ViewHolder>>): CatalogueHolder {
         val parent = adapter.recyclerView
         // TODO("实现Grid布局 ")
         return CatalogueListHolder(view, adapter)
     }
 
-    override fun bindViewHolder(adapter: FlexibleAdapter<IFlexible<RecyclerView.ViewHolder>>?,
+    override fun bindViewHolder(adapter: FlexibleAdapter<IFlexible<androidx.recyclerview.widget.RecyclerView.ViewHolder>>?,
                                 holder: CatalogueHolder,
                                 position: Int,
                                 payloads: MutableList<Any>?) {

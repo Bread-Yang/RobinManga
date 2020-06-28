@@ -1,8 +1,8 @@
 package template.ui.catalogue.browse
 
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.jakewharton.rxbinding2.view.clicks
 import eu.davidea.flexibleadapter.FlexibleAdapter
@@ -38,7 +38,7 @@ class BrowseCatalogueController : NucleusDaggerController<BrowseCataloguePresent
     /**
      * Recycler view with the list of results.
      */
-    private var recyclerView: RecyclerView? = null
+    private var recyclerView: androidx.recyclerview.widget.RecyclerView? = null
 
     /**
      *  Endless loading item.
@@ -66,20 +66,20 @@ class BrowseCatalogueController : NucleusDaggerController<BrowseCataloguePresent
 
     fun setupRecycler(view: View) {
 
-        var oldPosition = RecyclerView.NO_POSITION
+        var oldPosition = androidx.recyclerview.widget.RecyclerView.NO_POSITION
         val oldRecycler = lltCatalogue.getChildAt(1)
-        if (oldRecycler is RecyclerView) {
-            oldPosition = (oldRecycler.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+        if (oldRecycler is androidx.recyclerview.widget.RecyclerView) {
+            oldPosition = (oldRecycler.layoutManager as androidx.recyclerview.widget.LinearLayoutManager).findFirstVisibleItemPosition()
             oldRecycler.adapter = null
 
             lltCatalogue.removeView(oldRecycler)
         }
 
         val recycler =
-                RecyclerView(view.context).apply {
+                androidx.recyclerview.widget.RecyclerView(view.context).apply {
                     id = R.id.recyclerView
-                    layoutManager = LinearLayoutManager(context)
-                    addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+                    layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+                    addItemDecoration(androidx.recyclerview.widget.DividerItemDecoration(context, androidx.recyclerview.widget.DividerItemDecoration.VERTICAL))
                 }
 
         recycler.setHasFixedSize(true)
@@ -87,7 +87,7 @@ class BrowseCatalogueController : NucleusDaggerController<BrowseCataloguePresent
 
         lltCatalogue.addView(recycler, 2)
 
-        if (oldPosition != RecyclerView.NO_POSITION) {
+        if (oldPosition != androidx.recyclerview.widget.RecyclerView.NO_POSITION) {
             recycler.layoutManager.scrollToPosition(oldPosition)
         }
         this.recyclerView = recycler

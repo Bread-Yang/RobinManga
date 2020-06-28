@@ -1,6 +1,6 @@
 package template.ui.reader.viewer.pager
 
-import android.support.v4.view.PagerAdapter
+import androidx.viewpager.widget.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
 import template.R
@@ -38,9 +38,9 @@ class PagerReaderAdapter(private val reader: PagerReader) : ViewPagerAdapter() {
     override fun getItemPosition(obj: Any): Int {
         val view = obj as PageView
         return if (view.page in pages) {
-            PagerAdapter.POSITION_UNCHANGED
+            androidx.viewpager.widget.PagerAdapter.POSITION_UNCHANGED
         } else {
-            PagerAdapter.POSITION_NONE
+            androidx.viewpager.widget.PagerAdapter.POSITION_NONE
         }
     }
 }

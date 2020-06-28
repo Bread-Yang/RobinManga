@@ -3,9 +3,9 @@ package template.ui.library
 import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.view.ActionMode
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -102,7 +102,7 @@ class LibraryController : NucleusDaggerController<LibraryPresenter>(),
     /**
      * Drawer listener to allow swipe only for closing the drawer.
      */
-    private var drawerListener: DrawerLayout.DrawerListener? = null
+    private var drawerListener: androidx.drawerlayout.widget.DrawerLayout.DrawerListener? = null
 
     private var tabsVisibilitySubject: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
 
